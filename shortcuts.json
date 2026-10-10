@@ -1,0 +1,1172 @@
+[
+  {
+    "id": "mac-1",
+    "platform": "mac",
+    "group": "Sistema",
+    "context": "macOS",
+    "source": "https://support.apple.com/pt-br/102650",
+    "keys": "Cmd + Espaço",
+    "title": "Abrir Spotlight",
+    "note": ""
+  },
+  {
+    "id": "mac-2",
+    "platform": "mac",
+    "group": "Sistema",
+    "context": "macOS",
+    "source": "https://support.apple.com/pt-br/102650",
+    "keys": "Ctrl + Cmd + Q",
+    "title": "Bloquear a sessão",
+    "note": ""
+  },
+  {
+    "id": "mac-3",
+    "platform": "mac",
+    "group": "Sistema",
+    "context": "macOS",
+    "source": "https://support.apple.com/pt-br/102650",
+    "keys": "Ctrl + ↑",
+    "title": "Abrir Mission Control",
+    "note": "Pode ser personalizado nos ajustes do sistema."
+  },
+  {
+    "id": "mac-4",
+    "platform": "mac",
+    "group": "Sistema",
+    "context": "macOS",
+    "source": "https://support.apple.com/pt-br/102650",
+    "keys": "Ctrl + ↓",
+    "title": "Mostrar janelas do aplicativo atual",
+    "note": ""
+  },
+  {
+    "id": "mac-5",
+    "platform": "mac",
+    "group": "Sistema",
+    "context": "macOS",
+    "source": "https://support.apple.com/pt-br/102650",
+    "keys": "Ctrl + ← / →",
+    "title": "Alternar entre mesas (Spaces)",
+    "note": ""
+  },
+  {
+    "id": "mac-6",
+    "platform": "mac",
+    "group": "Sistema",
+    "context": "macOS",
+    "source": "https://support.apple.com/pt-br/102650",
+    "keys": "Ctrl + F2",
+    "title": "Focar a barra de menus",
+    "note": "Em alguns teclados, acrescente Fn."
+  },
+  {
+    "id": "mac-7",
+    "platform": "mac",
+    "group": "Sistema",
+    "context": "macOS",
+    "source": "https://support.apple.com/pt-br/102650",
+    "keys": "Ctrl + F3",
+    "title": "Focar o Dock",
+    "note": "Em alguns teclados, acrescente Fn."
+  },
+  {
+    "id": "mac-8",
+    "platform": "mac",
+    "group": "Sistema",
+    "context": "macOS",
+    "source": "https://support.apple.com/pt-br/102650",
+    "keys": "Cmd + Option + Esc",
+    "title": "Abrir o diálogo Forçar Encerrar",
+    "note": "Selecione o aplicativo no diálogo. Encerrá-lo pode perder alterações não salvas."
+  },
+  {
+    "id": "mac-9",
+    "platform": "mac",
+    "group": "Sistema",
+    "context": "macOS",
+    "source": "https://support.apple.com/pt-br/102650",
+    "keys": "Cmd + Ctrl + Espaço",
+    "title": "Abrir o visualizador de caracteres",
+    "note": ""
+  },
+  {
+    "id": "mac-10",
+    "platform": "mac",
+    "group": "Sistema",
+    "context": "macOS",
+    "source": "https://support.apple.com/pt-br/102650",
+    "keys": "Cmd + Option + D",
+    "title": "Mostrar ou ocultar o Dock",
+    "note": ""
+  },
+  {
+    "id": "mac-11",
+    "platform": "mac",
+    "group": "Janelas e aplicativos",
+    "context": "macOS / aplicativos compatíveis",
+    "source": "https://support.apple.com/pt-br/102650",
+    "keys": "Cmd + Tab",
+    "title": "Alternar entre aplicativos",
+    "note": ""
+  },
+  {
+    "id": "mac-12",
+    "platform": "mac",
+    "group": "Janelas e aplicativos",
+    "context": "macOS / aplicativos compatíveis",
+    "source": "https://support.apple.com/pt-br/102650",
+    "keys": "Cmd + Shift + Tab",
+    "title": "Alternar aplicativos no sentido inverso",
+    "note": ""
+  },
+  {
+    "id": "mac-13",
+    "platform": "mac",
+    "group": "Janelas e aplicativos",
+    "context": "macOS / aplicativos compatíveis",
+    "source": "https://support.apple.com/pt-br/102650",
+    "keys": "Cmd + `",
+    "title": "Alternar janelas do mesmo aplicativo",
+    "note": "A tecla física varia conforme a fonte de entrada."
+  },
+  {
+    "id": "mac-14",
+    "platform": "mac",
+    "group": "Janelas e aplicativos",
+    "context": "macOS / aplicativos compatíveis",
+    "source": "https://support.apple.com/pt-br/102650",
+    "keys": "Cmd + W",
+    "title": "Fechar a janela ou aba ativa",
+    "note": "Depende do aplicativo; pode solicitar salvar alterações."
+  },
+  {
+    "id": "mac-15",
+    "platform": "mac",
+    "group": "Janelas e aplicativos",
+    "context": "macOS / aplicativos compatíveis",
+    "source": "https://support.apple.com/pt-br/102650",
+    "keys": "Cmd + M",
+    "title": "Minimizar a janela",
+    "note": ""
+  },
+  {
+    "id": "mac-16",
+    "platform": "mac",
+    "group": "Janelas e aplicativos",
+    "context": "macOS / aplicativos compatíveis",
+    "source": "https://support.apple.com/pt-br/102650",
+    "keys": "Cmd + H",
+    "title": "Ocultar o aplicativo atual",
+    "note": ""
+  },
+  {
+    "id": "mac-17",
+    "platform": "mac",
+    "group": "Janelas e aplicativos",
+    "context": "macOS / aplicativos compatíveis",
+    "source": "https://support.apple.com/pt-br/102650",
+    "keys": "Cmd + Option + H",
+    "title": "Ocultar os outros aplicativos",
+    "note": ""
+  },
+  {
+    "id": "mac-18",
+    "platform": "mac",
+    "group": "Janelas e aplicativos",
+    "context": "macOS / aplicativos compatíveis",
+    "source": "https://support.apple.com/pt-br/102650",
+    "keys": "Cmd + Q",
+    "title": "Encerrar o aplicativo",
+    "note": "Pode solicitar salvar alterações."
+  },
+  {
+    "id": "mac-19",
+    "platform": "mac",
+    "group": "Janelas e aplicativos",
+    "context": "macOS / aplicativos compatíveis",
+    "source": "https://support.apple.com/pt-br/102650",
+    "keys": "Cmd + N",
+    "title": "Criar uma janela ou documento",
+    "note": "A ação exata depende do aplicativo."
+  },
+  {
+    "id": "mac-20",
+    "platform": "mac",
+    "group": "Janelas e aplicativos",
+    "context": "macOS / aplicativos compatíveis",
+    "source": "https://support.apple.com/pt-br/102650",
+    "keys": "Cmd + ,",
+    "title": "Abrir os ajustes do aplicativo",
+    "note": "Disponível em muitos aplicativos; consulte o menu do app."
+  },
+  {
+    "id": "mac-21",
+    "platform": "mac",
+    "group": "Finder e arquivos",
+    "context": "Finder",
+    "source": "https://support.apple.com/pt-br/102650",
+    "keys": "Espaço",
+    "title": "Visualizar com Quick Look",
+    "note": "Selecione um arquivo primeiro."
+  },
+  {
+    "id": "mac-22",
+    "platform": "mac",
+    "group": "Finder e arquivos",
+    "context": "Finder",
+    "source": "https://support.apple.com/pt-br/102650",
+    "keys": "Cmd + O",
+    "title": "Abrir o item selecionado",
+    "note": ""
+  },
+  {
+    "id": "mac-23",
+    "platform": "mac",
+    "group": "Finder e arquivos",
+    "context": "Finder",
+    "source": "https://support.apple.com/pt-br/102650",
+    "keys": "Cmd + ↓",
+    "title": "Abrir o item selecionado",
+    "note": ""
+  },
+  {
+    "id": "mac-24",
+    "platform": "mac",
+    "group": "Finder e arquivos",
+    "context": "Finder",
+    "source": "https://support.apple.com/pt-br/102650",
+    "keys": "Cmd + ↑",
+    "title": "Abrir a pasta superior",
+    "note": ""
+  },
+  {
+    "id": "mac-25",
+    "platform": "mac",
+    "group": "Finder e arquivos",
+    "context": "Finder",
+    "source": "https://support.apple.com/pt-br/102650",
+    "keys": "Return",
+    "title": "Renomear o item selecionado",
+    "note": ""
+  },
+  {
+    "id": "mac-26",
+    "platform": "mac",
+    "group": "Finder e arquivos",
+    "context": "Finder",
+    "source": "https://support.apple.com/pt-br/102650",
+    "keys": "Cmd + Shift + G",
+    "title": "Ir para uma pasta pelo caminho",
+    "note": ""
+  },
+  {
+    "id": "mac-27",
+    "platform": "mac",
+    "group": "Finder e arquivos",
+    "context": "Finder",
+    "source": "https://support.apple.com/pt-br/102650",
+    "keys": "Cmd + Shift + N",
+    "title": "Criar uma pasta",
+    "note": ""
+  },
+  {
+    "id": "mac-28",
+    "platform": "mac",
+    "group": "Finder e arquivos",
+    "context": "Finder",
+    "source": "https://support.apple.com/pt-br/102650",
+    "keys": "Cmd + Option + P",
+    "title": "Mostrar ou ocultar a barra de caminho",
+    "note": ""
+  },
+  {
+    "id": "mac-29",
+    "platform": "mac",
+    "group": "Finder e arquivos",
+    "context": "Finder",
+    "source": "https://support.apple.com/pt-br/102650",
+    "keys": "Cmd + C, depois Cmd + Option + V",
+    "title": "Mover os arquivos copiados para a pasta atual",
+    "note": "Use no Finder; não equivale a recortar texto."
+  },
+  {
+    "id": "mac-30",
+    "platform": "mac",
+    "group": "Finder e arquivos",
+    "context": "Finder",
+    "source": "https://support.apple.com/pt-br/102650",
+    "keys": "Cmd + Backspace",
+    "title": "Mover os itens para o Lixo",
+    "note": ""
+  },
+  {
+    "id": "mac-31",
+    "platform": "mac",
+    "group": "Finder e arquivos",
+    "context": "Finder",
+    "source": "https://support.apple.com/pt-br/102650",
+    "keys": "Cmd + Shift + Backspace",
+    "title": "Esvaziar o Lixo",
+    "note": "Remove arquivos; revise os itens antes de confirmar."
+  },
+  {
+    "id": "mac-32",
+    "platform": "mac",
+    "group": "Finder e arquivos",
+    "context": "Finder",
+    "source": "https://support.apple.com/pt-br/102650",
+    "keys": "Cmd + Shift + .",
+    "title": "Mostrar ou ocultar arquivos invisíveis",
+    "note": ""
+  },
+  {
+    "id": "mac-33",
+    "platform": "mac",
+    "group": "Texto e edição",
+    "context": "Campos de texto / aplicativos compatíveis",
+    "source": "https://support.apple.com/pt-br/102650",
+    "keys": "Cmd + C",
+    "title": "Copiar a seleção",
+    "note": ""
+  },
+  {
+    "id": "mac-34",
+    "platform": "mac",
+    "group": "Texto e edição",
+    "context": "Campos de texto / aplicativos compatíveis",
+    "source": "https://support.apple.com/pt-br/102650",
+    "keys": "Cmd + X",
+    "title": "Recortar a seleção",
+    "note": ""
+  },
+  {
+    "id": "mac-35",
+    "platform": "mac",
+    "group": "Texto e edição",
+    "context": "Campos de texto / aplicativos compatíveis",
+    "source": "https://support.apple.com/pt-br/102650",
+    "keys": "Cmd + V",
+    "title": "Colar",
+    "note": ""
+  },
+  {
+    "id": "mac-36",
+    "platform": "mac",
+    "group": "Texto e edição",
+    "context": "Campos de texto / aplicativos compatíveis",
+    "source": "https://support.apple.com/pt-br/102650",
+    "keys": "Cmd + A",
+    "title": "Selecionar tudo",
+    "note": ""
+  },
+  {
+    "id": "mac-37",
+    "platform": "mac",
+    "group": "Texto e edição",
+    "context": "Campos de texto / aplicativos compatíveis",
+    "source": "https://support.apple.com/pt-br/102650",
+    "keys": "Cmd + Z",
+    "title": "Desfazer",
+    "note": ""
+  },
+  {
+    "id": "mac-38",
+    "platform": "mac",
+    "group": "Texto e edição",
+    "context": "Campos de texto / aplicativos compatíveis",
+    "source": "https://support.apple.com/pt-br/102650",
+    "keys": "Cmd + Shift + Z",
+    "title": "Refazer",
+    "note": "Pode variar conforme o aplicativo."
+  },
+  {
+    "id": "mac-39",
+    "platform": "mac",
+    "group": "Texto e edição",
+    "context": "Campos de texto / aplicativos compatíveis",
+    "source": "https://support.apple.com/pt-br/102650",
+    "keys": "Option + ← / →",
+    "title": "Mover por palavras",
+    "note": ""
+  },
+  {
+    "id": "mac-40",
+    "platform": "mac",
+    "group": "Texto e edição",
+    "context": "Campos de texto / aplicativos compatíveis",
+    "source": "https://support.apple.com/pt-br/102650",
+    "keys": "Cmd + ← / →",
+    "title": "Ir ao início ou fim da linha",
+    "note": ""
+  },
+  {
+    "id": "mac-41",
+    "platform": "mac",
+    "group": "Texto e edição",
+    "context": "Campos de texto / aplicativos compatíveis",
+    "source": "https://support.apple.com/pt-br/102650",
+    "keys": "Cmd + ↑ / ↓",
+    "title": "Ir ao início ou fim do documento",
+    "note": ""
+  },
+  {
+    "id": "mac-42",
+    "platform": "mac",
+    "group": "Texto e edição",
+    "context": "Campos de texto / aplicativos compatíveis",
+    "source": "https://support.apple.com/pt-br/102650",
+    "keys": "Option + ↑ / ↓",
+    "title": "Mover ao início ou fim do parágrafo",
+    "note": ""
+  },
+  {
+    "id": "mac-43",
+    "platform": "mac",
+    "group": "Texto e edição",
+    "context": "Campos de texto / aplicativos compatíveis",
+    "source": "https://support.apple.com/pt-br/102650",
+    "keys": "Option + Backspace",
+    "title": "Apagar a palavra anterior",
+    "note": ""
+  },
+  {
+    "id": "mac-44",
+    "platform": "mac",
+    "group": "Texto e edição",
+    "context": "Campos de texto / aplicativos compatíveis",
+    "source": "https://support.apple.com/pt-br/102650",
+    "keys": "Cmd + Backspace",
+    "title": "Apagar até o início da linha",
+    "note": ""
+  },
+  {
+    "id": "mac-45",
+    "platform": "mac",
+    "group": "Texto e edição",
+    "context": "Campos de texto / aplicativos compatíveis",
+    "source": "https://support.apple.com/pt-br/102650",
+    "keys": "Fn + Backspace",
+    "title": "Apagar o caractere à frente",
+    "note": ""
+  },
+  {
+    "id": "mac-46",
+    "platform": "mac",
+    "group": "Texto e edição",
+    "context": "Campos de texto / aplicativos compatíveis",
+    "source": "https://support.apple.com/pt-br/102650",
+    "keys": "Option + Fn + Backspace",
+    "title": "Apagar a próxima palavra",
+    "note": ""
+  },
+  {
+    "id": "mac-47",
+    "platform": "mac",
+    "group": "Texto e edição",
+    "context": "Campos de texto / aplicativos compatíveis",
+    "source": "https://support.apple.com/pt-br/102650",
+    "keys": "Cmd + Shift + ← / →",
+    "title": "Selecionar até a borda da linha",
+    "note": "Parte da posição atual do cursor."
+  },
+  {
+    "id": "mac-48",
+    "platform": "mac",
+    "group": "Texto e edição",
+    "context": "Campos de texto / aplicativos compatíveis",
+    "source": "https://support.apple.com/pt-br/102650",
+    "keys": "Option + Shift + ← / →",
+    "title": "Ampliar a seleção por palavra",
+    "note": ""
+  },
+  {
+    "id": "mac-49",
+    "platform": "mac",
+    "group": "Navegação web",
+    "context": "Safari",
+    "source": "https://support.apple.com/en-gb/guide/safari/cpsh003/mac",
+    "keys": "Cmd + L",
+    "title": "Focar o endereço",
+    "note": ""
+  },
+  {
+    "id": "mac-50",
+    "platform": "mac",
+    "group": "Navegação web",
+    "context": "Safari",
+    "source": "https://support.apple.com/en-gb/guide/safari/cpsh003/mac",
+    "keys": "Cmd + T",
+    "title": "Abrir uma aba",
+    "note": ""
+  },
+  {
+    "id": "mac-51",
+    "platform": "mac",
+    "group": "Navegação web",
+    "context": "Safari",
+    "source": "https://support.apple.com/en-gb/guide/safari/cpsh003/mac",
+    "keys": "Cmd + Shift + T",
+    "title": "Reabrir a última aba fechada",
+    "note": ""
+  },
+  {
+    "id": "mac-52",
+    "platform": "mac",
+    "group": "Navegação web",
+    "context": "Safari",
+    "source": "https://support.apple.com/en-gb/guide/safari/cpsh003/mac",
+    "keys": "Ctrl + Tab",
+    "title": "Ir à próxima aba",
+    "note": ""
+  },
+  {
+    "id": "mac-53",
+    "platform": "mac",
+    "group": "Navegação web",
+    "context": "Safari",
+    "source": "https://support.apple.com/en-gb/guide/safari/cpsh003/mac",
+    "keys": "Ctrl + Shift + Tab",
+    "title": "Ir à aba anterior",
+    "note": ""
+  },
+  {
+    "id": "mac-54",
+    "platform": "mac",
+    "group": "Navegação web",
+    "context": "Safari",
+    "source": "https://support.apple.com/en-gb/guide/safari/cpsh003/mac",
+    "keys": "Cmd + 1 a 8",
+    "title": "Selecionar uma das primeiras oito abas",
+    "note": ""
+  },
+  {
+    "id": "mac-55",
+    "platform": "mac",
+    "group": "Navegação web",
+    "context": "Safari",
+    "source": "https://support.apple.com/en-gb/guide/safari/cpsh003/mac",
+    "keys": "Cmd + 9",
+    "title": "Selecionar a última aba",
+    "note": ""
+  },
+  {
+    "id": "mac-56",
+    "platform": "mac",
+    "group": "Navegação web",
+    "context": "Safari",
+    "source": "https://support.apple.com/en-gb/guide/safari/cpsh003/mac",
+    "keys": "Cmd + [ / ]",
+    "title": "Voltar ou avançar no histórico",
+    "note": ""
+  },
+  {
+    "id": "mac-57",
+    "platform": "mac",
+    "group": "Navegação web",
+    "context": "Safari",
+    "source": "https://support.apple.com/en-gb/guide/safari/cpsh003/mac",
+    "keys": "Cmd + F",
+    "title": "Buscar na página",
+    "note": ""
+  },
+  {
+    "id": "mac-58",
+    "platform": "mac",
+    "group": "Navegação web",
+    "context": "Safari",
+    "source": "https://support.apple.com/en-gb/guide/safari/cpsh003/mac",
+    "keys": "Cmd + G",
+    "title": "Ir à próxima ocorrência",
+    "note": ""
+  },
+  {
+    "id": "mac-59",
+    "platform": "mac",
+    "group": "Navegação web",
+    "context": "Safari",
+    "source": "https://support.apple.com/en-gb/guide/safari/cpsh003/mac",
+    "keys": "Cmd + Shift + G",
+    "title": "Ir à ocorrência anterior",
+    "note": ""
+  },
+  {
+    "id": "mac-60",
+    "platform": "mac",
+    "group": "Navegação web",
+    "context": "Safari",
+    "source": "https://support.apple.com/en-gb/guide/safari/cpsh003/mac",
+    "keys": "Cmd + R",
+    "title": "Recarregar a página",
+    "note": ""
+  },
+  {
+    "id": "mac-61",
+    "platform": "mac",
+    "group": "Navegação web",
+    "context": "Safari",
+    "source": "https://support.apple.com/en-gb/guide/safari/cpsh003/mac",
+    "keys": "Cmd + Shift + R",
+    "title": "Ativar ou desativar o Leitor",
+    "note": "Atalho do Safari. No Chrome essa combinação tem outra função."
+  },
+  {
+    "id": "mac-62",
+    "platform": "mac",
+    "group": "Navegação web",
+    "context": "Safari",
+    "source": "https://support.apple.com/en-gb/guide/safari/cpsh003/mac",
+    "keys": "Espaço / Shift + Espaço",
+    "title": "Rolar uma página para baixo ou para cima",
+    "note": "Quando o foco não está em um campo de edição."
+  },
+  {
+    "id": "mac-63",
+    "platform": "mac",
+    "group": "Capturas",
+    "context": "macOS",
+    "source": "https://support.apple.com/pt-br/102650",
+    "keys": "Cmd + Shift + 3",
+    "title": "Capturar a tela",
+    "note": ""
+  },
+  {
+    "id": "mac-64",
+    "platform": "mac",
+    "group": "Capturas",
+    "context": "macOS",
+    "source": "https://support.apple.com/pt-br/102650",
+    "keys": "Cmd + Shift + 4",
+    "title": "Capturar uma área",
+    "note": ""
+  },
+  {
+    "id": "mac-65",
+    "platform": "mac",
+    "group": "Capturas",
+    "context": "macOS",
+    "source": "https://support.apple.com/pt-br/102650",
+    "keys": "Cmd + Shift + 4, depois Espaço",
+    "title": "Capturar uma janela",
+    "note": "Selecione a janela com o ponteiro."
+  },
+  {
+    "id": "mac-66",
+    "platform": "mac",
+    "group": "Capturas",
+    "context": "macOS",
+    "source": "https://support.apple.com/pt-br/102650",
+    "keys": "Cmd + Shift + 5",
+    "title": "Abrir o painel de captura e gravação",
+    "note": ""
+  },
+  {
+    "id": "mac-67",
+    "platform": "mac",
+    "group": "Capturas",
+    "context": "macOS",
+    "source": "https://support.apple.com/pt-br/102650",
+    "keys": "Ctrl junto ao atalho de captura",
+    "title": "Copiar a captura para a área de transferência",
+    "note": "Exemplo: Ctrl + Cmd + Shift + 3."
+  },
+  {
+    "id": "mac-68",
+    "platform": "mac",
+    "group": "Acentos e símbolos",
+    "context": "Fonte de entrada US / ABC",
+    "source": "https://support.apple.com/pt-br/102650",
+    "keys": "Option + E, depois a vogal",
+    "title": "Digitar acento agudo",
+    "note": "Exemplo: Option + E, depois A → á. Não vale para todas as fontes de entrada."
+  },
+  {
+    "id": "mac-69",
+    "platform": "mac",
+    "group": "Acentos e símbolos",
+    "context": "Fonte de entrada US / ABC",
+    "source": "https://support.apple.com/pt-br/102650",
+    "keys": "Option + `, depois a vogal",
+    "title": "Digitar acento grave",
+    "note": ""
+  },
+  {
+    "id": "mac-70",
+    "platform": "mac",
+    "group": "Acentos e símbolos",
+    "context": "Fonte de entrada US / ABC",
+    "source": "https://support.apple.com/pt-br/102650",
+    "keys": "Option + I, depois a vogal",
+    "title": "Digitar acento circunflexo",
+    "note": ""
+  },
+  {
+    "id": "mac-71",
+    "platform": "mac",
+    "group": "Acentos e símbolos",
+    "context": "Fonte de entrada US / ABC",
+    "source": "https://support.apple.com/pt-br/102650",
+    "keys": "Option + N, depois a vogal",
+    "title": "Digitar til",
+    "note": ""
+  },
+  {
+    "id": "mac-72",
+    "platform": "mac",
+    "group": "Acentos e símbolos",
+    "context": "Fonte de entrada US / ABC",
+    "source": "https://support.apple.com/pt-br/102650",
+    "keys": "Option + U, depois a vogal",
+    "title": "Digitar trema",
+    "note": ""
+  },
+  {
+    "id": "mac-73",
+    "platform": "mac",
+    "group": "Acentos e símbolos",
+    "context": "Fonte de entrada US / ABC",
+    "source": "https://support.apple.com/pt-br/102650",
+    "keys": "Option + C",
+    "title": "Digitar ç",
+    "note": "Com Shift, gera Ç na fonte US/ABC."
+  },
+  {
+    "id": "mac-74",
+    "platform": "mac",
+    "group": "Acentos e símbolos",
+    "context": "Fonte de entrada US / ABC",
+    "source": "https://support.apple.com/pt-br/102650",
+    "keys": "Option + Shift + 8",
+    "title": "Digitar o símbolo de grau °",
+    "note": ""
+  },
+  {
+    "id": "mac-75",
+    "platform": "mac",
+    "group": "Acentos e símbolos",
+    "context": "Fonte de entrada US / ABC",
+    "source": "https://support.apple.com/pt-br/102650",
+    "keys": "Option + 8",
+    "title": "Digitar o marcador •",
+    "note": ""
+  },
+  {
+    "id": "mac-76",
+    "platform": "mac",
+    "group": "Acentos e símbolos",
+    "context": "Fonte de entrada US / ABC",
+    "source": "https://support.apple.com/pt-br/102650",
+    "keys": "Option + =",
+    "title": "Digitar diferente ≠",
+    "note": ""
+  },
+  {
+    "id": "mac-77",
+    "platform": "mac",
+    "group": "Acentos e símbolos",
+    "context": "Fonte de entrada US / ABC",
+    "source": "https://support.apple.com/pt-br/102650",
+    "keys": "Option + /",
+    "title": "Digitar divisão ÷",
+    "note": ""
+  },
+  {
+    "id": "linux-78",
+    "platform": "linux",
+    "group": "Janelas",
+    "context": "Xfce / Xfwm4, configuração padrão",
+    "source": "https://docs.xfce.org/xfce/xfwm4/keyboard_shortcuts",
+    "keys": "Alt + Tab",
+    "title": "Alternar entre janelas",
+    "note": ""
+  },
+  {
+    "id": "linux-79",
+    "platform": "linux",
+    "group": "Janelas",
+    "context": "Xfce / Xfwm4, configuração padrão",
+    "source": "https://docs.xfce.org/xfce/xfwm4/keyboard_shortcuts",
+    "keys": "Alt + Shift + Tab",
+    "title": "Alternar janelas no sentido inverso",
+    "note": ""
+  },
+  {
+    "id": "linux-80",
+    "platform": "linux",
+    "group": "Janelas",
+    "context": "Xfce / Xfwm4, configuração padrão",
+    "source": "https://docs.xfce.org/xfce/xfwm4/keyboard_shortcuts",
+    "keys": "Alt + F4",
+    "title": "Fechar a janela ativa",
+    "note": "Pode solicitar salvar alterações."
+  },
+  {
+    "id": "linux-81",
+    "platform": "linux",
+    "group": "Janelas",
+    "context": "Xfce / Xfwm4, configuração padrão",
+    "source": "https://docs.xfce.org/xfce/xfwm4/keyboard_shortcuts",
+    "keys": "Alt + F7",
+    "title": "Mover a janela pelo teclado",
+    "note": ""
+  },
+  {
+    "id": "linux-82",
+    "platform": "linux",
+    "group": "Janelas",
+    "context": "Xfce / Xfwm4, configuração padrão",
+    "source": "https://docs.xfce.org/xfce/xfwm4/keyboard_shortcuts",
+    "keys": "Alt + F8",
+    "title": "Redimensionar a janela pelo teclado",
+    "note": ""
+  },
+  {
+    "id": "linux-83",
+    "platform": "linux",
+    "group": "Janelas",
+    "context": "Xfce / Xfwm4, configuração padrão",
+    "source": "https://docs.xfce.org/xfce/xfwm4/keyboard_shortcuts",
+    "keys": "Alt + F9",
+    "title": "Minimizar a janela",
+    "note": ""
+  },
+  {
+    "id": "linux-84",
+    "platform": "linux",
+    "group": "Janelas",
+    "context": "Xfce / Xfwm4, configuração padrão",
+    "source": "https://docs.xfce.org/xfce/xfwm4/keyboard_shortcuts",
+    "keys": "Alt + F10",
+    "title": "Alternar maximização",
+    "note": ""
+  },
+  {
+    "id": "linux-85",
+    "platform": "linux",
+    "group": "Janelas",
+    "context": "Xfce / Xfwm4, configuração padrão",
+    "source": "https://docs.xfce.org/xfce/xfwm4/keyboard_shortcuts",
+    "keys": "Alt + F11",
+    "title": "Alternar tela cheia",
+    "note": ""
+  },
+  {
+    "id": "linux-86",
+    "platform": "linux",
+    "group": "Janelas",
+    "context": "Xfce / Xfwm4, configuração padrão",
+    "source": "https://docs.xfce.org/xfce/xfwm4/keyboard_shortcuts",
+    "keys": "Alt + Espaço",
+    "title": "Abrir o menu da janela",
+    "note": ""
+  },
+  {
+    "id": "linux-87",
+    "platform": "linux",
+    "group": "Área de trabalho",
+    "context": "Xfce / Xfwm4, configuração padrão",
+    "source": "https://docs.xfce.org/xfce/xfwm4/keyboard_shortcuts",
+    "keys": "Ctrl + Alt + D",
+    "title": "Mostrar ou ocultar a área de trabalho",
+    "note": ""
+  },
+  {
+    "id": "linux-88",
+    "platform": "linux",
+    "group": "Área de trabalho",
+    "context": "Xfce / Xfwm4, configuração padrão",
+    "source": "https://docs.xfce.org/xfce/xfwm4/keyboard_shortcuts",
+    "keys": "Ctrl + Alt + ← / →",
+    "title": "Alternar espaços de trabalho",
+    "note": ""
+  },
+  {
+    "id": "linux-89",
+    "platform": "linux",
+    "group": "Área de trabalho",
+    "context": "Xfce / Xfwm4, configuração padrão",
+    "source": "https://docs.xfce.org/xfce/xfwm4/keyboard_shortcuts",
+    "keys": "Ctrl + F1 a F12",
+    "title": "Ir ao espaço de trabalho correspondente",
+    "note": "O espaço precisa existir."
+  },
+  {
+    "id": "linux-90",
+    "platform": "linux",
+    "group": "Área de trabalho",
+    "context": "Xfce / Xfwm4, configuração padrão",
+    "source": "https://docs.xfce.org/xfce/xfwm4/keyboard_shortcuts",
+    "keys": "Ctrl + Alt + Home / End",
+    "title": "Mover a janela para o espaço anterior ou seguinte",
+    "note": ""
+  },
+  {
+    "id": "linux-91",
+    "platform": "linux",
+    "group": "Área de trabalho",
+    "context": "Xfce / Xfwm4, configuração padrão",
+    "source": "https://docs.xfce.org/xfce/xfwm4/keyboard_shortcuts",
+    "keys": "Alt + F2",
+    "title": "Abrir o lançador de aplicativos",
+    "note": ""
+  },
+  {
+    "id": "linux-92",
+    "platform": "linux",
+    "group": "Área de trabalho",
+    "context": "Xfce / Xfwm4, configuração padrão",
+    "source": "https://docs.xfce.org/xfce/xfwm4/keyboard_shortcuts",
+    "keys": "Alt + F3",
+    "title": "Abrir o localizador de aplicativos",
+    "note": ""
+  },
+  {
+    "id": "linux-93",
+    "platform": "linux",
+    "group": "Área de trabalho",
+    "context": "Xfce / Xfwm4, configuração padrão",
+    "source": "https://docs.xfce.org/xfce/xfwm4/keyboard_shortcuts",
+    "keys": "Ctrl + Alt + T",
+    "title": "Abrir o terminal",
+    "note": "Depende das associações de aplicativos da distribuição."
+  },
+  {
+    "id": "linux-94",
+    "platform": "linux",
+    "group": "Área de trabalho",
+    "context": "Xfce / Xfwm4, configuração padrão",
+    "source": "https://docs.xfce.org/xfce/xfwm4/keyboard_shortcuts",
+    "keys": "Super + E",
+    "title": "Abrir o gerenciador de arquivos",
+    "note": ""
+  },
+  {
+    "id": "linux-95",
+    "platform": "linux",
+    "group": "Área de trabalho",
+    "context": "Xfce / Xfwm4, configuração padrão",
+    "source": "https://docs.xfce.org/xfce/xfwm4/keyboard_shortcuts",
+    "keys": "Ctrl + Alt + L",
+    "title": "Bloquear a sessão",
+    "note": "Usa xflock4; depende de um bloqueador instalado."
+  },
+  {
+    "id": "linux-96",
+    "platform": "linux",
+    "group": "Área de trabalho",
+    "context": "Xfce / Xfwm4, configuração padrão",
+    "source": "https://docs.xfce.org/xfce/xfwm4/keyboard_shortcuts",
+    "keys": "Alt + Print",
+    "title": "Capturar a janela ativa",
+    "note": "Depende do aplicativo de captura configurado."
+  },
+  {
+    "id": "linux-97",
+    "platform": "linux",
+    "group": "Área de trabalho",
+    "context": "Xfce / Xfwm4, configuração padrão",
+    "source": "https://docs.xfce.org/xfce/xfwm4/keyboard_shortcuts",
+    "keys": "Shift + Print",
+    "title": "Capturar uma área",
+    "note": "Depende do aplicativo de captura configurado."
+  },
+  {
+    "id": "linux-98",
+    "platform": "linux",
+    "group": "Terminal e histórico",
+    "context": "Bash / Readline no modo Emacs",
+    "source": "https://www.gnu.org/software/bash/manual/bash.html",
+    "keys": "Ctrl + A",
+    "title": "Ir ao início da linha",
+    "note": ""
+  },
+  {
+    "id": "linux-99",
+    "platform": "linux",
+    "group": "Terminal e histórico",
+    "context": "Bash / Readline no modo Emacs",
+    "source": "https://www.gnu.org/software/bash/manual/bash.html",
+    "keys": "Ctrl + E",
+    "title": "Ir ao fim da linha",
+    "note": ""
+  },
+  {
+    "id": "linux-100",
+    "platform": "linux",
+    "group": "Terminal e histórico",
+    "context": "Bash / Readline no modo Emacs",
+    "source": "https://www.gnu.org/software/bash/manual/bash.html",
+    "keys": "Alt + B / F",
+    "title": "Mover uma palavra para trás ou à frente",
+    "note": "Alt pode ser interceptado pelo terminal; Esc seguido de B/F é uma alternativa."
+  },
+  {
+    "id": "linux-101",
+    "platform": "linux",
+    "group": "Terminal e histórico",
+    "context": "Bash / Readline no modo Emacs",
+    "source": "https://www.gnu.org/software/bash/manual/bash.html",
+    "keys": "Ctrl + B / F",
+    "title": "Mover um caractere para trás ou à frente",
+    "note": ""
+  },
+  {
+    "id": "linux-102",
+    "platform": "linux",
+    "group": "Terminal e histórico",
+    "context": "Bash / Readline no modo Emacs",
+    "source": "https://www.gnu.org/software/bash/manual/bash.html",
+    "keys": "Ctrl + L",
+    "title": "Limpar a tela e redesenhar a linha",
+    "note": "Não apaga o histórico."
+  },
+  {
+    "id": "linux-103",
+    "platform": "linux",
+    "group": "Terminal e histórico",
+    "context": "Bash / Readline no modo Emacs",
+    "source": "https://www.gnu.org/software/bash/manual/bash.html",
+    "keys": "Ctrl + P / N",
+    "title": "Navegar para o comando anterior ou seguinte",
+    "note": ""
+  },
+  {
+    "id": "linux-104",
+    "platform": "linux",
+    "group": "Terminal e histórico",
+    "context": "Bash / Readline no modo Emacs",
+    "source": "https://www.gnu.org/software/bash/manual/bash.html",
+    "keys": "Ctrl + R",
+    "title": "Buscar no histórico em sentido inverso",
+    "note": "Digite um trecho; repita Ctrl+R para recuar."
+  },
+  {
+    "id": "linux-105",
+    "platform": "linux",
+    "group": "Terminal e histórico",
+    "context": "Bash / Readline no modo Emacs",
+    "source": "https://www.gnu.org/software/bash/manual/bash.html",
+    "keys": "Ctrl + G",
+    "title": "Cancelar a busca ou operação Readline",
+    "note": ""
+  },
+  {
+    "id": "linux-106",
+    "platform": "linux",
+    "group": "Terminal e histórico",
+    "context": "Bash / Readline no modo Emacs",
+    "source": "https://www.gnu.org/software/bash/manual/bash.html",
+    "keys": "Ctrl + U",
+    "title": "Remover o trecho antes do cursor",
+    "note": "No Bash com a associação padrão unix-line-discard."
+  },
+  {
+    "id": "linux-107",
+    "platform": "linux",
+    "group": "Terminal e histórico",
+    "context": "Bash / Readline no modo Emacs",
+    "source": "https://www.gnu.org/software/bash/manual/bash.html",
+    "keys": "Ctrl + K",
+    "title": "Remover do cursor até o fim da linha",
+    "note": ""
+  },
+  {
+    "id": "linux-108",
+    "platform": "linux",
+    "group": "Terminal e histórico",
+    "context": "Bash / Readline no modo Emacs",
+    "source": "https://www.gnu.org/software/bash/manual/bash.html",
+    "keys": "Ctrl + W",
+    "title": "Remover a palavra anterior",
+    "note": ""
+  },
+  {
+    "id": "linux-109",
+    "platform": "linux",
+    "group": "Terminal e histórico",
+    "context": "Bash / Readline no modo Emacs",
+    "source": "https://www.gnu.org/software/bash/manual/bash.html",
+    "keys": "Alt + D",
+    "title": "Remover a próxima palavra",
+    "note": ""
+  },
+  {
+    "id": "linux-110",
+    "platform": "linux",
+    "group": "Terminal e histórico",
+    "context": "Bash / Readline no modo Emacs",
+    "source": "https://www.gnu.org/software/bash/manual/bash.html",
+    "keys": "Ctrl + Y",
+    "title": "Reinserir o texto removido (yank)",
+    "note": "Usa o kill ring do Readline, não a área de transferência do sistema."
+  },
+  {
+    "id": "linux-111",
+    "platform": "linux",
+    "group": "Terminal e histórico",
+    "context": "Bash / Readline no modo Emacs",
+    "source": "https://www.gnu.org/software/bash/manual/bash.html",
+    "keys": "Alt + .",
+    "title": "Inserir o último argumento do comando anterior",
+    "note": ""
+  },
+  {
+    "id": "linux-112",
+    "platform": "linux",
+    "group": "Terminal e histórico",
+    "context": "Bash / Readline no modo Emacs",
+    "source": "https://www.gnu.org/software/bash/manual/bash.html",
+    "keys": "Tab",
+    "title": "Completar um nome ou comando",
+    "note": "O resultado depende das regras de completamento instaladas."
+  },
+  {
+    "id": "linux-113",
+    "platform": "linux",
+    "group": "Terminal e histórico",
+    "context": "Bash / Readline no modo Emacs",
+    "source": "https://www.gnu.org/software/bash/manual/bash.html",
+    "keys": "Ctrl + D",
+    "title": "Apagar à frente ou enviar EOF",
+    "note": "Em uma linha vazia, pode encerrar o shell; depende de ignoreeof."
+  },
+  {
+    "id": "linux-114",
+    "platform": "linux",
+    "group": "Sinais e recuperação",
+    "context": "Terminal Unix, configurações usuais",
+    "source": "https://www.gnu.org/software/bash/manual/bash.html",
+    "keys": "Ctrl + C",
+    "title": "Solicitar interrupção do processo em primeiro plano",
+    "note": "Normalmente envia SIGINT; o aplicativo pode tratar ou ignorar o sinal."
+  },
+  {
+    "id": "linux-115",
+    "platform": "linux",
+    "group": "Sinais e recuperação",
+    "context": "Terminal Unix, configurações usuais",
+    "source": "https://www.gnu.org/software/bash/manual/bash.html",
+    "keys": "Ctrl + Z",
+    "title": "Suspender o processo em primeiro plano",
+    "note": "Normalmente envia SIGTSTP. Use fg para retomá-lo; não encerra o programa."
+  },
+  {
+    "id": "linux-116",
+    "platform": "linux",
+    "group": "Sinais e recuperação",
+    "context": "Terminal Unix, configurações usuais",
+    "source": "https://www.gnu.org/software/bash/manual/bash.html",
+    "keys": "Ctrl + Q",
+    "title": "Retomar saída pausada por Ctrl+S",
+    "note": "Só se o controle de fluxo por software estiver ativo (ixon)."
+  },
+  {
+    "id": "linux-117",
+    "platform": "linux",
+    "group": "Sinais e recuperação",
+    "context": "Terminal Unix, configurações usuais",
+    "source": "https://www.gnu.org/software/bash/manual/bash.html",
+    "keys": "Ctrl + \\",
+    "title": "Solicitar encerramento via SIGQUIT",
+    "note": "Pode gerar core dump e perder trabalho não salvo. Não é uma saída normal do aplicativo."
+  }
+]

@@ -30,3 +30,14 @@ Foi verificada a preservação e acessibilidade dos 2.653 registros, além das f
 ## Licenças
 
 Conteúdo adaptado de tldr-pages: CC BY 4.0, conforme `LICENCA.md`. Referências específicas estão nos cartões. Fontes Inter e Fira Code: SIL Open Font License, nos arquivos de licença correspondentes. A licença do conteúdo de terceiros não deve ser aplicada automaticamente à interface e aos demais arquivos.
+
+
+## Atalhos e teclados · v03
+- Comandos Linux: base preservada com 2.653 exemplos.
+- Atalhos Linux: 40 referências para Xfce/Xfwm4, Bash/Readline e terminal.
+- Atalhos macOS: 77 referências por contexto; símbolos US/ABC.
+- Meus teclados: Corne 42 / Sofle 58, seis camadas, manual e adesivos v21.
+As imagens são prévias dos PDFs fornecidos pelo autor. Os PDFs são os originais; a documentação distingue mapa lógico de validação física/firmware.
+Fontes dos atalhos: PDF macOS fornecido pelo autor, Apple Support, manual GNU Bash e documentação Xfce. Descrições redigidas para consulta; cada cartão traz contexto e referência.
+URLs diretas: #linux, #atalhos-linux, #atalhos-macos, #teclados.
+PDFs carregados sob demanda, imagens somente ao abrir a área de teclados.
