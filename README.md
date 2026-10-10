@@ -4,9 +4,9 @@ Referência em português com tema escuro, cores por área e busca por comando, 
 
 **[Abrir o FP Atlas](https://fabriciopecanha.github.io/fp-atlas/)** · **[Baixar o pacote completo para uso offline](https://fabriciopecanha.github.io/fp-atlas/fp-atlas-offline.zip)**
 
-## Conteúdo · v04
+## Conteúdo · v05
 
-- 2.653 exemplos Linux, 1.080 nomes de comandos, 65 grupos e 8 volumes.
+- 2.653 entradas Linux (2.474 exemplos e 179 referências de catálogo), 1.080 nomes de comandos, 65 grupos e 8 volumes.
 - 40 atalhos Linux para Xfce/Xfwm4, Bash/Readline e terminal.
 - 77 atalhos macOS, separados por contexto; símbolos US/ABC.
 - Corne 42 / Sofle 58: seis camadas por modelo, manual e adesivos vetoriais v21.
@@ -63,3 +63,9 @@ Verificações automatizadas: campos e IDs, volumes/plataformas, assets obrigat�
 ## Créditos e licenças
 
 Conteúdo adaptado de tldr-pages: CC BY 4.0. Fontes Inter e Fira Code: SIL Open Font License. As referências disponíveis aparecem em cada cartão. Os PDFs v21 foram fornecidos pelo autor e permanecem originais. A licença do conteúdo de terceiros não é aplicada automaticamente à interface ou aos PDFs. Consulte `LICENCA.md`.
+
+## Revisão de receitas · 2026-10-10
+
+Foram encontradas 66 ferramentas com apenas `man ferramenta`: 65 receberam exemplos de uso, com finalidade, requisitos, fonte e impacto revisados. `msfpc` permanece identificado como catálogo sem receita operacional revisada. As 178 verificações de instalação fora do comando `command` também são referências de catálogo. Não são contabilizadas como exemplos nem exibidas como comandos copiáveis.
+
+A revisão documental não executou scanners, ataques, serviços, scripts externos, suspensão, captura ou operações em cartões/discos. Interfaces gráficas e menus estão identificados nos títulos/notas. Ferramentas específicas do Kali não têm disponibilidade no Fedora presumida. Consulte `docs/revisao-manpages-2026-10-10.md` para a lista e fontes.

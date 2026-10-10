@@ -34,6 +34,20 @@ class BuildTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, 'volume inválido'):
                 build.read_data(root)
 
+    def test_rejects_tool_with_only_manual_placeholder(self):
+        import shutil
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            shutil.copytree(build.ROOT/'assets', root/'assets')
+            shutil.copyfile(build.ROOT/'shortcuts.json', root/'shortcuts.json')
+            atlas, _ = build.read_data()
+            for row in atlas['rows']:
+                if row['command'] == 'ffuf':
+                    row['example'] = 'man ffuf'
+            (root/'atlas_base.json').write_text(json.dumps(atlas))
+            with self.assertRaisesRegex(ValueError, 'ffuf: somente manual'):
+                build.read_data(root)
+
     def test_script_injection_is_escaped_and_data_preserved(self):
         data = {'example': '</script><script>alert(1)</script>', 'note': '\u2028\u2029'}
         encoded = build.inline_json(data)

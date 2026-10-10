@@ -32,6 +32,7 @@ def read_data(root=ROOT):
             ident = row['id']
             require(isinstance(ident, str) and ident and ident not in seen, f'{label}: id ausente/duplicado em {i}')
             seen.add(ident)
+            require(row.get('kind', 'recipe') in ('recipe', 'catalog'), f'{label}: kind inválido em {ident}')
             for key in fields:
                 if key == 'vol':
                     require(type(row[key]) is int and 1 <= row[key] <= 8, f'{label}: volume inválido em {ident}')
@@ -42,6 +43,13 @@ def read_data(root=ROOT):
             require(row['source'] == '' or re.match(r'^https?://', row['source']) or label == 'Linux', f'Fonte inválida em {ident}')
     require({r['vol'] for r in atlas['rows']} == set(range(1, 9)), 'Os oito volumes precisam estar presentes')
     require({r['platform'] for r in shortcuts} == {'mac', 'linux'}, 'As duas plataformas precisam estar presentes')
+    tools = {}
+    for row in atlas['rows']:
+        if row.get('kind') != 'catalog':
+            tools.setdefault(row['command'], []).append(row)
+    for command, rows in tools.items():
+        if command != 'man':
+            require(not all(re.match(r'^man\s+', r['example'].strip()) for r in rows), f'{command}: somente manual, falta receita ou marcação de catálogo')
     for model in ('corne', 'sofle'):
         for layer in range(6):
             require((root / 'assets' / f'{model}-l{layer}.webp').is_file(), f'Prévia ausente: {model} L{layer}')

@@ -10841,14 +10841,16 @@
       "section": "Agendamento e inicialização",
       "command": "batch",
       "page": "batch",
-      "name": "Agendar por carga",
-      "purpose": "Consultar ajuda do agendamento condicionado à carga.",
-      "example": "man batch",
-      "notes": "Precisa de atd. Um job batch roda quando a política de carga permitir.",
-      "source": "Redação original com referência ao manual da ferramenta",
+      "name": "Agendar tarefa conforme a carga",
+      "purpose": "Agendar tarefa conforme a carga.",
+      "example": "printf '%s\\n' 'date >> \"$HOME/batch-lab.log\"' | batch",
+      "notes": "Requer atd ativo e permissão de agendamento. Cria ou acrescenta o log quando a política de carga permitir; consulte a fila com atq.",
+      "source": "https://manpages.debian.org/trixie/at/batch.1.en.html",
       "adapted": false,
-      "risk": "CONSULTA",
-      "id": "ca5f1fab39"
+      "risk": "ALTERA",
+      "id": "ca5f1fab39",
+      "kind": "recipe",
+      "reviewed_on": "2026-10-10"
     },
     {
       "vol": 2,
@@ -11653,14 +11655,16 @@
       "section": "Desktop fontes e configuração",
       "command": "pm-suspend",
       "page": "pm-suspend",
-      "name": "Suspensão legada",
-      "purpose": "Abrir manual da ferramenta de suspensão.",
-      "example": "man pm-suspend",
-      "notes": "pm-utils antigo; instalações systemd usam systemctl suspend. Pode não estar instalado.",
-      "source": "https://linuxcommandlibrary.com/basic/systemcontrol",
+      "name": "Suspender com pm-utils legado",
+      "purpose": "Suspender com pm-utils legado.",
+      "example": "sudo pm-suspend",
+      "notes": "Salve o trabalho. Suspende o computador e interrompe conexões. Somente sistemas com pm-utils; em systemd prefira systemctl suspend.",
+      "source": "https://manpages.debian.org/trixie/pm-utils/pm-suspend.8.en.html",
       "adapted": false,
-      "risk": "CONSULTA",
-      "id": "f67c7254be"
+      "risk": "ALTERA",
+      "id": "f67c7254be",
+      "kind": "recipe",
+      "reviewed_on": "2026-10-10"
     },
     {
       "vol": 2,
@@ -15804,7 +15808,8 @@
       "source": "https://linuxcommandlibrary.com/basic/backupimaging",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "ef2b1bc56d"
+      "id": "ef2b1bc56d",
+      "kind": "catalog"
     },
     {
       "vol": 3,
@@ -16098,7 +16103,8 @@
       "source": "https://linuxcommandlibrary.com/basic/backupimaging",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "d96ac1c2bc"
+      "id": "d96ac1c2bc",
+      "kind": "catalog"
     },
     {
       "vol": 3,
@@ -23889,56 +23895,64 @@
       "section": "Ferramentas de segurança e investigação",
       "command": "aircrack-ng",
       "page": "aircrack-ng",
-      "name": "Auditoria de redes sem fio",
-      "purpose": "Auditar segurança Wi-Fi e analisar capturas de autenticação. Consultar documentação local.",
-      "example": "man aircrack-ng",
-      "notes": "Kali Tools: confirme pacote, binário e versão. Fedora pode não fornecer a ferramenta. Consulte somente alvos próprios ou autorizados.",
-      "source": "https://linuxcommandlibrary.com/basic/hackingtools",
+      "name": "Testar dicionário contra captura própria",
+      "purpose": "Testar dicionário contra captura própria.",
+      "example": "aircrack-ng -w palavras-lab.txt captura-lab.cap",
+      "notes": "Análise offline de captura WPA com handshake válido. Use captura e lista próprias; consome CPU e pode gravar resultados locais.",
+      "source": "https://www.kali.org/tools/aircrack-ng/",
       "adapted": false,
-      "risk": "CONSULTA",
-      "id": "d3ffc1f44d"
+      "risk": "ALTERA",
+      "id": "d3ffc1f44d",
+      "kind": "recipe",
+      "reviewed_on": "2026-10-10"
     },
     {
       "vol": 5,
       "section": "Ferramentas de segurança e investigação",
       "command": "autopsy",
       "page": "autopsy",
-      "name": "Forense e análise de arquivos",
-      "purpose": "Examinar imagens de disco e artefatos em análise forense. Consultar documentação local.",
-      "example": "man autopsy",
-      "notes": "Kali Tools: confirme pacote, binário e versão. Fedora pode não fornecer a ferramenta. Consulte somente alvos próprios ou autorizados.",
-      "source": "https://linuxcommandlibrary.com/basic/hackingtools",
+      "name": "Abrir interface forense web",
+      "purpose": "Abrir interface forense web.",
+      "example": "autopsy -p 9999",
+      "notes": "Frontend web legado do Sleuth Kit no Kali, diferente do Autopsy moderno em Java. Acesse a URL mostrada no terminal; analise cópias das evidências.",
+      "source": "https://www.kali.org/tools/autopsy/",
       "adapted": false,
-      "risk": "CONSULTA",
-      "id": "8d1612e77c"
+      "risk": "SERVIÇO",
+      "id": "8d1612e77c",
+      "kind": "recipe",
+      "reviewed_on": "2026-10-10"
     },
     {
       "vol": 5,
       "section": "Ferramentas de segurança e investigação",
       "command": "beef-xss",
       "page": "beef-xss",
-      "name": "Testes de segurança e frameworks",
-      "purpose": "Avaliar segurança de navegadores em laboratório controlado. Consultar documentação local.",
-      "example": "man beef-xss",
-      "notes": "Kali Tools: confirme pacote, binário e versão. Fedora pode não fornecer a ferramenta. Consulte somente alvos próprios ou autorizados.",
-      "source": "https://linuxcommandlibrary.com/basic/hackingtools",
+      "name": "Abrir console do BeEF no Kali",
+      "purpose": "Abrir console do BeEF no Kali.",
+      "example": "sudo beef-xss",
+      "notes": "Launcher do pacote Kali. Inicia serviços e pode solicitar configuração inicial. Use VM de laboratório; este exemplo não injeta hooks nem testa navegadores.",
+      "source": "https://www.kali.org/tools/beef-xss/",
       "adapted": false,
-      "risk": "CONSULTA",
-      "id": "6eae1448e1"
+      "risk": "SERVIÇO",
+      "id": "6eae1448e1",
+      "kind": "recipe",
+      "reviewed_on": "2026-10-10"
     },
     {
       "vol": 5,
       "section": "Ferramentas de segurança e investigação",
       "command": "bettercap",
       "page": "bettercap",
-      "name": "Inspeção de tráfego e interfaces",
-      "purpose": "Analisar redes e protocolos em testes de segurança autorizados. Consultar documentação local.",
-      "example": "man bettercap",
-      "notes": "Kali Tools: confirme pacote, binário e versão. Fedora pode não fornecer a ferramenta. Consulte somente alvos próprios ou autorizados.",
-      "source": "https://linuxcommandlibrary.com/basic/hackingtools",
+      "name": "Abrir console na interface do laboratório",
+      "purpose": "Abrir console na interface do laboratório.",
+      "example": "sudo bettercap -iface eth0",
+      "notes": "Substitua eth0 pela interface correta. Configuração e caplets podem iniciar módulos; confira a configuração antes. No console, help lista módulos; quit encerra.",
+      "source": "https://www.kali.org/tools/bettercap/",
       "adapted": false,
-      "risk": "CONSULTA",
-      "id": "8663be81a6"
+      "risk": "SERVIÇO",
+      "id": "8663be81a6",
+      "kind": "recipe",
+      "reviewed_on": "2026-10-10"
     },
     {
       "vol": 5,
@@ -24029,70 +24043,80 @@
       "section": "Ferramentas de segurança e investigação",
       "command": "bulk_extractor",
       "page": "bulk_extractor",
-      "name": "Forense e análise de arquivos",
-      "purpose": "Extrair artefatos como e-mails e URLs de imagens e arquivos. Consultar documentação local.",
-      "example": "man bulk_extractor",
-      "notes": "Kali Tools: confirme pacote, binário e versão. Fedora pode não fornecer a ferramenta. Consulte somente alvos próprios ou autorizados.",
-      "source": "https://linuxcommandlibrary.com/basic/hackingtools",
+      "name": "Extrair artefatos de imagem de disco",
+      "purpose": "Extrair artefatos de imagem de disco.",
+      "example": "bulk_extractor -o artefatos-lab imagem-lab.dd",
+      "notes": "Lê uma cópia da imagem e grava relatórios na pasta de saída. Use pasta nova; os resultados podem conter dados pessoais.",
+      "source": "https://www.kali.org/tools/bulk-extractor/",
       "adapted": false,
-      "risk": "CONSULTA",
-      "id": "9a734ad9dd"
+      "risk": "ALTERA",
+      "id": "9a734ad9dd",
+      "kind": "recipe",
+      "reviewed_on": "2026-10-10"
     },
     {
       "vol": 5,
       "section": "Ferramentas de segurança e investigação",
       "command": "burpsuite",
       "page": "burpsuite",
-      "name": "Avaliação de aplicações web",
-      "purpose": "Inspecionar e testar aplicações web com proxy e ferramentas gráficas. Consultar documentação local.",
-      "example": "man burpsuite",
-      "notes": "Kali Tools: confirme pacote, binário e versão. Fedora pode não fornecer a ferramenta. Consulte somente alvos próprios ou autorizados.",
-      "source": "https://linuxcommandlibrary.com/basic/hackingtools",
+      "name": "Abrir interface do Burp Suite",
+      "purpose": "Abrir interface do Burp Suite.",
+      "example": "burpsuite",
+      "notes": "Launcher gráfico do Kali. Configure o proxy somente no navegador de testes; revisar listeners e projeto antes de interceptar tráfego.",
+      "source": "https://www.kali.org/tools/burpsuite/",
       "adapted": false,
-      "risk": "CONSULTA",
-      "id": "6840617d26"
+      "risk": "SERVIÇO",
+      "id": "6840617d26",
+      "kind": "recipe",
+      "reviewed_on": "2026-10-10"
     },
     {
       "vol": 5,
       "section": "Ferramentas de segurança e investigação",
       "command": "cewl",
       "page": "cewl",
-      "name": "Auditoria e recuperação de senhas",
-      "purpose": "Gerar lista de palavras a partir do conteúdo de um site. Consultar documentação local.",
-      "example": "man cewl",
-      "notes": "Kali Tools: confirme pacote, binário e versão. Fedora pode não fornecer a ferramenta. Consulte somente alvos próprios ou autorizados.",
-      "source": "https://linuxcommandlibrary.com/basic/hackingtools",
+      "name": "Gerar lista de palavras de site próprio",
+      "purpose": "Gerar lista de palavras de site próprio.",
+      "example": "cewl -d 1 -m 5 -w palavras-lab.txt http://127.0.0.1:8000",
+      "notes": "Percorre links até profundidade 1, seleciona palavras com no mínimo 5 caracteres e grava a lista. Exige servidor local e sobrescreve a saída.",
+      "source": "https://www.kali.org/tools/cewl/",
       "adapted": false,
-      "risk": "CONSULTA",
-      "id": "bf9a1bd2d2"
+      "risk": "ATIVO",
+      "id": "bf9a1bd2d2",
+      "kind": "recipe",
+      "reviewed_on": "2026-10-10"
     },
     {
       "vol": 5,
       "section": "Ferramentas de segurança e investigação",
       "command": "chirpw",
       "page": "chirpw",
-      "name": "Auditoria de redes sem fio",
-      "purpose": "Programar rádios compatíveis pela interface gráfica do CHIRP. Consultar documentação local.",
-      "example": "man chirpw",
-      "notes": "Kali Tools: confirme pacote, binário e versão. Fedora pode não fornecer a ferramenta. Consulte somente alvos próprios ou autorizados.",
-      "source": "https://linuxcommandlibrary.com/basic/hackingtools",
+      "name": "Abrir editor gráfico CHIRP",
+      "purpose": "Abrir editor gráfico CHIRP.",
+      "example": "chirpw",
+      "notes": "Abra uma cópia da programação do rádio na interface. Ler ou gravar o equipamento exige modelo/cabo compatíveis; faça backup antes de gravar.",
+      "source": "https://www.kali.org/tools/chirp/",
       "adapted": false,
-      "risk": "CONSULTA",
-      "id": "94eff9dbe0"
+      "risk": "ALTERA",
+      "id": "94eff9dbe0",
+      "kind": "recipe",
+      "reviewed_on": "2026-10-10"
     },
     {
       "vol": 5,
       "section": "Ferramentas de segurança e investigação",
       "command": "chkrootkit",
       "page": "chkrootkit",
-      "name": "Forense e análise de arquivos",
-      "purpose": "Procurar indícios conhecidos de rootkits no sistema. Consultar documentação local.",
-      "example": "man chkrootkit",
-      "notes": "Kali Tools: confirme pacote, binário e versão. Fedora pode não fornecer a ferramenta. Consulte somente alvos próprios ou autorizados.",
-      "source": "https://linuxcommandlibrary.com/basic/hackingtools",
+      "name": "Procurar indícios conhecidos de rootkits",
+      "purpose": "Procurar indícios conhecidos de rootkits.",
+      "example": "sudo chkrootkit -q",
+      "notes": "Modo de saída reduzida. Resultado limpo não prova ausência de comprometimento; alertas podem ser falsos positivos.",
+      "source": "https://www.kali.org/tools/chkrootkit/",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "301e8b2e01"
+      "id": "301e8b2e01",
+      "kind": "recipe",
+      "reviewed_on": "2026-10-10"
     },
     {
       "vol": 5,
@@ -24106,175 +24130,200 @@
       "source": "https://linuxcommandlibrary.com/basic/hackingtools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "2b06447f78"
+      "id": "2b06447f78",
+      "kind": "catalog"
     },
     {
       "vol": 5,
       "section": "Ferramentas de segurança e investigação",
       "command": "crunch",
       "page": "crunch",
-      "name": "Auditoria e recuperação de senhas",
-      "purpose": "Gerar combinações de caracteres para listas de palavras. Consultar documentação local.",
-      "example": "man crunch",
-      "notes": "Kali Tools: confirme pacote, binário e versão. Fedora pode não fornecer a ferramenta. Consulte somente alvos próprios ou autorizados.",
-      "source": "https://linuxcommandlibrary.com/basic/hackingtools",
+      "name": "Gerar lista pequena para laboratório",
+      "purpose": "Gerar lista pequena para laboratório.",
+      "example": "crunch 2 3 abc -o palavras-lab.txt",
+      "notes": "Gera combinações de 2 a 3 caracteres usando a, b e c. São 36 linhas; listas com alfabetos grandes crescem exponencialmente. Grava a saída.",
+      "source": "https://www.kali.org/tools/crunch/",
       "adapted": false,
-      "risk": "CONSULTA",
-      "id": "f968cc5ea2"
+      "risk": "ALTERA",
+      "id": "f968cc5ea2",
+      "kind": "recipe",
+      "reviewed_on": "2026-10-10"
     },
     {
       "vol": 5,
       "section": "Ferramentas de segurança e investigação",
       "command": "cutycapt",
       "page": "cutycapt",
-      "name": "Relatórios e documentação",
-      "purpose": "Capturar a renderização de uma página web como imagem. Consultar documentação local.",
-      "example": "man cutycapt",
-      "notes": "Kali Tools: confirme pacote, binário e versão. Fedora pode não fornecer a ferramenta. Consulte somente alvos próprios ou autorizados.",
-      "source": "https://linuxcommandlibrary.com/basic/hackingtools",
+      "name": "Salvar captura de página local",
+      "purpose": "Salvar captura de página local.",
+      "example": "cutycapt --url=http://127.0.0.1:8000 --out=pagina-lab.png",
+      "notes": "Exige servidor local e ambiente gráfico ou X virtual. Renderiza a página e grava PNG; é ferramenta antiga baseada em Qt/WebKit.",
+      "source": "https://www.kali.org/tools/cutycapt/",
       "adapted": false,
-      "risk": "CONSULTA",
-      "id": "7731948f1d"
+      "risk": "ATIVO",
+      "id": "7731948f1d",
+      "kind": "recipe",
+      "reviewed_on": "2026-10-10"
     },
     {
       "vol": 5,
       "section": "Ferramentas de segurança e investigação",
       "command": "dirb",
       "page": "dirb",
-      "name": "Avaliação de aplicações web",
-      "purpose": "Pesquisar caminhos de aplicações web usando uma lista de palavras. Consultar documentação local.",
-      "example": "man dirb",
-      "notes": "Kali Tools: confirme pacote, binário e versão. Fedora pode não fornecer a ferramenta. Consulte somente alvos próprios ou autorizados.",
-      "source": "https://linuxcommandlibrary.com/basic/hackingtools",
+      "name": "Enumerar caminhos no servidor do laboratório",
+      "purpose": "Enumerar caminhos no servidor do laboratório.",
+      "example": "dirb http://127.0.0.1:8000/ palavras-lab.txt -r",
+      "notes": "Envia requisições HTTP com a lista própria. -r desativa recursão. Mesmo sem recursão pode produzir carga; não aponte para terceiros.",
+      "source": "https://www.kali.org/tools/dirb/",
       "adapted": false,
-      "risk": "CONSULTA",
-      "id": "432abf1556"
+      "risk": "ATIVO",
+      "id": "432abf1556",
+      "kind": "recipe",
+      "reviewed_on": "2026-10-10"
     },
     {
       "vol": 5,
       "section": "Ferramentas de segurança e investigação",
       "command": "dmitry",
       "page": "dmitry",
-      "name": "Reconhecimento e enumeração",
-      "purpose": "Reunir informações de domínio, host e serviços em reconhecimento. Consultar documentação local.",
-      "example": "man dmitry",
-      "notes": "Kali Tools: confirme pacote, binário e versão. Fedora pode não fornecer a ferramenta. Consulte somente alvos próprios ou autorizados.",
-      "source": "https://linuxcommandlibrary.com/basic/hackingtools",
+      "name": "Consultar WHOIS de domínio",
+      "purpose": "Consultar WHOIS de domínio.",
+      "example": "dmitry -w example.com",
+      "notes": "Faz consulta de registro do domínio. Não ativa o scanner de portas (-p). WHOIS pode sofrer bloqueios ou ter informações ocultadas.",
+      "source": "https://www.kali.org/tools/dmitry/",
       "adapted": false,
-      "risk": "CONSULTA",
-      "id": "c6a230beeb"
+      "risk": "ATIVO",
+      "id": "c6a230beeb",
+      "kind": "recipe",
+      "reviewed_on": "2026-10-10"
     },
     {
       "vol": 5,
       "section": "Ferramentas de segurança e investigação",
       "command": "driftnet",
       "page": "driftnet",
-      "name": "Inspeção de tráfego e interfaces",
-      "purpose": "Exibir imagens identificadas em tráfego de rede capturado. Consultar documentação local.",
-      "example": "man driftnet",
-      "notes": "Kali Tools: confirme pacote, binário e versão. Fedora pode não fornecer a ferramenta. Consulte somente alvos próprios ou autorizados.",
-      "source": "https://linuxcommandlibrary.com/basic/hackingtools",
+      "name": "Examinar imagens em captura local",
+      "purpose": "Examinar imagens em captura local.",
+      "example": "driftnet -f captura-lab.pcap",
+      "notes": "Lê PCAP em vez de capturar uma interface. Precisa de ambiente gráfico; conteúdo HTTPS cifrado não vira imagem decodificada automaticamente.",
+      "source": "https://www.kali.org/tools/driftnet/",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "d215bc4b32"
+      "id": "d215bc4b32",
+      "kind": "recipe",
+      "reviewed_on": "2026-10-10"
     },
     {
       "vol": 5,
       "section": "Ferramentas de segurança e investigação",
       "command": "enum4linux",
       "page": "enum4linux",
-      "name": "Reconhecimento e enumeração",
-      "purpose": "Enumerar informações de sistemas que oferecem serviços SMB. Consultar documentação local.",
-      "example": "man enum4linux",
-      "notes": "Kali Tools: confirme pacote, binário e versão. Fedora pode não fornecer a ferramenta. Consulte somente alvos próprios ou autorizados.",
-      "source": "https://linuxcommandlibrary.com/basic/hackingtools",
+      "name": "Consultar compartilhamentos SMB",
+      "purpose": "Consultar compartilhamentos SMB.",
+      "example": "enum4linux -S 192.168.56.10",
+      "notes": "IP ilustrativo de VM própria, substitua pelo alvo autorizado. Consulta SMB; servidor pode impedir sessão anônima. Não usa -A, que inclui testes de escrita.",
+      "source": "https://www.kali.org/tools/enum4linux/",
       "adapted": false,
-      "risk": "CONSULTA",
-      "id": "6ca7d11270"
+      "risk": "ATIVO",
+      "id": "6ca7d11270",
+      "kind": "recipe",
+      "reviewed_on": "2026-10-10"
     },
     {
       "vol": 5,
       "section": "Ferramentas de segurança e investigação",
       "command": "ettercap",
       "page": "ettercap",
-      "name": "Inspeção de tráfego e interfaces",
-      "purpose": "Analisar tráfego e testar cenários de intermediação em laboratório. Consultar documentação local.",
-      "example": "man ettercap",
-      "notes": "Kali Tools: confirme pacote, binário e versão. Fedora pode não fornecer a ferramenta. Consulte somente alvos próprios ou autorizados.",
-      "source": "https://linuxcommandlibrary.com/basic/hackingtools",
+      "name": "Ler captura sem MITM ativo",
+      "purpose": "Ler captura sem MITM ativo.",
+      "example": "ettercap -T -r captura-lab.pcap",
+      "notes": "Abre interface textual para PCAP local. Não inclui -M nem captura de interface; use cópia de captura própria.",
+      "source": "https://www.kali.org/tools/ettercap/",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "6a30961c34"
+      "id": "6a30961c34",
+      "kind": "recipe",
+      "reviewed_on": "2026-10-10"
     },
     {
       "vol": 5,
       "section": "Ferramentas de segurança e investigação",
       "command": "evil-winrm",
       "page": "evil-winrm",
-      "name": "Testes de segurança e frameworks",
-      "purpose": "Administrar sistemas Windows por WinRM com credenciais autorizadas. Consultar documentação local.",
-      "example": "man evil-winrm",
-      "notes": "Kali Tools: confirme pacote, binário e versão. Fedora pode não fornecer a ferramenta. Consulte somente alvos próprios ou autorizados.",
-      "source": "https://linuxcommandlibrary.com/basic/hackingtools",
+      "name": "Abrir sessão WinRM autorizada por TLS",
+      "purpose": "Abrir sessão WinRM autorizada por TLS.",
+      "example": "evil-winrm -S -i servidor-lab.example -u usuario-lab",
+      "notes": "Servidor ilustrativo, exige WinRM HTTPS configurado. Solicita senha quando omitida, evitando literal no histórico. Uma sessão permite alterar o host; quit encerra.",
+      "source": "https://www.kali.org/tools/evil-winrm/",
       "adapted": false,
-      "risk": "CONSULTA",
-      "id": "6381ae4066"
+      "risk": "ATIVO",
+      "id": "6381ae4066",
+      "kind": "recipe",
+      "reviewed_on": "2026-10-10"
     },
     {
       "vol": 5,
       "section": "Ferramentas de segurança e investigação",
       "command": "feroxbuster",
       "page": "feroxbuster",
-      "name": "Avaliação de aplicações web",
-      "purpose": "Pesquisar conteúdo web por descoberta recursiva de caminhos. Consultar documentação local.",
-      "example": "man feroxbuster",
-      "notes": "Kali Tools: confirme pacote, binário e versão. Fedora pode não fornecer a ferramenta. Consulte somente alvos próprios ou autorizados.",
-      "source": "https://linuxcommandlibrary.com/basic/hackingtools",
+      "name": "Enumerar conteúdo HTTP local",
+      "purpose": "Enumerar conteúdo HTTP local.",
+      "example": "feroxbuster -u http://127.0.0.1:8000 -w palavras-lab.txt --no-recursion -t 2",
+      "notes": "Exige servidor e lista locais. Limita a duas threads e desativa recursão, mas ainda envia requisições de descoberta.",
+      "source": "https://www.kali.org/tools/feroxbuster/",
       "adapted": false,
-      "risk": "CONSULTA",
-      "id": "6ccc8f4a55"
+      "risk": "ATIVO",
+      "id": "6ccc8f4a55",
+      "kind": "recipe",
+      "reviewed_on": "2026-10-10"
     },
     {
       "vol": 5,
       "section": "Ferramentas de segurança e investigação",
       "command": "ffuf",
       "page": "ffuf",
-      "name": "Avaliação de aplicações web",
-      "purpose": "Testar entradas HTTP com substituição de valores de uma lista. Consultar documentação local.",
-      "example": "man ffuf",
-      "notes": "Kali Tools: confirme pacote, binário e versão. Fedora pode não fornecer a ferramenta. Consulte somente alvos próprios ou autorizados.",
-      "source": "https://linuxcommandlibrary.com/basic/hackingtools",
+      "name": "Pesquisar caminhos HTTP com FUZZ",
+      "purpose": "Pesquisar caminhos HTTP com FUZZ.",
+      "example": "ffuf -w palavras-lab.txt -u http://127.0.0.1:8000/FUZZ -rate 5 -t 1",
+      "notes": "Substitui FUZZ pelas palavras da lista. Limita a cinco requisições por segundo e uma thread; use servidor próprio de laboratório.",
+      "source": "https://www.kali.org/tools/ffuf/",
       "adapted": false,
-      "risk": "CONSULTA",
-      "id": "259d7fa70e"
+      "risk": "ATIVO",
+      "id": "259d7fa70e",
+      "kind": "recipe",
+      "reviewed_on": "2026-10-10"
     },
     {
       "vol": 5,
       "section": "Ferramentas de segurança e investigação",
       "command": "foremost",
       "page": "foremost",
-      "name": "Forense e análise de arquivos",
-      "purpose": "Recuperar arquivos por assinaturas em imagens ou dispositivos. Consultar documentação local.",
-      "example": "man foremost",
-      "notes": "Kali Tools: confirme pacote, binário e versão. Fedora pode não fornecer a ferramenta. Consulte somente alvos próprios ou autorizados.",
-      "source": "https://linuxcommandlibrary.com/basic/hackingtools",
+      "name": "Recuperar arquivos de uma cópia de imagem",
+      "purpose": "Recuperar arquivos de uma cópia de imagem.",
+      "example": "foremost -t jpg,pdf -i imagem-lab.dd -o recuperados-lab",
+      "notes": "Carving de JPEG/PDF em imagem local. Pasta de saída deve estar vazia; nunca grave recuperados no dispositivo que está sendo recuperado.",
+      "source": "https://www.kali.org/tools/foremost/",
       "adapted": false,
-      "risk": "CONSULTA",
-      "id": "273222f69f"
+      "risk": "ALTERA",
+      "id": "273222f69f",
+      "kind": "recipe",
+      "reviewed_on": "2026-10-10"
     },
     {
       "vol": 5,
       "section": "Ferramentas de segurança e investigação",
       "command": "galleta",
       "page": "galleta",
-      "name": "Forense e análise de arquivos",
-      "purpose": "Extrair informações de arquivos de cookies do Internet Explorer. Consultar documentação local.",
-      "example": "man galleta",
-      "notes": "Kali Tools: confirme pacote, binário e versão. Fedora pode não fornecer a ferramenta. Consulte somente alvos próprios ou autorizados.",
-      "source": "https://linuxcommandlibrary.com/basic/hackingtools",
+      "name": "Extrair registros de cookie legado",
+      "purpose": "Extrair registros de cookie legado.",
+      "example": "galleta -d ';' cookies-legados.dat",
+      "notes": "Analisa arquivo de cookies de versões antigas do Internet Explorer e imprime campos separados por ponto e vírgula. Não é leitor de cookies moderno do Chrome/Safari.",
+      "source": "https://www.kali.org/tools/galleta/",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "f0d0b2624b"
+      "id": "f0d0b2624b",
+      "kind": "recipe",
+      "reviewed_on": "2026-10-10"
     },
     {
       "vol": 5,
@@ -24288,105 +24337,120 @@
       "source": "https://linuxcommandlibrary.com/basic/hackingtools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "cf1ce7113a"
+      "id": "cf1ce7113a",
+      "kind": "catalog"
     },
     {
       "vol": 5,
       "section": "Ferramentas de segurança e investigação",
       "command": "gobuster",
       "page": "gobuster",
-      "name": "Avaliação de aplicações web",
-      "purpose": "Descobrir caminhos web e outros nomes conforme o modo escolhido. Consultar documentação local.",
-      "example": "man gobuster",
-      "notes": "Kali Tools: confirme pacote, binário e versão. Fedora pode não fornecer a ferramenta. Consulte somente alvos próprios ou autorizados.",
-      "source": "https://linuxcommandlibrary.com/basic/hackingtools",
+      "name": "Enumerar diretórios no servidor local",
+      "purpose": "Enumerar diretórios no servidor local.",
+      "example": "gobuster dir -u http://127.0.0.1:8000 -w palavras-lab.txt -t 2",
+      "notes": "Modo dir, lista própria e duas threads. Requer servidor local; códigos HTTP e respostas wildcard podem exigir ajustes conforme a aplicação.",
+      "source": "https://github.com/OJ/gobuster",
       "adapted": false,
-      "risk": "CONSULTA",
-      "id": "d7cf1352f9"
+      "risk": "ATIVO",
+      "id": "d7cf1352f9",
+      "kind": "recipe",
+      "reviewed_on": "2026-10-10"
     },
     {
       "vol": 5,
       "section": "Ferramentas de segurança e investigação",
       "command": "hashcat",
       "page": "hashcat",
-      "name": "Auditoria e recuperação de senhas",
-      "purpose": "Auditar resistência de hashes de senhas em ambiente autorizado. Consultar documentação local.",
-      "example": "man hashcat",
-      "notes": "Kali Tools: confirme pacote, binário e versão. Fedora pode não fornecer a ferramenta. Consulte somente alvos próprios ou autorizados.",
-      "source": "https://linuxcommandlibrary.com/basic/hackingtools",
+      "name": "Mostrar resultados já recuperados",
+      "purpose": "Mostrar resultados já recuperados.",
+      "example": "hashcat -m 0 --show hashes-md5-lab.txt",
+      "notes": "Modo 0 é MD5 simples, não md5crypt. Compara hashes com o potfile existente; não inicia ataque de dicionário. Resultados contêm senhas em claro.",
+      "source": "https://www.kali.org/tools/hashcat/",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "94bbbf399b"
+      "id": "94bbbf399b",
+      "kind": "recipe",
+      "reviewed_on": "2026-10-10"
     },
     {
       "vol": 5,
       "section": "Ferramentas de segurança e investigação",
       "command": "hashdeep",
       "page": "hashdeep",
-      "name": "Forense e análise de arquivos",
-      "purpose": "Calcular e comparar conjuntos de hashes de arquivos. Consultar documentação local.",
-      "example": "man hashdeep",
-      "notes": "Kali Tools: confirme pacote, binário e versão. Fedora pode não fornecer a ferramenta. Consulte somente alvos próprios ou autorizados.",
-      "source": "https://linuxcommandlibrary.com/basic/hackingtools",
+      "name": "Gerar inventário SHA-256",
+      "purpose": "Gerar inventário SHA-256.",
+      "example": "hashdeep -c sha256 -r arquivos-lab/",
+      "notes": "Calcula hashes recursivamente e imprime o inventário. Para preservar evidências, use cópias; hashing lê dados e pode atualizar atime.",
+      "source": "https://www.kali.org/tools/hashdeep/",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "f4fb6698b6"
+      "id": "f4fb6698b6",
+      "kind": "recipe",
+      "reviewed_on": "2026-10-10"
     },
     {
       "vol": 5,
       "section": "Ferramentas de segurança e investigação",
       "command": "httrack",
       "page": "httrack",
-      "name": "Avaliação de aplicações web",
-      "purpose": "Criar uma cópia local navegável de um site permitido. Consultar documentação local.",
-      "example": "man httrack",
-      "notes": "Kali Tools: confirme pacote, binário e versão. Fedora pode não fornecer a ferramenta. Consulte somente alvos próprios ou autorizados.",
-      "source": "https://linuxcommandlibrary.com/basic/hackingtools",
+      "name": "Criar espelho limitado de site local",
+      "purpose": "Criar espelho limitado de site local.",
+      "example": "httrack http://127.0.0.1:8000/ -O espelho-lab -r1",
+      "notes": "Grava espelho em pasta própria e limita profundidade. Não reproduz automaticamente backends ou aplicações dinâmicas; pode seguir recursos conforme configuração.",
+      "source": "https://www.kali.org/tools/httrack/",
       "adapted": false,
-      "risk": "CONSULTA",
-      "id": "485274bbe0"
+      "risk": "ATIVO",
+      "id": "485274bbe0",
+      "kind": "recipe",
+      "reviewed_on": "2026-10-10"
     },
     {
       "vol": 5,
       "section": "Ferramentas de segurança e investigação",
       "command": "hydra",
       "page": "hydra",
-      "name": "Auditoria e recuperação de senhas",
-      "purpose": "Auditar autenticação de serviços por tentativas controladas. Consultar documentação local.",
-      "example": "man hydra",
-      "notes": "Kali Tools: confirme pacote, binário e versão. Fedora pode não fornecer a ferramenta. Consulte somente alvos próprios ou autorizados.",
-      "source": "https://linuxcommandlibrary.com/basic/hackingtools",
+      "name": "Testar senha de conta de laboratório",
+      "purpose": "Testar senha de conta de laboratório.",
+      "example": "hydra -l usuario-lab -P senhas-lab.txt -t 1 ssh://192.168.56.10",
+      "notes": "Somente VM e conta autorizadas, lista pequena. Pode bloquear a conta ou gerar alertas; não use contas de produção. Não imprime senha literal na linha de comando.",
+      "source": "https://www.kali.org/tools/hydra/",
       "adapted": false,
-      "risk": "CONSULTA",
-      "id": "e2762eb892"
+      "risk": "ATIVO",
+      "id": "e2762eb892",
+      "kind": "recipe",
+      "reviewed_on": "2026-10-10"
     },
     {
       "vol": 5,
       "section": "Ferramentas de segurança e investigação",
       "command": "ike-scan",
       "page": "ike-scan",
-      "name": "Reconhecimento e enumeração",
-      "purpose": "Identificar respostas e características de serviços IKE/IPsec. Consultar documentação local.",
-      "example": "man ike-scan",
-      "notes": "Kali Tools: confirme pacote, binário e versão. Fedora pode não fornecer a ferramenta. Consulte somente alvos próprios ou autorizados.",
-      "source": "https://linuxcommandlibrary.com/basic/hackingtools",
+      "name": "Consultar resposta IKE de VPN própria",
+      "purpose": "Consultar resposta IKE de VPN própria.",
+      "example": "sudo ike-scan 192.168.56.10",
+      "notes": "Envia negociação IKE ao IP ilustrativo, sem varrer sub-rede. Depende de VPN compatível e firewall; pode precisar de privilégios para a porta local UDP 500.",
+      "source": "https://www.kali.org/tools/ike-scan/",
       "adapted": false,
-      "risk": "CONSULTA",
-      "id": "fa04a550f0"
+      "risk": "ATIVO",
+      "id": "fa04a550f0",
+      "kind": "recipe",
+      "reviewed_on": "2026-10-10"
     },
     {
       "vol": 5,
       "section": "Ferramentas de segurança e investigação",
       "command": "john",
       "page": "john",
-      "name": "Auditoria e recuperação de senhas",
-      "purpose": "Auditar hashes de senhas com formatos e modos selecionados. Consultar documentação local.",
-      "example": "man john",
-      "notes": "Kali Tools: confirme pacote, binário e versão. Fedora pode não fornecer a ferramenta. Consulte somente alvos próprios ou autorizados.",
-      "source": "https://linuxcommandlibrary.com/basic/hackingtools",
+      "name": "Mostrar senhas previamente recuperadas",
+      "purpose": "Mostrar senhas previamente recuperadas.",
+      "example": "john --show hashes-lab.txt",
+      "notes": "Consulta o potfile local para os hashes informados; não inicia recuperação. Pode precisar de --format para resolver ambiguidade; proteja resultados em claro.",
+      "source": "https://www.kali.org/tools/john/",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "9674551ad7"
+      "id": "9674551ad7",
+      "kind": "recipe",
+      "reviewed_on": "2026-10-10"
     },
     {
       "vol": 5,
@@ -24400,133 +24464,152 @@
       "source": "https://linuxcommandlibrary.com/basic/hackingtools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "2b5dcab1c4"
+      "id": "2b5dcab1c4",
+      "kind": "catalog"
     },
     {
       "vol": 5,
       "section": "Ferramentas de segurança e investigação",
       "command": "kismet",
       "page": "kismet",
-      "name": "Auditoria de redes sem fio",
-      "purpose": "Detectar e registrar redes e dispositivos sem fio. Consultar documentação local.",
-      "example": "man kismet",
-      "notes": "Kali Tools: confirme pacote, binário e versão. Fedora pode não fornecer a ferramenta. Consulte somente alvos próprios ou autorizados.",
-      "source": "https://linuxcommandlibrary.com/basic/hackingtools",
+      "name": "Abrir Kismet com fonte Wi-Fi",
+      "purpose": "Abrir Kismet com fonte Wi-Fi.",
+      "example": "kismet -c wlan0",
+      "notes": "Requer adaptador/driver de captura compatível e permissões configuradas. Inicia captura e pode gerar logs; configure o acesso web e use apenas ambiente autorizado.",
+      "source": "https://www.kismetwireless.net/docs/readme/starting/starting/",
       "adapted": false,
-      "risk": "CONSULTA",
-      "id": "a83dbd00e4"
+      "risk": "SERVIÇO",
+      "id": "a83dbd00e4",
+      "kind": "recipe",
+      "reviewed_on": "2026-10-10"
     },
     {
       "vol": 5,
       "section": "Ferramentas de segurança e investigação",
       "command": "macchanger",
       "page": "macchanger",
-      "name": "Inspeção de tráfego e interfaces",
-      "purpose": "Consultar ou alterar o endereço MAC de uma interface. Consultar documentação local.",
-      "example": "man macchanger",
-      "notes": "Kali Tools: confirme pacote, binário e versão. Fedora pode não fornecer a ferramenta. Consulte somente alvos próprios ou autorizados.",
-      "source": "https://linuxcommandlibrary.com/basic/hackingtools",
+      "name": "Consultar MAC atual e permanente",
+      "purpose": "Consultar MAC atual e permanente.",
+      "example": "macchanger -s eth0",
+      "notes": "Substitua eth0 pelo nome real. -s apenas mostra os endereços; não altera MAC nem derruba a interface.",
+      "source": "https://www.kali.org/tools/macchanger/",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "9524008415"
+      "id": "9524008415",
+      "kind": "recipe",
+      "reviewed_on": "2026-10-10"
     },
     {
       "vol": 5,
       "section": "Ferramentas de segurança e investigação",
       "command": "masscan",
       "page": "masscan",
-      "name": "Reconhecimento e enumeração",
-      "purpose": "Pesquisar portas de rede com envio de pacotes em alta velocidade. Consultar documentação local.",
-      "example": "man masscan",
-      "notes": "Kali Tools: confirme pacote, binário e versão. Fedora pode não fornecer a ferramenta. Consulte somente alvos próprios ou autorizados.",
-      "source": "https://linuxcommandlibrary.com/basic/hackingtools",
+      "name": "Examinar duas portas de uma VM",
+      "purpose": "Examinar duas portas de uma VM.",
+      "example": "sudo masscan 192.168.56.10 -p22,80 --rate 10",
+      "notes": "IP ilustrativo de laboratório; taxa de dez pacotes por segundo. Usa pacotes raw e exige privilégio/capabilities; não confirma a aplicação por trás da porta.",
+      "source": "https://www.kali.org/tools/masscan/",
       "adapted": false,
-      "risk": "CONSULTA",
-      "id": "cb85e19eb9"
+      "risk": "ATIVO",
+      "id": "cb85e19eb9",
+      "kind": "recipe",
+      "reviewed_on": "2026-10-10"
     },
     {
       "vol": 5,
       "section": "Ferramentas de segurança e investigação",
       "command": "mdb-sql",
       "page": "mdb-sql",
-      "name": "Forense e análise de arquivos",
-      "purpose": "Consultar bases Microsoft Access pelo mecanismo SQL do MDBTools. Consultar documentação local.",
-      "example": "man mdb-sql",
-      "notes": "Kali Tools: confirme pacote, binário e versão. Fedora pode não fornecer a ferramenta. Consulte somente alvos próprios ou autorizados.",
-      "source": "https://linuxcommandlibrary.com/basic/hackingtools",
+      "name": "Consultar banco Microsoft Access local",
+      "purpose": "Consultar banco Microsoft Access local.",
+      "example": "printf '%s\\n' 'SELECT * FROM Clientes;' | mdb-sql dados-lab.mdb",
+      "notes": "Substitua tabela e arquivo pelos existentes. Dialeto SQL do mdbtools é limitado; não é SQLite ou servidor SQL. Use uma cópia do banco.",
+      "source": "https://www.kali.org/tools/mdbtools/",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "00eee0193c"
+      "id": "00eee0193c",
+      "kind": "recipe",
+      "reviewed_on": "2026-10-10"
     },
     {
       "vol": 5,
       "section": "Ferramentas de segurança e investigação",
       "command": "medusa",
       "page": "medusa",
-      "name": "Auditoria e recuperação de senhas",
-      "purpose": "Auditar autenticação de serviços com execução paralela controlada. Consultar documentação local.",
-      "example": "man medusa",
-      "notes": "Kali Tools: confirme pacote, binário e versão. Fedora pode não fornecer a ferramenta. Consulte somente alvos próprios ou autorizados.",
-      "source": "https://linuxcommandlibrary.com/basic/hackingtools",
+      "name": "Listar módulos de autenticação instalados",
+      "purpose": "Listar módulos de autenticação instalados.",
+      "example": "medusa -d",
+      "notes": "Enumera módulos locais sem testar credenciais ou contatar alvos. Para testes reais, consulte opções específicas do módulo e possíveis bloqueios de conta.",
+      "source": "https://www.kali.org/tools/medusa/",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "fda60e906a"
+      "id": "fda60e906a",
+      "kind": "recipe",
+      "reviewed_on": "2026-10-10"
     },
     {
       "vol": 5,
       "section": "Ferramentas de segurança e investigação",
       "command": "mfoc",
       "page": "mfoc",
-      "name": "Auditoria de redes sem fio",
-      "purpose": "Auditar cartões MIFARE Classic em laboratório autorizado. Consultar documentação local.",
-      "example": "man mfoc",
-      "notes": "Kali Tools: confirme pacote, binário e versão. Fedora pode não fornecer a ferramenta. Consulte somente alvos próprios ou autorizados.",
-      "source": "https://linuxcommandlibrary.com/basic/hackingtools",
+      "name": "Ler cartão MIFARE Classic próprio",
+      "purpose": "Ler cartão MIFARE Classic próprio.",
+      "example": "mfoc -O cartao-lab.mfd",
+      "notes": "Requer leitor NFC compatível e cartão próprio. Recupera chaves e grava dump, podendo levar tempo; não é leitura universal de NFC nem de DESFire.",
+      "source": "https://www.kali.org/tools/mfoc/",
       "adapted": false,
-      "risk": "CONSULTA",
-      "id": "120c2a572b"
+      "risk": "ATIVO",
+      "id": "120c2a572b",
+      "kind": "recipe",
+      "reviewed_on": "2026-10-10"
     },
     {
       "vol": 5,
       "section": "Ferramentas de segurança e investigação",
       "command": "mfterm",
       "page": "mfterm",
-      "name": "Auditoria de redes sem fio",
-      "purpose": "Interagir com cartões MIFARE por terminal e leitor compatível. Consultar documentação local.",
-      "example": "man mfterm",
-      "notes": "Kali Tools: confirme pacote, binário e versão. Fedora pode não fornecer a ferramenta. Consulte somente alvos próprios ou autorizados.",
-      "source": "https://linuxcommandlibrary.com/basic/hackingtools",
+      "name": "Abrir dump de cartão no console",
+      "purpose": "Abrir dump de cartão no console.",
+      "example": "mfterm -t cartao-lab.mfd",
+      "notes": "Carrega arquivo de tag em sessão interativa. Comandos posteriores podem acessar/gravar hardware; confira a ajuda antes de usá-los.",
+      "source": "https://www.kali.org/tools/mfterm/",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "58e72178fc"
+      "id": "58e72178fc",
+      "kind": "recipe",
+      "reviewed_on": "2026-10-10"
     },
     {
       "vol": 5,
       "section": "Ferramentas de segurança e investigação",
       "command": "mitmproxy",
       "page": "mitmproxy",
-      "name": "Inspeção de tráfego e interfaces",
-      "purpose": "Inspecionar e modificar tráfego HTTP/HTTPS em proxy autorizado. Consultar documentação local.",
-      "example": "man mitmproxy",
-      "notes": "Kali Tools: confirme pacote, binário e versão. Fedora pode não fornecer a ferramenta. Consulte somente alvos próprios ou autorizados.",
-      "source": "https://linuxcommandlibrary.com/basic/hackingtools",
+      "name": "Inspecionar fluxos já salvos",
+      "purpose": "Inspecionar fluxos já salvos.",
+      "example": "mitmproxy -r fluxos-lab.mitm --set server=false",
+      "notes": "Abre arquivo no formato do mitmproxy, não PCAP. server=false desativa o servidor proxy; pode conter tokens e dados pessoais.",
+      "source": "https://www.kali.org/tools/mitmproxy/",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "9bbc4a0895"
+      "id": "9bbc4a0895",
+      "kind": "recipe",
+      "reviewed_on": "2026-10-10"
     },
     {
       "vol": 5,
       "section": "Ferramentas de segurança e investigação",
       "command": "msfconsole",
       "page": "msfconsole",
-      "name": "Testes de segurança e frameworks",
-      "purpose": "Abrir a interface principal do Metasploit Framework. Consultar documentação local.",
-      "example": "man msfconsole",
-      "notes": "Kali Tools: confirme pacote, binário e versão. Fedora pode não fornecer a ferramenta. Consulte somente alvos próprios ou autorizados.",
-      "source": "https://linuxcommandlibrary.com/basic/hackingtools",
+      "name": "Pesquisar módulos sem executá-los",
+      "purpose": "Pesquisar módulos sem executá-los.",
+      "example": "msfconsole -q -x 'search type:auxiliary name:scanner; exit'",
+      "notes": "Pesquisa o catálogo local e encerra. Não seleciona nem executa módulos; inicialização pode criar arquivos locais e conectar ao banco configurado.",
+      "source": "https://www.kali.org/tools/metasploit-framework/",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "4875a6e8a0"
+      "id": "4875a6e8a0",
+      "kind": "recipe",
+      "reviewed_on": "2026-10-10"
     },
     {
       "vol": 5,
@@ -24534,111 +24617,126 @@
       "command": "msfpc",
       "page": "msfpc",
       "name": "Testes de segurança e frameworks",
-      "purpose": "Ferramenta de geração de artefatos de teste do Metasploit; consultar ajuda. Consultar documentação local.",
+      "purpose": "Gerador de payloads do ecossistema Metasploit; referência de catálogo, sem receita operacional revisada.",
       "example": "man msfpc",
-      "notes": "Kali Tools: confirme pacote, binário e versão. Fedora pode não fornecer a ferramenta. Consulte somente alvos próprios ou autorizados.",
-      "source": "https://linuxcommandlibrary.com/basic/hackingtools",
+      "notes": "CATÁLOGO. Não há exemplo prático revisado nesta edição. A documentação inclui payloads ativos; uma chamada genérica não representa uso seguro nem universal.",
+      "source": "https://www.kali.org/tools/msfpc/",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "eda2d37c7d"
+      "id": "eda2d37c7d",
+      "kind": "catalog"
     },
     {
       "vol": 5,
       "section": "Ferramentas de segurança e investigação",
       "command": "ncrack",
       "page": "ncrack",
-      "name": "Auditoria e recuperação de senhas",
-      "purpose": "Auditar autenticação de serviços de rede. Consultar documentação local.",
-      "example": "man ncrack",
-      "notes": "Kali Tools: confirme pacote, binário e versão. Fedora pode não fornecer a ferramenta. Consulte somente alvos próprios ou autorizados.",
-      "source": "https://linuxcommandlibrary.com/basic/hackingtools",
+      "name": "Testar autenticação SSH em VM própria",
+      "purpose": "Testar autenticação SSH em VM própria.",
+      "example": "ncrack --user usuario-lab -P senhas-lab.txt --connection-limit 1 ssh://192.168.56.10",
+      "notes": "Use lista pequena e conta autorizada. Limita conexões simultâneas, mas pode bloquear a conta. Não é uma verificação passiva.",
+      "source": "https://www.kali.org/tools/ncrack/",
       "adapted": false,
-      "risk": "CONSULTA",
-      "id": "6d2240c558"
+      "risk": "ATIVO",
+      "id": "6d2240c558",
+      "kind": "recipe",
+      "reviewed_on": "2026-10-10"
     },
     {
       "vol": 5,
       "section": "Ferramentas de segurança e investigação",
       "command": "netdiscover",
       "page": "netdiscover",
-      "name": "Reconhecimento e enumeração",
-      "purpose": "Descobrir dispositivos na rede local por ARP. Consultar documentação local.",
-      "example": "man netdiscover",
-      "notes": "Kali Tools: confirme pacote, binário e versão. Fedora pode não fornecer a ferramenta. Consulte somente alvos próprios ou autorizados.",
-      "source": "https://linuxcommandlibrary.com/basic/hackingtools",
+      "name": "Observar ARP sem emitir varredura",
+      "purpose": "Observar ARP sem emitir varredura.",
+      "example": "sudo netdiscover -i eth0 -p",
+      "notes": "Modo passivo; substitua interface. Mostra somente hosts cujo tráfego ARP seja observado, não inventário completo da rede.",
+      "source": "https://www.kali.org/tools/netdiscover/",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "d047bf8b9b"
+      "id": "d047bf8b9b",
+      "kind": "recipe",
+      "reviewed_on": "2026-10-10"
     },
     {
       "vol": 5,
       "section": "Ferramentas de segurança e investigação",
       "command": "netexec",
       "page": "netexec",
-      "name": "Testes de segurança e frameworks",
-      "purpose": "Avaliar serviços e configuração de redes Windows com acesso autorizado. Consultar documentação local.",
-      "example": "man netexec",
-      "notes": "Kali Tools: confirme pacote, binário e versão. Fedora pode não fornecer a ferramenta. Consulte somente alvos próprios ou autorizados.",
-      "source": "https://linuxcommandlibrary.com/basic/hackingtools",
+      "name": "Consultar serviço SMB de VM própria",
+      "purpose": "Consultar serviço SMB de VM própria.",
+      "example": "netexec smb 192.168.56.10",
+      "notes": "Consulta um host ilustrativo usando o protocolo SMB, sem listas de senhas nem módulos. Pode gerar eventos de rede; nxc é outro executável do pacote.",
+      "source": "https://www.kali.org/tools/netexec/",
       "adapted": false,
-      "risk": "CONSULTA",
-      "id": "132120647b"
+      "risk": "ATIVO",
+      "id": "132120647b",
+      "kind": "recipe",
+      "reviewed_on": "2026-10-10"
     },
     {
       "vol": 5,
       "section": "Ferramentas de segurança e investigação",
       "command": "netsniff-ng",
       "page": "netsniff-ng",
-      "name": "Inspeção de tráfego e interfaces",
-      "purpose": "Capturar e analisar pacotes de rede. Consultar documentação local.",
-      "example": "man netsniff-ng",
-      "notes": "Kali Tools: confirme pacote, binário e versão. Fedora pode não fornecer a ferramenta. Consulte somente alvos próprios ou autorizados.",
-      "source": "https://linuxcommandlibrary.com/basic/hackingtools",
+      "name": "Decodificar PCAP local",
+      "purpose": "Decodificar PCAP local.",
+      "example": "netsniff-ng --in captura-lab.pcap",
+      "notes": "--in aponta para arquivo, não interface. Imprime pacotes locais; não use --out com interface, que mudaria a operação para transmissão/replay.",
+      "source": "https://www.kali.org/tools/netsniff-ng/",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "aac3b172b9"
+      "id": "aac3b172b9",
+      "kind": "recipe",
+      "reviewed_on": "2026-10-10"
     },
     {
       "vol": 5,
       "section": "Ferramentas de segurança e investigação",
       "command": "nikto",
       "page": "nikto",
-      "name": "Avaliação de vulnerabilidades",
-      "purpose": "Avaliar configurações e problemas conhecidos de servidores web. Consultar documentação local.",
-      "example": "man nikto",
-      "notes": "Kali Tools: confirme pacote, binário e versão. Fedora pode não fornecer a ferramenta. Consulte somente alvos próprios ou autorizados.",
-      "source": "https://linuxcommandlibrary.com/basic/hackingtools",
+      "name": "Verificar base local de testes",
+      "purpose": "Verificar base local de testes.",
+      "example": "nikto -dbcheck",
+      "notes": "Verifica sintaxe/integridade da base local do Nikto sem indicar host. Não executa varredura web nem garante atualidade da base.",
+      "source": "https://www.kali.org/tools/nikto/",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "ae4dc23cdd"
+      "id": "ae4dc23cdd",
+      "kind": "recipe",
+      "reviewed_on": "2026-10-10"
     },
     {
       "vol": 5,
       "section": "Ferramentas de segurança e investigação",
       "command": "nuclei",
       "page": "nuclei",
-      "name": "Avaliação de vulnerabilidades",
-      "purpose": "Executar verificações baseadas em templates, após revisar seu conteúdo. Consultar documentação local.",
-      "example": "man nuclei",
-      "notes": "Kali Tools: confirme pacote, binário e versão. Fedora pode não fornecer a ferramenta. Consulte somente alvos próprios ou autorizados.",
-      "source": "https://linuxcommandlibrary.com/basic/hackingtools",
+      "name": "Validar template local sem varredura",
+      "purpose": "Validar template local sem varredura.",
+      "example": "nuclei -validate -t template-lab.yaml",
+      "notes": "Valida o template informado. Não fornece alvo nem executa os testes do template; use arquivo confiável, pois templates podem conter recursos ativos.",
+      "source": "https://www.kali.org/tools/nuclei/",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "c01ee12ade"
+      "id": "c01ee12ade",
+      "kind": "recipe",
+      "reviewed_on": "2026-10-10"
     },
     {
       "vol": 5,
       "section": "Ferramentas de segurança e investigação",
       "command": "ophcrack",
       "page": "ophcrack",
-      "name": "Auditoria e recuperação de senhas",
-      "purpose": "Auditar hashes Windows com tabelas pré-calculadas. Consultar documentação local.",
-      "example": "man ophcrack",
-      "notes": "Kali Tools: confirme pacote, binário e versão. Fedora pode não fornecer a ferramenta. Consulte somente alvos próprios ou autorizados.",
-      "source": "https://linuxcommandlibrary.com/basic/hackingtools",
+      "name": "Abrir hashes no modo gráfico",
+      "purpose": "Abrir hashes no modo gráfico.",
+      "example": "ophcrack -f hashes-lab.pwdump",
+      "notes": "Abre GUI com hashes locais, requer tabelas compatíveis para recuperação. Não usa -r para iniciar ao abrir; o modo GUI pode salvar sessão local.",
+      "source": "https://www.kali.org/tools/ophcrack/",
       "adapted": false,
-      "risk": "CONSULTA",
-      "id": "7c44f798f0"
+      "risk": "ALTERA",
+      "id": "7c44f798f0",
+      "kind": "recipe",
+      "reviewed_on": "2026-10-10"
     },
     {
       "vol": 5,
@@ -24652,133 +24750,152 @@
       "source": "https://linuxcommandlibrary.com/basic/hackingtools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "1a6d6b4906"
+      "id": "1a6d6b4906",
+      "kind": "catalog"
     },
     {
       "vol": 5,
       "section": "Ferramentas de segurança e investigação",
       "command": "rcrack",
       "page": "rcrack",
-      "name": "Auditoria e recuperação de senhas",
-      "purpose": "Consultar tabelas rainbow em auditoria de hashes. Consultar documentação local.",
-      "example": "man rcrack",
-      "notes": "Kali Tools: confirme pacote, binário e versão. Fedora pode não fornecer a ferramenta. Consulte somente alvos próprios ou autorizados.",
-      "source": "https://linuxcommandlibrary.com/basic/hackingtools",
+      "name": "Consultar hash em tabelas locais",
+      "purpose": "Consultar hash em tabelas locais.",
+      "example": "rcrack tabelas-lab/ -h 5d41402abc4b2a76b9719d911017c592",
+      "notes": "Hash MD5 de exemplo. Requer tabelas rainbow compatíveis com algoritmo, charset e intervalo; não gera tabelas nem consulta serviço remoto.",
+      "source": "https://www.kali.org/tools/rainbowcrack/",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "469b9d4866"
+      "id": "469b9d4866",
+      "kind": "recipe",
+      "reviewed_on": "2026-10-10"
     },
     {
       "vol": 5,
       "section": "Ferramentas de segurança e investigação",
       "command": "reaver",
       "page": "reaver",
-      "name": "Auditoria de redes sem fio",
-      "purpose": "Auditar implementação WPS de redes Wi-Fi autorizadas. Consultar documentação local.",
-      "example": "man reaver",
-      "notes": "Kali Tools: confirme pacote, binário e versão. Fedora pode não fornecer a ferramenta. Consulte somente alvos próprios ou autorizados.",
-      "source": "https://linuxcommandlibrary.com/basic/hackingtools",
+      "name": "Verificar WPS usando wash da suíte",
+      "purpose": "Verificar WPS usando wash da suíte.",
+      "example": "sudo wash -i wlan0mon -c 6",
+      "notes": "wash acompanha reaver; requer interface já em monitor e canal correto. Descobre WPS e pode emitir probes; não inicia tentativa de PIN. Não faça deauth para este exemplo.",
+      "source": "https://www.kali.org/tools/reaver/",
       "adapted": false,
-      "risk": "CONSULTA",
-      "id": "b9108f52ed"
+      "risk": "ATIVO",
+      "id": "b9108f52ed",
+      "kind": "recipe",
+      "reviewed_on": "2026-10-10"
     },
     {
       "vol": 5,
       "section": "Ferramentas de segurança e investigação",
       "command": "searchsploit",
       "page": "searchsploit",
-      "name": "Testes de segurança e frameworks",
-      "purpose": "Pesquisar o catálogo local de referências do Exploit-DB. Consultar documentação local.",
-      "example": "man searchsploit",
-      "notes": "Kali Tools: confirme pacote, binário e versão. Fedora pode não fornecer a ferramenta. Consulte somente alvos próprios ou autorizados.",
-      "source": "https://linuxcommandlibrary.com/basic/hackingtools",
+      "name": "Pesquisar referência por CVE",
+      "purpose": "Pesquisar referência por CVE.",
+      "example": "searchsploit --cve 2021-44228",
+      "notes": "Pesquisa o catálogo local do Exploit-DB; não executa exploits. Um resultado não comprova que seu sistema é vulnerável.",
+      "source": "https://www.kali.org/tools/exploitdb/",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "7920b26426"
+      "id": "7920b26426",
+      "kind": "recipe",
+      "reviewed_on": "2026-10-10"
     },
     {
       "vol": 5,
       "section": "Ferramentas de segurança e investigação",
       "command": "setoolkit",
       "page": "setoolkit",
-      "name": "Testes de segurança e frameworks",
-      "purpose": "Framework de simulações de engenharia social em treinamento autorizado. Consultar documentação local.",
-      "example": "man setoolkit",
-      "notes": "Kali Tools: confirme pacote, binário e versão. Fedora pode não fornecer a ferramenta. Consulte somente alvos próprios ou autorizados.",
-      "source": "https://linuxcommandlibrary.com/basic/hackingtools",
+      "name": "Abrir menu do SET em laboratório",
+      "purpose": "Abrir menu do SET em laboratório.",
+      "example": "sudo setoolkit",
+      "notes": "Abre menu interativo. Opções posteriores podem criar serviços/campanhas; não selecione módulos contra terceiros. Use VM isolada e confira dependências.",
+      "source": "https://www.kali.org/tools/set/",
       "adapted": false,
-      "risk": "CONSULTA",
-      "id": "d787af56f6"
+      "risk": "SERVIÇO",
+      "id": "d787af56f6",
+      "kind": "recipe",
+      "reviewed_on": "2026-10-10"
     },
     {
       "vol": 5,
       "section": "Ferramentas de segurança e investigação",
       "command": "skipfish",
       "page": "skipfish",
-      "name": "Avaliação de aplicações web",
-      "purpose": "Avaliar aplicações web por rastreamento e verificações automatizadas. Consultar documentação local.",
-      "example": "man skipfish",
-      "notes": "Kali Tools: confirme pacote, binário e versão. Fedora pode não fornecer a ferramenta. Consulte somente alvos próprios ou autorizados.",
-      "source": "https://linuxcommandlibrary.com/basic/hackingtools",
+      "name": "Auditar aplicação HTTP local",
+      "purpose": "Auditar aplicação HTTP local.",
+      "example": "skipfish -o relatorio-lab http://127.0.0.1:8000/",
+      "notes": "Scanner legado com requisições ativas e potencial carga alta. Requer servidor descartável e pasta nova; não use produção. Confira wordlists/configuração da versão.",
+      "source": "https://www.kali.org/tools/skipfish/",
       "adapted": false,
-      "risk": "CONSULTA",
-      "id": "1dfed9fd0e"
+      "risk": "ATIVO",
+      "id": "1dfed9fd0e",
+      "kind": "recipe",
+      "reviewed_on": "2026-10-10"
     },
     {
       "vol": 5,
       "section": "Ferramentas de segurança e investigação",
       "command": "smbmap",
       "page": "smbmap",
-      "name": "Reconhecimento e enumeração",
-      "purpose": "Consultar compartilhamentos e permissões SMB com acesso autorizado. Consultar documentação local.",
-      "example": "man smbmap",
-      "notes": "Kali Tools: confirme pacote, binário e versão. Fedora pode não fornecer a ferramenta. Consulte somente alvos próprios ou autorizados.",
-      "source": "https://linuxcommandlibrary.com/basic/hackingtools",
+      "name": "Listar acessos SMB sem testar escrita",
+      "purpose": "Listar acessos SMB sem testar escrita.",
+      "example": "smbmap -H 192.168.56.10 -u usuario-lab --prompt --no-write-check",
+      "notes": "Solicita senha sem literal no histórico e desativa testes de escrita. Exige conta autorizada; não inclui download, upload, exclusão nem execução remota.",
+      "source": "https://www.kali.org/tools/smbmap/",
       "adapted": false,
-      "risk": "CONSULTA",
-      "id": "ee61a09e8f"
+      "risk": "ATIVO",
+      "id": "ee61a09e8f",
+      "kind": "recipe",
+      "reviewed_on": "2026-10-10"
     },
     {
       "vol": 5,
       "section": "Ferramentas de segurança e investigação",
       "command": "sqlitebrowser",
       "page": "sqlitebrowser",
-      "name": "Forense e análise de arquivos",
-      "purpose": "Examinar e editar bases SQLite em interface gráfica. Consultar documentação local.",
-      "example": "man sqlitebrowser",
-      "notes": "Kali Tools: confirme pacote, binário e versão. Fedora pode não fornecer a ferramenta. Consulte somente alvos próprios ou autorizados.",
-      "source": "https://linuxcommandlibrary.com/basic/hackingtools",
+      "name": "Abrir cópia de banco SQLite na GUI",
+      "purpose": "Abrir cópia de banco SQLite na GUI.",
+      "example": "sqlitebrowser banco-lab.sqlite",
+      "notes": "Interface permite editar e salvar dados. Use cópia do banco, sobretudo durante perícia; depende de sessão gráfica.",
+      "source": "https://www.kali.org/tools/sqlitebrowser/",
       "adapted": false,
-      "risk": "CONSULTA",
-      "id": "a8761f2c84"
+      "risk": "ALTERA",
+      "id": "a8761f2c84",
+      "kind": "recipe",
+      "reviewed_on": "2026-10-10"
     },
     {
       "vol": 5,
       "section": "Ferramentas de segurança e investigação",
       "command": "sqlmap",
       "page": "sqlmap",
-      "name": "Avaliação de aplicações web",
-      "purpose": "Avaliar possíveis falhas de injeção SQL em aplicações autorizadas. Consultar documentação local.",
-      "example": "man sqlmap",
-      "notes": "Kali Tools: confirme pacote, binário e versão. Fedora pode não fornecer a ferramenta. Consulte somente alvos próprios ou autorizados.",
-      "source": "https://linuxcommandlibrary.com/basic/hackingtools",
+      "name": "Testar parâmetro de aplicação local",
+      "purpose": "Testar parâmetro de aplicação local.",
+      "example": "sqlmap -u 'http://127.0.0.1:8000/item?id=1' --level=1 --risk=1",
+      "notes": "Exige aplicação vulnerável de laboratório. Envia payloads e grava sessão local; nível/risco 1 não tornam o teste inofensivo. Não inclui dump ou shell.",
+      "source": "https://www.kali.org/tools/sqlmap/",
       "adapted": false,
-      "risk": "CONSULTA",
-      "id": "fcf8d38e4e"
+      "risk": "ATIVO",
+      "id": "fcf8d38e4e",
+      "kind": "recipe",
+      "reviewed_on": "2026-10-10"
     },
     {
       "vol": 5,
       "section": "Ferramentas de segurança e investigação",
       "command": "termineter",
       "page": "termineter",
-      "name": "Testes de segurança e frameworks",
-      "purpose": "Avaliar dispositivos que usam protocolos de medição compatíveis. Consultar documentação local.",
-      "example": "man termineter",
-      "notes": "Kali Tools: confirme pacote, binário e versão. Fedora pode não fornecer a ferramenta. Consulte somente alvos próprios ou autorizados.",
-      "source": "https://linuxcommandlibrary.com/basic/hackingtools",
+      "name": "Abrir console de medidores",
+      "purpose": "Abrir console de medidores.",
+      "example": "termineter",
+      "notes": "Console interativo; exige hardware/protocolo compatível para operação. Módulos posteriores podem alterar medidores; use apenas bancada própria e consulte help.",
+      "source": "https://www.kali.org/tools/termineter/",
       "adapted": false,
-      "risk": "CONSULTA",
-      "id": "ca42b150f2"
+      "risk": "ALTERA",
+      "id": "ca42b150f2",
+      "kind": "recipe",
+      "reviewed_on": "2026-10-10"
     },
     {
       "vol": 5,
@@ -24806,119 +24923,136 @@
       "source": "https://linuxcommandlibrary.com/basic/hackingtools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "b9d3681000"
+      "id": "b9d3681000",
+      "kind": "catalog"
     },
     {
       "vol": 5,
       "section": "Ferramentas de segurança e investigação",
       "command": "wafw00f",
       "page": "wafw00f",
-      "name": "Avaliação de aplicações web",
-      "purpose": "Identificar indícios de firewalls de aplicações web pelas respostas HTTP. Consultar documentação local.",
-      "example": "man wafw00f",
-      "notes": "Kali Tools: confirme pacote, binário e versão. Fedora pode não fornecer a ferramenta. Consulte somente alvos próprios ou autorizados.",
-      "source": "https://linuxcommandlibrary.com/basic/hackingtools",
+      "name": "Consultar indícios de WAF em site local",
+      "purpose": "Consultar indícios de WAF em site local.",
+      "example": "wafw00f http://127.0.0.1:8000/",
+      "notes": "Envia requisições de identificação ao servidor local. Ausência de identificação não prova ausência de proteção.",
+      "source": "https://www.kali.org/tools/wafw00f/",
       "adapted": false,
-      "risk": "CONSULTA",
-      "id": "f47de8ca63"
+      "risk": "ATIVO",
+      "id": "f47de8ca63",
+      "kind": "recipe",
+      "reviewed_on": "2026-10-10"
     },
     {
       "vol": 5,
       "section": "Ferramentas de segurança e investigação",
       "command": "wfuzz",
       "page": "wfuzz",
-      "name": "Avaliação de aplicações web",
-      "purpose": "Testar entradas web com valores de uma lista. Consultar documentação local.",
-      "example": "man wfuzz",
-      "notes": "Kali Tools: confirme pacote, binário e versão. Fedora pode não fornecer a ferramenta. Consulte somente alvos próprios ou autorizados.",
-      "source": "https://linuxcommandlibrary.com/basic/hackingtools",
+      "name": "Testar caminhos de servidor local",
+      "purpose": "Testar caminhos de servidor local.",
+      "example": "wfuzz -z file,palavras-lab.txt --hc 404 http://127.0.0.1:8000/FUZZ",
+      "notes": "Lista própria e marcador FUZZ. --hc 404 oculta respostas 404; páginas wildcard podem precisar de outros filtros. Gera requisições ativas.",
+      "source": "https://www.kali.org/tools/wfuzz/",
       "adapted": false,
-      "risk": "CONSULTA",
-      "id": "31e7170560"
+      "risk": "ATIVO",
+      "id": "31e7170560",
+      "kind": "recipe",
+      "reviewed_on": "2026-10-10"
     },
     {
       "vol": 5,
       "section": "Ferramentas de segurança e investigação",
       "command": "whatweb",
       "page": "whatweb",
-      "name": "Avaliação de aplicações web",
-      "purpose": "Identificar tecnologias expostas por um serviço web. Consultar documentação local.",
-      "example": "man whatweb",
-      "notes": "Kali Tools: confirme pacote, binário e versão. Fedora pode não fornecer a ferramenta. Consulte somente alvos próprios ou autorizados.",
-      "source": "https://linuxcommandlibrary.com/basic/hackingtools",
+      "name": "Identificar tecnologias de site local",
+      "purpose": "Identificar tecnologias de site local.",
+      "example": "whatweb -a 1 http://127.0.0.1:8000/",
+      "notes": "Nível de agressividade 1. Ainda faz requisições HTTP; resultado é identificação por sinais, não prova de versão ou vulnerabilidade.",
+      "source": "https://www.kali.org/tools/whatweb/",
       "adapted": false,
-      "risk": "CONSULTA",
-      "id": "55f974f6fc"
+      "risk": "ATIVO",
+      "id": "55f974f6fc",
+      "kind": "recipe",
+      "reviewed_on": "2026-10-10"
     },
     {
       "vol": 5,
       "section": "Ferramentas de segurança e investigação",
       "command": "wifite",
       "page": "wifite",
-      "name": "Auditoria de redes sem fio",
-      "purpose": "Orquestrar auditoria de redes Wi-Fi em ambiente autorizado. Consultar documentação local.",
-      "example": "man wifite",
-      "notes": "Kali Tools: confirme pacote, binário e versão. Fedora pode não fornecer a ferramenta. Consulte somente alvos próprios ou autorizados.",
-      "source": "https://linuxcommandlibrary.com/basic/hackingtools",
+      "name": "Verificar handshake em captura própria",
+      "purpose": "Verificar handshake em captura própria.",
+      "example": "wifite --check captura-lab.cap",
+      "notes": "Examina handshakes em arquivo local usando ferramentas auxiliares. Não é captura ao vivo nem ataque; confira dependências e formato da captura.",
+      "source": "https://www.kali.org/tools/wifite/",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "003fd784e0"
+      "id": "003fd784e0",
+      "kind": "recipe",
+      "reviewed_on": "2026-10-10"
     },
     {
       "vol": 5,
       "section": "Ferramentas de segurança e investigação",
       "command": "wireshark",
       "page": "wireshark",
-      "name": "Inspeção de tráfego e interfaces",
-      "purpose": "Inspecionar protocolos e pacotes em interface gráfica. Consultar documentação local.",
-      "example": "man wireshark",
-      "notes": "Kali Tools: confirme pacote, binário e versão. Fedora pode não fornecer a ferramenta. Consulte somente alvos próprios ou autorizados.",
-      "source": "https://linuxcommandlibrary.com/basic/hackingtools",
+      "name": "Abrir captura na interface gráfica",
+      "purpose": "Abrir captura na interface gráfica.",
+      "example": "wireshark -r captura-lab.pcap",
+      "notes": "Abre PCAP local, sem iniciar captura. Não execute a GUI como root; dados cifrados precisam de chaves apropriadas para decriptação.",
+      "source": "https://www.kali.org/tools/wireshark/",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "e7a80bba6c"
+      "id": "e7a80bba6c",
+      "kind": "recipe",
+      "reviewed_on": "2026-10-10"
     },
     {
       "vol": 5,
       "section": "Ferramentas de segurança e investigação",
       "command": "wpscan",
       "page": "wpscan",
-      "name": "Avaliação de aplicações web",
-      "purpose": "Auditar aplicações WordPress e componentes identificados. Consultar documentação local.",
-      "example": "man wpscan",
-      "notes": "Kali Tools: confirme pacote, binário e versão. Fedora pode não fornecer a ferramenta. Consulte somente alvos próprios ou autorizados.",
-      "source": "https://linuxcommandlibrary.com/basic/hackingtools",
+      "name": "Examinar WordPress de laboratório",
+      "purpose": "Examinar WordPress de laboratório.",
+      "example": "wpscan --url http://127.0.0.1:8000 --detection-mode passive",
+      "notes": "Passive descreve a estratégia de detecção, mas ainda envia HTTP. Requer WordPress próprio; dados de vulnerabilidades podem exigir token da API. Não testa senhas.",
+      "source": "https://www.kali.org/tools/wpscan/",
       "adapted": false,
-      "risk": "CONSULTA",
-      "id": "a8bd62b8a0"
+      "risk": "ATIVO",
+      "id": "a8bd62b8a0",
+      "kind": "recipe",
+      "reviewed_on": "2026-10-10"
     },
     {
       "vol": 5,
       "section": "Ferramentas de segurança e investigação",
       "command": "yersinia",
       "page": "yersinia",
-      "name": "Testes de segurança e frameworks",
-      "purpose": "Avaliar protocolos de camada 2 em laboratório de rede. Consultar documentação local.",
-      "example": "man yersinia",
-      "notes": "Kali Tools: confirme pacote, binário e versão. Fedora pode não fornecer a ferramenta. Consulte somente alvos próprios ou autorizados.",
-      "source": "https://linuxcommandlibrary.com/basic/hackingtools",
+      "name": "Abrir interface ncurses",
+      "purpose": "Abrir interface ncurses.",
+      "example": "sudo yersinia -I",
+      "notes": "Abre modo interativo com acesso raw. Pode capturar protocolos L2 e oferece ataques que alteram a rede; não acione ataques fora de bancada isolada.",
+      "source": "https://www.kali.org/tools/yersinia/",
       "adapted": false,
-      "risk": "CONSULTA",
-      "id": "cb268a2557"
+      "risk": "ALTERA",
+      "id": "cb268a2557",
+      "kind": "recipe",
+      "reviewed_on": "2026-10-10"
     },
     {
       "vol": 5,
       "section": "Ferramentas de segurança e investigação",
       "command": "zenmap",
       "page": "zenmap",
-      "name": "Reconhecimento e enumeração",
-      "purpose": "Interface gráfica para criar, executar e comparar perfis Nmap. Consultar documentação local.",
-      "example": "man zenmap",
-      "notes": "Kali Tools: confirme pacote, binário e versão. Fedora pode não fornecer a ferramenta. Consulte somente alvos próprios ou autorizados.",
-      "source": "https://linuxcommandlibrary.com/basic/hackingtools",
+      "name": "Abrir interface gráfica do Nmap",
+      "purpose": "Abrir interface gráfica do Nmap.",
+      "example": "zenmap",
+      "notes": "Launcher gráfico; abrir a interface não inicia scan. Perfis escolhidos depois podem fazer varreduras ativas. Disponibilidade varia por instalação.",
+      "source": "https://nmap.org/book/zenmap.html",
       "adapted": false,
-      "risk": "CONSULTA",
-      "id": "39bd6b438c"
+      "risk": "ALTERA",
+      "id": "39bd6b438c",
+      "kind": "recipe",
+      "reviewed_on": "2026-10-10"
     },
     {
       "vol": 6,
@@ -27501,14 +27635,16 @@
       "section": "Python ferramentas e compilação",
       "command": "expect",
       "page": "expect",
-      "name": "Automação interativa",
-      "purpose": "Consultar ajuda sobre automação de programas interativos.",
-      "example": "man expect",
-      "notes": "Scripts Expect executam comandos. Não embuta senhas nos scripts.",
-      "source": "Redação original com referência ao manual da ferramenta",
+      "name": "Executar automação Tcl/Expect local",
+      "purpose": "Executar automação Tcl/Expect local.",
+      "example": "expect automacao-lab.exp",
+      "notes": "O arquivo é um programa executável e pode fazer alterações ou acessar rede. Revise o script antes; não inclua senhas em texto claro.",
+      "source": "https://manpages.debian.org/trixie/expect/expect.1.en.html",
       "adapted": false,
-      "risk": "CONSULTA",
-      "id": "fea373f0f8"
+      "risk": "ALTERA",
+      "id": "fea373f0f8",
+      "kind": "recipe",
+      "reviewed_on": "2026-10-10"
     },
     {
       "vol": 6,
@@ -34725,14 +34861,16 @@
       "section": "Captura de tela webcam e reprodução",
       "command": "uvccapture",
       "page": "uvccapture",
-      "name": "Webcam UVC legada",
-      "purpose": "Abrir manual de captura UVC.",
-      "example": "man uvccapture",
-      "notes": "Ferramenta externa antiga; disponibilidade e flags devem ser conferidas.",
-      "source": "https://linuxcommandlibrary.com/basic/videoaudio",
+      "name": "Salvar foto de webcam UVC",
+      "purpose": "Salvar foto de webcam UVC.",
+      "example": "uvccapture -d/dev/video0 -ofoto-lab.jpg -x640 -y480 -t0",
+      "notes": "Use -ofoto-lab.jpg para gravar no diretório atual. Opções e argumentos são concatenados. -t0 captura uma vez; exige webcam/permissões e resolução compatíveis.",
+      "source": "https://manpages.debian.org/trixie/uvccapture/uvccapture.1.en.html",
       "adapted": false,
-      "risk": "CONSULTA",
-      "id": "85f01d4010"
+      "risk": "ALTERA",
+      "id": "85f01d4010",
+      "kind": "recipe",
+      "reviewed_on": "2026-10-10"
     },
     {
       "vol": 7,
@@ -34760,7 +34898,8 @@
       "source": "https://linuxcommandlibrary.com/basic/terminalgames",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "710adfff34"
+      "id": "710adfff34",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -34774,7 +34913,8 @@
       "source": "https://linuxcommandlibrary.com/basic/terminalgames",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "d12be4779b"
+      "id": "d12be4779b",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -34788,7 +34928,8 @@
       "source": "https://linuxcommandlibrary.com/basic/terminalgames",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "5f0cd562e7"
+      "id": "5f0cd562e7",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -34802,7 +34943,8 @@
       "source": "https://linuxcommandlibrary.com/basic/terminalgames",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "c24cfdb63f"
+      "id": "c24cfdb63f",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -34816,7 +34958,8 @@
       "source": "https://linuxcommandlibrary.com/basic/terminalgames",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "f2a1b51b50"
+      "id": "f2a1b51b50",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -34830,7 +34973,8 @@
       "source": "https://linuxcommandlibrary.com/basic/terminalgames",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "cfdb728bc3"
+      "id": "cfdb728bc3",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -34844,7 +34988,8 @@
       "source": "https://linuxcommandlibrary.com/basic/terminalgames",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "175e055030"
+      "id": "175e055030",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -34858,7 +35003,8 @@
       "source": "https://linuxcommandlibrary.com/basic/terminalgames",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "925b3b0414"
+      "id": "925b3b0414",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -34872,7 +35018,8 @@
       "source": "https://linuxcommandlibrary.com/basic/terminalgames",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "3ec30fba4f"
+      "id": "3ec30fba4f",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -34886,7 +35033,8 @@
       "source": "https://linuxcommandlibrary.com/basic/terminalgames",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "e6bfc80973"
+      "id": "e6bfc80973",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -34900,7 +35048,8 @@
       "source": "https://linuxcommandlibrary.com/basic/terminalgames",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "d3f7609cd2"
+      "id": "d3f7609cd2",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -34914,7 +35063,8 @@
       "source": "https://linuxcommandlibrary.com/basic/terminalgames",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "00c2a85378"
+      "id": "00c2a85378",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -34928,7 +35078,8 @@
       "source": "https://linuxcommandlibrary.com/basic/terminalgames",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "702e9f701c"
+      "id": "702e9f701c",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -34942,7 +35093,8 @@
       "source": "https://linuxcommandlibrary.com/basic/terminalgames",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "74a5f9fbc1"
+      "id": "74a5f9fbc1",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -34956,7 +35108,8 @@
       "source": "https://linuxcommandlibrary.com/basic/terminalgames",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "6acca06afa"
+      "id": "6acca06afa",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -34970,7 +35123,8 @@
       "source": "https://linuxcommandlibrary.com/basic/terminalgames",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "e95c6bdc2a"
+      "id": "e95c6bdc2a",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -34984,7 +35138,8 @@
       "source": "https://linuxcommandlibrary.com/basic/terminalgames",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "718b1121fc"
+      "id": "718b1121fc",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -34998,7 +35153,8 @@
       "source": "https://linuxcommandlibrary.com/basic/terminalgames",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "6bcf4bbe82"
+      "id": "6bcf4bbe82",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -35012,7 +35168,8 @@
       "source": "https://linuxcommandlibrary.com/basic/terminalgames",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "7d8b99fdaf"
+      "id": "7d8b99fdaf",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -35026,7 +35183,8 @@
       "source": "https://linuxcommandlibrary.com/basic/terminalgames",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "02bb4b4acf"
+      "id": "02bb4b4acf",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -35040,7 +35198,8 @@
       "source": "https://linuxcommandlibrary.com/basic/terminalgames",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "5c395eca7e"
+      "id": "5c395eca7e",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -35054,7 +35213,8 @@
       "source": "https://linuxcommandlibrary.com/basic/terminalgames",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "23ace593a3"
+      "id": "23ace593a3",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -35068,7 +35228,8 @@
       "source": "https://linuxcommandlibrary.com/basic/terminalgames",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "6152b1426b"
+      "id": "6152b1426b",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -35082,7 +35243,8 @@
       "source": "https://linuxcommandlibrary.com/basic/terminalgames",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "420eaca471"
+      "id": "420eaca471",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -35096,7 +35258,8 @@
       "source": "https://linuxcommandlibrary.com/basic/terminalgames",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "fdf146a3a6"
+      "id": "fdf146a3a6",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -35110,7 +35273,8 @@
       "source": "https://linuxcommandlibrary.com/basic/terminalgames",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "0b8c587999"
+      "id": "0b8c587999",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -35124,7 +35288,8 @@
       "source": "https://linuxcommandlibrary.com/basic/terminalgames",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "abc7e0d79b"
+      "id": "abc7e0d79b",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -35138,7 +35303,8 @@
       "source": "https://linuxcommandlibrary.com/basic/terminalgames",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "032bd9923e"
+      "id": "032bd9923e",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -35152,7 +35318,8 @@
       "source": "https://linuxcommandlibrary.com/basic/terminalgames",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "2cc350afff"
+      "id": "2cc350afff",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -35166,7 +35333,8 @@
       "source": "https://linuxcommandlibrary.com/basic/terminalgames",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "8071656671"
+      "id": "8071656671",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -35180,7 +35348,8 @@
       "source": "https://linuxcommandlibrary.com/basic/terminalgames",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "4a8787e76b"
+      "id": "4a8787e76b",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -35194,7 +35363,8 @@
       "source": "https://linuxcommandlibrary.com/basic/terminalgames",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "94fa941d66"
+      "id": "94fa941d66",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -35208,7 +35378,8 @@
       "source": "https://linuxcommandlibrary.com/basic/terminalgames",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "1369147aa0"
+      "id": "1369147aa0",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -35222,7 +35393,8 @@
       "source": "https://linuxcommandlibrary.com/basic/terminalgames",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "2ecb3bce19"
+      "id": "2ecb3bce19",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -35236,7 +35408,8 @@
       "source": "https://linuxcommandlibrary.com/basic/terminalgames",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "dd56b77ae4"
+      "id": "dd56b77ae4",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -35250,7 +35423,8 @@
       "source": "https://linuxcommandlibrary.com/basic/terminalgames",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "96acfd6d27"
+      "id": "96acfd6d27",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -35264,7 +35438,8 @@
       "source": "https://linuxcommandlibrary.com/basic/terminalgames",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "de830b1cc1"
+      "id": "de830b1cc1",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -35278,7 +35453,8 @@
       "source": "https://linuxcommandlibrary.com/basic/terminalgames",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "b40e9c8dbd"
+      "id": "b40e9c8dbd",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -35292,7 +35468,8 @@
       "source": "https://linuxcommandlibrary.com/basic/terminalgames",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "0c3f87b3b8"
+      "id": "0c3f87b3b8",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -35306,7 +35483,8 @@
       "source": "https://linuxcommandlibrary.com/basic/terminalgames",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "a63759c571"
+      "id": "a63759c571",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -35320,7 +35498,8 @@
       "source": "https://linuxcommandlibrary.com/basic/terminalgames",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "8c180f2007"
+      "id": "8c180f2007",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -35334,7 +35513,8 @@
       "source": "https://linuxcommandlibrary.com/basic/terminalgames",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "ef3718ad24"
+      "id": "ef3718ad24",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -35348,7 +35528,8 @@
       "source": "https://linuxcommandlibrary.com/basic/terminalgames",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "5c7062eaa2"
+      "id": "5c7062eaa2",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -35362,7 +35543,8 @@
       "source": "https://linuxcommandlibrary.com/basic/terminalgames",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "f58cf1ec8b"
+      "id": "f58cf1ec8b",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -35376,7 +35558,8 @@
       "source": "https://linuxcommandlibrary.com/basic/terminalgames",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "53eec4481d"
+      "id": "53eec4481d",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -35390,7 +35573,8 @@
       "source": "https://linuxcommandlibrary.com/basic/terminalgames",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "cb1c8a03e8"
+      "id": "cb1c8a03e8",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -35404,7 +35588,8 @@
       "source": "https://linuxcommandlibrary.com/basic/terminalgames",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "0dfb94757d"
+      "id": "0dfb94757d",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -35418,7 +35603,8 @@
       "source": "https://linuxcommandlibrary.com/basic/terminalgames",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "bb54e15f3d"
+      "id": "bb54e15f3d",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -35432,7 +35618,8 @@
       "source": "https://linuxcommandlibrary.com/basic/terminalgames",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "1cfbe07be4"
+      "id": "1cfbe07be4",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -35446,7 +35633,8 @@
       "source": "https://linuxcommandlibrary.com/basic/terminalgames",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "458b864a19"
+      "id": "458b864a19",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -35460,7 +35648,8 @@
       "source": "https://linuxcommandlibrary.com/basic/terminalgames",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "aba6eaeedb"
+      "id": "aba6eaeedb",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -35474,7 +35663,8 @@
       "source": "https://linuxcommandlibrary.com/basic/terminalgames",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "d8d85e0781"
+      "id": "d8d85e0781",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -35488,7 +35678,8 @@
       "source": "https://linuxcommandlibrary.com/basic/terminalgames",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "c8a14df070"
+      "id": "c8a14df070",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -35502,7 +35693,8 @@
       "source": "https://linuxcommandlibrary.com/basic/terminalgames",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "cc97595830"
+      "id": "cc97595830",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -35516,7 +35708,8 @@
       "source": "https://linuxcommandlibrary.com/basic/terminalgames",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "fbe75e867a"
+      "id": "fbe75e867a",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -35530,7 +35723,8 @@
       "source": "https://linuxcommandlibrary.com/basic/terminalgames",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "93ccef7d1c"
+      "id": "93ccef7d1c",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -35544,7 +35738,8 @@
       "source": "https://linuxcommandlibrary.com/basic/terminalgames",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "06c7345d87"
+      "id": "06c7345d87",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -35558,7 +35753,8 @@
       "source": "https://linuxcommandlibrary.com/basic/terminalgames",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "8520bf1b08"
+      "id": "8520bf1b08",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -35572,7 +35768,8 @@
       "source": "https://linuxcommandlibrary.com/basic/terminalgames",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "f39e012c84"
+      "id": "f39e012c84",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -35586,7 +35783,8 @@
       "source": "https://linuxcommandlibrary.com/basic/terminalgames",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "1826ce07a1"
+      "id": "1826ce07a1",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -35600,7 +35798,8 @@
       "source": "https://linuxcommandlibrary.com/basic/terminalgames",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "24e8c187a4"
+      "id": "24e8c187a4",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -35614,7 +35813,8 @@
       "source": "https://linuxcommandlibrary.com/basic/terminalgames",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "63fc60f715"
+      "id": "63fc60f715",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -35628,7 +35828,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "2e2353d285"
+      "id": "2e2353d285",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -35642,7 +35843,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "07a318e8cd"
+      "id": "07a318e8cd",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -35656,7 +35858,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "a1b12e6909"
+      "id": "a1b12e6909",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -35670,7 +35873,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "d1125787ac"
+      "id": "d1125787ac",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -35684,7 +35888,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "833cc6487d"
+      "id": "833cc6487d",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -35698,7 +35903,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "491898de91"
+      "id": "491898de91",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -35712,7 +35918,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "94253b7094"
+      "id": "94253b7094",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -35726,7 +35933,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "c59afc5394"
+      "id": "c59afc5394",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -35740,7 +35948,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "cbb22e264f"
+      "id": "cbb22e264f",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -35754,7 +35963,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "52a4ae89d5"
+      "id": "52a4ae89d5",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -35768,7 +35978,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "8b6894db15"
+      "id": "8b6894db15",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -35782,7 +35993,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "44aab40f62"
+      "id": "44aab40f62",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -35796,7 +36008,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "37e64591ab"
+      "id": "37e64591ab",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -35810,7 +36023,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "8051efa657"
+      "id": "8051efa657",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -35824,7 +36038,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "b583190196"
+      "id": "b583190196",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -35838,7 +36053,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "ec828c6117"
+      "id": "ec828c6117",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -35852,7 +36068,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "d8fb9b193e"
+      "id": "d8fb9b193e",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -35866,7 +36083,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "f2e938b09b"
+      "id": "f2e938b09b",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -35880,7 +36098,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "bdcb55e47c"
+      "id": "bdcb55e47c",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -35894,7 +36113,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "c0a04f79fd"
+      "id": "c0a04f79fd",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -35908,7 +36128,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "deaba0d6d8"
+      "id": "deaba0d6d8",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -35922,7 +36143,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "8c286dd43f"
+      "id": "8c286dd43f",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -35936,7 +36158,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "d15a01bb6c"
+      "id": "d15a01bb6c",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -35950,7 +36173,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "ac5cb15862"
+      "id": "ac5cb15862",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -35964,7 +36188,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "7998f39940"
+      "id": "7998f39940",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -35978,7 +36203,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "f8f5482c6e"
+      "id": "f8f5482c6e",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -35992,7 +36218,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "e5ba2a94ff"
+      "id": "e5ba2a94ff",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -36006,7 +36233,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "fe95e44530"
+      "id": "fe95e44530",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -36020,7 +36248,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "e48dad3fc8"
+      "id": "e48dad3fc8",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -36034,7 +36263,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "f459435924"
+      "id": "f459435924",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -36048,7 +36278,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "d33fa813e3"
+      "id": "d33fa813e3",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -36062,7 +36293,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "d4952f07c3"
+      "id": "d4952f07c3",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -36076,7 +36308,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "6554289259"
+      "id": "6554289259",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -36090,7 +36323,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "b42543ee75"
+      "id": "b42543ee75",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -36104,7 +36338,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "e49f429231"
+      "id": "e49f429231",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -36118,7 +36353,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "4486b3f92d"
+      "id": "4486b3f92d",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -36132,7 +36368,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "02f06fcd98"
+      "id": "02f06fcd98",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -36146,7 +36383,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "8816c1b7a7"
+      "id": "8816c1b7a7",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -36160,7 +36398,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "851bbe19c4"
+      "id": "851bbe19c4",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -36174,7 +36413,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "038e8dc944"
+      "id": "038e8dc944",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -36188,7 +36428,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "922f508d5a"
+      "id": "922f508d5a",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -36202,7 +36443,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "83253157df"
+      "id": "83253157df",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -36216,7 +36458,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "cc205668bc"
+      "id": "cc205668bc",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -36230,7 +36473,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "070d723091"
+      "id": "070d723091",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -36244,7 +36488,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "c024a340c8"
+      "id": "c024a340c8",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -36258,7 +36503,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "8e5e19505f"
+      "id": "8e5e19505f",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -36272,7 +36518,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "412b2db5a7"
+      "id": "412b2db5a7",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -36286,7 +36533,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "39fc0e0640"
+      "id": "39fc0e0640",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -36300,7 +36548,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "a2b8018a94"
+      "id": "a2b8018a94",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -36314,7 +36563,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "2167b6b3b6"
+      "id": "2167b6b3b6",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -36328,7 +36578,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "843fc44f2c"
+      "id": "843fc44f2c",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -36342,7 +36593,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "098ed25a3a"
+      "id": "098ed25a3a",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -36356,7 +36608,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "bf64f8002b"
+      "id": "bf64f8002b",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -36370,7 +36623,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "68e49d5008"
+      "id": "68e49d5008",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -36384,7 +36638,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "7a2d005967"
+      "id": "7a2d005967",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -36398,7 +36653,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "b4d9b6d23b"
+      "id": "b4d9b6d23b",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -36412,7 +36668,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "848fe231a8"
+      "id": "848fe231a8",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -36426,7 +36683,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "373a857948"
+      "id": "373a857948",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -36440,7 +36698,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "ae4c36ebcb"
+      "id": "ae4c36ebcb",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -36454,7 +36713,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "1b2ec319c8"
+      "id": "1b2ec319c8",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -36468,7 +36728,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "b0bf20a1c2"
+      "id": "b0bf20a1c2",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -36482,7 +36743,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "e85c4e0e9e"
+      "id": "e85c4e0e9e",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -36496,7 +36758,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "de0e22521a"
+      "id": "de0e22521a",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -36510,7 +36773,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "1290e6ef3b"
+      "id": "1290e6ef3b",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -36524,7 +36788,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "f272673875"
+      "id": "f272673875",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -36538,7 +36803,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "4683ed8105"
+      "id": "4683ed8105",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -36552,7 +36818,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "e087a638a5"
+      "id": "e087a638a5",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -36566,7 +36833,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "afe0f99f9c"
+      "id": "afe0f99f9c",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -36580,7 +36848,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "2fe4aea801"
+      "id": "2fe4aea801",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -36594,7 +36863,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "0f2e30b0b9"
+      "id": "0f2e30b0b9",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -36608,7 +36878,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "8ee92b1b87"
+      "id": "8ee92b1b87",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -36622,7 +36893,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "f5796484b2"
+      "id": "f5796484b2",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -36636,7 +36908,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "4d76787ad6"
+      "id": "4d76787ad6",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -36650,7 +36923,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "7dc30b1e5a"
+      "id": "7dc30b1e5a",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -36664,7 +36938,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "9678f3915f"
+      "id": "9678f3915f",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -36678,7 +36953,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "c098d71763"
+      "id": "c098d71763",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -36692,7 +36968,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "c66650d087"
+      "id": "c66650d087",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -36706,7 +36983,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "ccf715aaf3"
+      "id": "ccf715aaf3",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -36720,7 +36998,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "d940c05b95"
+      "id": "d940c05b95",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -36734,7 +37013,8 @@
       "source": "https://linuxcommandlibrary.com/basic/cryptocurrencies",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "560ecdbe63"
+      "id": "560ecdbe63",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -36748,7 +37028,8 @@
       "source": "https://linuxcommandlibrary.com/basic/cryptocurrencies",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "e59ee4e7eb"
+      "id": "e59ee4e7eb",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -36762,7 +37043,8 @@
       "source": "https://linuxcommandlibrary.com/basic/cryptocurrencies",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "b1b07b0d90"
+      "id": "b1b07b0d90",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -36776,7 +37058,8 @@
       "source": "https://linuxcommandlibrary.com/basic/cryptocurrencies",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "d2581a9df6"
+      "id": "d2581a9df6",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -36790,7 +37073,8 @@
       "source": "https://linuxcommandlibrary.com/basic/cryptocurrencies",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "0099ed7963"
+      "id": "0099ed7963",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -36804,7 +37088,8 @@
       "source": "https://linuxcommandlibrary.com/basic/cryptocurrencies",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "aeee672541"
+      "id": "aeee672541",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -36818,7 +37103,8 @@
       "source": "https://linuxcommandlibrary.com/basic/cryptocurrencies",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "23c2e2e90e"
+      "id": "23c2e2e90e",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -36832,7 +37118,8 @@
       "source": "https://linuxcommandlibrary.com/basic/cryptocurrencies",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "74b227d903"
+      "id": "74b227d903",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -36846,7 +37133,8 @@
       "source": "https://linuxcommandlibrary.com/basic/cryptocurrencies",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "b2ff15769e"
+      "id": "b2ff15769e",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -36860,7 +37148,8 @@
       "source": "https://linuxcommandlibrary.com/basic/cryptocurrencies",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "2d3319a5ec"
+      "id": "2d3319a5ec",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -36874,7 +37163,8 @@
       "source": "https://linuxcommandlibrary.com/basic/cryptocurrencies",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "745e08e57a"
+      "id": "745e08e57a",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -36888,7 +37178,8 @@
       "source": "https://linuxcommandlibrary.com/basic/cryptocurrencies",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "9696672835"
+      "id": "9696672835",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -36902,7 +37193,8 @@
       "source": "https://linuxcommandlibrary.com/basic/cryptocurrencies",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "88eb0b4253"
+      "id": "88eb0b4253",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -36916,7 +37208,8 @@
       "source": "https://linuxcommandlibrary.com/basic/cryptocurrencies",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "b6bbe343dc"
+      "id": "b6bbe343dc",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -36930,7 +37223,8 @@
       "source": "https://linuxcommandlibrary.com/basic/cryptocurrencies",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "0b4ba8760f"
+      "id": "0b4ba8760f",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -36944,7 +37238,8 @@
       "source": "https://linuxcommandlibrary.com/basic/cryptocurrencies",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "8fdd9c8b50"
+      "id": "8fdd9c8b50",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -36958,7 +37253,8 @@
       "source": "https://linuxcommandlibrary.com/basic/cryptocurrencies",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "311b152180"
+      "id": "311b152180",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -36972,7 +37268,8 @@
       "source": "https://linuxcommandlibrary.com/basic/cryptocurrencies",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "6fe720a913"
+      "id": "6fe720a913",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -36986,7 +37283,8 @@
       "source": "https://linuxcommandlibrary.com/basic/cryptocurrencies",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "0ed4992c25"
+      "id": "0ed4992c25",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -37000,7 +37298,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "fa0d66cb06"
+      "id": "fa0d66cb06",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -37014,7 +37313,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "e22948893f"
+      "id": "e22948893f",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -37028,7 +37328,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "f4537dc788"
+      "id": "f4537dc788",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -37042,7 +37343,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "e57fef156c"
+      "id": "e57fef156c",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -37056,7 +37358,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "1e97572cfc"
+      "id": "1e97572cfc",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -37070,7 +37373,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "416cef6b92"
+      "id": "416cef6b92",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -37084,7 +37388,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "22494f0073"
+      "id": "22494f0073",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -37098,7 +37403,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "01b3bad86b"
+      "id": "01b3bad86b",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -37112,7 +37418,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "2a558277bb"
+      "id": "2a558277bb",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -37126,7 +37433,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "ceb7761af1"
+      "id": "ceb7761af1",
+      "kind": "catalog"
     },
     {
       "vol": 8,
@@ -37140,7 +37448,8 @@
       "source": "https://linuxcommandlibrary.com/basic/aitools",
       "adapted": false,
       "risk": "CONSULTA",
-      "id": "83a4102f07"
+      "id": "83a4102f07",
+      "kind": "catalog"
     }
   ]
 }
