@@ -1,0 +1,53 @@
+name: Validar, gerar e publicar FP Atlas
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: fp-atlas-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+      - name: Validar dados e testar geração
+        run: python3 -m unittest discover -s scripts -p 'test_*.py' -v
+      - name: Gerar site e pacote offline
+        run: python3 scripts/build.py
+      - name: Verificar sintaxe JavaScript e testar interface e cache
+        run: |
+          node --check src/app.js
+          node --check src/pwa.js
+          node --check dist/sw.js
+          node scripts/test_app.cjs
+          node scripts/test_sw.cjs
+      - uses: actions/upload-pages-artifact@v4
+        if: github.event_name != 'pull_request'
+        with:
+          path: dist
+  deploy:
+    if: github.event_name != 'pull_request'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/configure-pages@v5
+      - name: Publicar
+        id: deployment
+        uses: actions/deploy-pages@v4

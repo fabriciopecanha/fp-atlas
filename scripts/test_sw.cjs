@@ -1,0 +1,13 @@
+const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
+const events={},storage=new Map(),messages=[];let offline=false,failAsset='',activated=false;
+const cache={open:async name=>{if(!storage.has(name))storage.set(name,new Map());const m=storage.get(name);return {put:async(k,v)=>m.set(String(k),v.clone()),match:async k=>m.get(String(k))?.clone()}},keys:async()=>[...storage.keys()],delete:async k=>storage.delete(k)};
+const self={registration:{scope:'https://example.test/fp-atlas/'},addEventListener:(t,f)=>events[t]=f,clients:{claim:async()=>{activated=true}},skipWaiting:async()=>{self.skipped=true}};
+const context={self,caches:cache,URL,Response,AbortController,setTimeout,clearTimeout,fetch:async address=>{if(offline||String(address).endsWith(failAsset)&&failAsset)throw Error('network');return new Response('resource:'+address)}};
+vm.createContext(context);vm.runInContext(fs.readFileSync('dist/sw.js','utf8'),context);
+async function event(type,data={}){const waits=[],result=[];events[type]({...data,waitUntil:p=>waits.push(p),respondWith:p=>result.push(p)});await Promise.all(waits);return result.length?result[0]:null}
+async function message(type){let reply;await event('message',{data:{type},source:{postMessage:x=>messages.push(x)},ports:[{postMessage:x=>reply=x}]});return reply}
+(async()=>{await event('install');assert((await message('CACHE_STATUS')).core);await cache.open('unrelated-app');await cache.open('fp-atlas-shell-old');await event('activate');assert(activated);assert(storage.has('unrelated-app'));assert(!storage.has('fp-atlas-shell-old'));
+ offline=true;const response=await event('fetch',{request:{method:'GET',url:'https://example.test/fp-atlas/?v=abc'}});assert.equal(response.status,200);assert((await response.text()).endsWith('/fp-atlas/index.html'));assert.equal(await event('fetch',{request:{method:'GET',url:'https://outside.test/file'}}),null);
+ const failed=await message('CACHE_EXTRAS');assert(failed.error);assert.equal((await message('CACHE_STATUS')).extras,0);
+ offline=false;failAsset='corne-l2.webp';assert((await message('CACHE_EXTRAS')).error);assert.equal((await message('CACHE_STATUS')).extras,2);failAsset='';const all=await message('CACHE_EXTRAS');assert.equal(all.extras,14);assert.equal(messages.at(-1).done,14);
+ offline=true;const pdf=await event('fetch',{request:{method:'GET',url:'https://example.test/fp-atlas/assets/manual-v21.pdf'}});assert.equal(pdf.status,200);await message('SKIP_WAITING');assert(self.skipped);console.log('PASS: cache inicial, HTML offline com query, falha parcial e retomada, PDFs offline, isolamento e atualização.');})().catch(e=>{console.error(e);process.exitCode=1});
