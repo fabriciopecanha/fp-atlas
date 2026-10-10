@@ -1,6 +1,6 @@
 const fs=require('fs'),vm=require('vm'),assert=require('assert');
-class El{constructor(tag='div'){this.tag=tag;this.children=[];this.dataset={};this.value='';this.hidden=false;this.handlers={};this.style={setProperty(){}};this.classList={toggle(){},add(){},remove(){}};this.attributes={}}append(...a){this.children.push(...a)}replaceChildren(...a){this.children=a}setAttribute(k,v){this.attributes[k]=String(v)}getAttribute(k){return this.attributes[k]}addEventListener(k,f){this.handlers[k]=f}focus(){context.lastFocused=this}blur(){}remove(){}select(){}setSelectionRange(){}querySelectorAll(){return this.children.filter(x=>x.tag==='button')}click(){if(this.onclick)this.onclick()}}
-const map=new Map(),get=id=>{if(!map.has(id))map.set(id,new El());return map.get(id)},nav=[new El(),new El()];nav[0].dataset.view='linux';nav[1].dataset.view='keyboard';const eventHandlers={},themeStore={'fp-atlas-v02-theme':'light'};const context={ATLAS_DATA:JSON.parse(fs.readFileSync('atlas_base.json','utf8')),SHORTCUTS:JSON.parse(fs.readFileSync('shortcuts.json','utf8')),URL,Blob,document:{getElementById:get,createElement:t=>new El(t),createTextNode:t=>({textContent:t}),querySelectorAll:s=>s==='.nav'?nav:s==='.area-btn'?get('area-nav').children:[],body:new El(),addEventListener(k,f){(eventHandlers[k]||=[]).push(f)}},navigator:{clipboard:{writeText:async t=>{context.copied=t}}},location:{hash:''},window:{isSecureContext:true,scrollX:0,scrollY:0,scrollTo(){},addEventListener(){}},localStorage:{getItem(k){return themeStore[k]??null},setItem(k,v){themeStore[k]=v}},setTimeout,clearTimeout,console};get('template-layer').value='0';vm.createContext(context);vm.runInContext(fs.readFileSync('src/app.js','utf8'),context);
+class El{constructor(tag='div'){this.tag=tag;this.children=[];this.dataset={};this.value='';this.hidden=false;this.handlers={};this.style={setProperty(){}};this.classList={toggle(){},add(){},remove(){}};this.attributes={}}append(...a){this.children.push(...a)}replaceChildren(...a){this.children=a}setAttribute(k,v){this.attributes[k]=String(v)}getAttribute(k){return this.attributes[k]}addEventListener(k,f){this.handlers[k]=f}focus(){context.lastFocused=this}blur(){}remove(){}select(){}setSelectionRange(){}querySelectorAll(){return this.children.filter(x=>x.tag==='button')}querySelector(s){function findClass(n,cls){if(n.className?.includes(cls))return n;for(const c of n.children||[]){const r=findClass(c,cls);if(r)return r}return null}function match(n){const m=s.match(/data-id="([^"]+)"/);if(m&&n.dataset?.id===m[1])return findClass(n,'fav-btn');for(const c of n.children||[]){const r=match(c);if(r)return r}return null}return match(this)}click(){if(this.onclick)this.onclick()}}
+const map=new Map(),get=id=>{if(!map.has(id))map.set(id,new El());return map.get(id)},nav=[new El(),new El()];nav[0].dataset.view='linux';nav[1].dataset.view='keyboard';const eventHandlers={},windowEventHandlers={},themeStore={'fp-atlas-v02-theme':'light'};const context={ATLAS_DATA:JSON.parse(fs.readFileSync('atlas_base.json','utf8')),SHORTCUTS:JSON.parse(fs.readFileSync('shortcuts.json','utf8')),URL,Blob,document:{getElementById:get,createElement:t=>new El(t),createTextNode:t=>({textContent:t}),querySelectorAll:s=>s==='.nav'?nav:s==='.area-btn'?get('area-nav').children:[],body:new El(),addEventListener(k,f){(eventHandlers[k]||=[]).push(f)}},navigator:{clipboard:{writeText:async t=>{context.copied=t}}},location:{hash:''},window:{isSecureContext:true,scrollX:0,scrollY:0,scrollTo(){},addEventListener(k,f){(windowEventHandlers[k]||=[]).push(f)}},localStorage:{getItem(k){return themeStore[k]??null},setItem(k,v){themeStore[k]=v}},setTimeout,clearTimeout,console};get('template-layer').value='0';vm.createContext(context);vm.runInContext(fs.readFileSync('src/app.js','utf8'),context);
 assert.equal(get('cards').children.length,18);assert.equal(get('area-nav').children.length,9);assert.equal(get('group').children.length,new Set(context.ATLAS_DATA.rows.map(r=>r.section)).size+1);assert.equal(get('command').children.length,new Set(context.ATLAS_DATA.rows.map(r=>r.command)).size+1);
 get('search').value='wireguard';get('search').handlers.input();assert(get('cards').children.length>0);get('search').value='ZZZZinexistente';get('search').handlers.input();assert.equal(get('cards').children.length,0);get('reset-filters').onclick();get('more').onclick();assert.equal(get('cards').children.length,36);
 get('mobile-area').value='5';get('mobile-area').handlers.change();assert.equal(get('results-title').textContent,'Segurança e OSINT');get('command').value='nmap';get('command').handlers.change();assert.equal(get('results-title').textContent,'nmap');let nmapIDs=[];function walk(n,ids){if(n?.dataset?.id)ids.push(n.dataset.id);for(const c of n?.children||[])walk(c,ids)}walk(get('cards'),nmapIDs);assert.equal(nmapIDs.length,context.ATLAS_DATA.rows.filter(r=>r.vol===5&&r.command==='nmap').length);
@@ -22,11 +22,21 @@ assert.equal(context.lastFocused,get('search'));assert.equal(pCount,2);
 // Bloqueado em campos em edição
 context.lastFocused=null;for(const f of eventHandlers.keydown)f({key:'/',target:{closest:()=>true},preventDefault(){pCount++}});
 assert.equal(context.lastFocused,null);assert.equal(pCount,2);
-// Bloqueado com Ctrl/Meta/Alt ou em composição
+// Bloqueado com Ctrl, Alt ou Meta/Cmd isolados
 for(const f of eventHandlers.keydown)f({key:'/',ctrlKey:true,target:{closest:()=>null},preventDefault(){pCount++}});
+assert.equal(context.lastFocused,null);assert.equal(pCount,2);
+for(const f of eventHandlers.keydown)f({key:'/',altKey:true,target:{closest:()=>null},preventDefault(){pCount++}});
+assert.equal(context.lastFocused,null);assert.equal(pCount,2);
+for(const f of eventHandlers.keydown)f({key:'/',metaKey:true,target:{closest:()=>null},preventDefault(){pCount++}});
+assert.equal(context.lastFocused,null);assert.equal(pCount,2);
+// Bloqueado em composição IME e quando defaultPrevented
 for(const f of eventHandlers.keydown)f({key:'/',isComposing:true,target:{closest:()=>null},preventDefault(){pCount++}});
 for(const f of eventHandlers.keydown)f({key:'/',defaultPrevented:true,target:{closest:()=>null},preventDefault(){pCount++}});
 assert.equal(context.lastFocused,null);assert.equal(pCount,2);
+// Em atalhos Linux foca linux-shortcut-search
+vm.runInContext("showView('linux-shortcuts')",context);
+for(const f of eventHandlers.keydown)f({key:'/',target:{closest:()=>null},preventDefault(){pCount++}});
+assert.equal(context.lastFocused,get('linux-shortcut-search'));
 // Em atalhos macOS foca mac-shortcut-search
 vm.runInContext("showView('mac-shortcuts')",context);
 for(const f of eventHandlers.keydown)f({key:'/',target:{closest:()=>null},preventDefault(){pCount++}});
@@ -43,19 +53,19 @@ let favButtons=[];
 function findFavButtons(n){if(n?.className?.includes?.('fav-btn'))favButtons.push(n);for(const c of n?.children||[])findFavButtons(c)}
 findFavButtons(get('cards'));
 assert(favButtons.length>0);assert.equal(favButtons[0].attributes['aria-pressed'],'false');
-// Favoritar o primeiro item
+// Favoritar o primeiro item e testar restauração de foco no teclado
 favButtons[0].onclick();
-favButtons=[];findFavButtons(get('cards'));
-assert.equal(favButtons[0].attributes['aria-pressed'],'true');assert.equal(favButtons[0].textContent,'★');
+assert.equal(context.lastFocused?.attributes?.['aria-pressed'],'true');
+assert.equal(context.lastFocused?.textContent,'★');
 assert(themeStore['fp-atlas-favorites'].includes(firstRecipe.id));
 assert.equal(get('fav-filter-btn').textContent,'★ Favoritos (1)');assert.equal(get('export-favs-md').hidden,false);
-// Filtrar por favoritos
+// Filtrar por favoritos (terminologia: Itens favoritos)
 get('fav-filter-btn').onclick();
-assert.equal(get('cards').children.length,1);assert.equal(get('results-title').textContent,'Receitas favoritas (1)');
+assert.equal(get('cards').children.length,1);assert.equal(get('results-title').textContent,'Itens favoritos (1)');
 // Desfavoritar o item
 favButtons=[];findFavButtons(get('cards'));favButtons[0].onclick();
 assert.equal(get('fav-filter-btn').textContent,'★ Apenas favoritos (0)');assert.equal(get('cards').children.length,0);
-assert.equal(get('empty').hidden,false);assert.equal(get('empty-title').textContent,'Nenhum favorito salvo ainda.');
+assert.equal(get('empty').hidden,false);assert.equal(get('empty-title').textContent,'Nenhum item salvo nos favoritos ainda.');
 // Adicionar 2 favoritos e testar clear-favs-btn
 get('reset-filters').onclick();
 favButtons=[];findFavButtons(get('cards'));favButtons[0].onclick();
@@ -66,9 +76,33 @@ assert.equal(get('clear-favs-btn').hidden,false);
 get('clear-favs-btn').onclick();
 assert.equal(get('fav-filter-btn').textContent,'★ Apenas favoritos (0)');assert.equal(themeStore['fp-atlas-favorites'],'[]');
 
-// Teste de exportação Markdown (resiliência de cercas e formato)
+// Teste de sanitização de IDs inválidos/antigos ao inicializar
 get('reset-filters').onclick();
-favButtons=[];findFavButtons(get('cards'));favButtons[0].onclick();
+themeStore['fp-atlas-favorites']=JSON.stringify(['id_obsoleto_antigo_999',firstRecipe.id,'outro_id_inexistente']);
+vm.runInContext("loadAndSanitizeFavorites();updateFavoritesUI()",context);
+assert.equal(vm.runInContext("favorites.size",context),1);
+assert.equal(vm.runInContext("favorites.has('id_obsoleto_antigo_999')",context),false);
+assert.equal(vm.runInContext("favorites.has('"+firstRecipe.id+"')",context),true);
+assert.equal(themeStore['fp-atlas-favorites'],JSON.stringify([firstRecipe.id]));
+assert.equal(get('fav-filter-btn').textContent,'★ Favoritos (1)');
+
+// Teste de falha ao salvar (QuotaExceeded / storage bloqueado)
+const secondRecipe=context.ATLAS_DATA.rows[1];
+const origSetItem=context.localStorage.setItem;
+context.localStorage.setItem=()=>{throw new Error('QuotaExceeded')};
+const ok=vm.runInContext("toggleFavorite('"+secondRecipe.id+"')",context);
+assert.equal(ok,false);
+assert.equal(vm.runInContext("favorites.has('"+secondRecipe.id+"')",context),false);
+assert.equal(get('toast').textContent,'Não foi possível salvar no armazenamento local do navegador.');
+context.localStorage.setItem=origSetItem;
+
+// Teste de sincronização entre abas via evento storage
+themeStore['fp-atlas-favorites']=JSON.stringify([firstRecipe.id,secondRecipe.id]);
+for(const f of windowEventHandlers.storage||[])f({key:'fp-atlas-favorites'});
+assert.equal(vm.runInContext("favorites.size",context),2);
+assert.equal(get('fav-filter-btn').textContent,'★ Favoritos (2)');
+
+// Teste de exportação Markdown (resiliência de cercas e formato)
 const testRow=vm.runInContext("rows.find(r=>r.id==='"+firstRecipe.id+"')",context);
 const origEx=testRow.example;testRow.example='echo `date` && echo ```test```';
 let exportedText='';
@@ -77,8 +111,9 @@ context.Blob=class{constructor([c]){this.content=c}};
 get('export-favs-md').onclick();
 assert(exportedText.startsWith('# FP Atlas · Favoritos'));
 assert(exportedText.includes(firstRecipe.command));assert(exportedText.includes(firstRecipe.purpose));assert(exportedText.includes(firstRecipe.risk));assert(exportedText.includes(firstRecipe.source));
+assert(exportedText.includes('2 itens selecionados'));
 // Com 3 crases dentro do exemplo, a cerca deve usar 4 crases
 assert(exportedText.includes('````bash\necho `date` && echo ```test```\n````'));
 testRow.example=origEx;
 
-vm.runInContext("copy('git status')",context).then(()=>{assert.equal(context.copied,'git status');context.window.isSecureContext=false;context.document.execCommand=()=>true;let restored=false,scrolled=false;context.document.activeElement={isConnected:true,focus(o){restored=o.preventScroll}};context.window.scrollTo=()=>{scrolled=true};return vm.runInContext("copy('fallback')",context).then(()=>{assert(restored);assert(scrolled);console.log('PASS: 2.653 entradas acessíveis, atalho / com guardas estritas, favoritos individuais por ID, filtro e limpeza, exportação Markdown resiliente a crases, catálogos sem comandos copiáveis, ffuf com receita, 1.080 nomes, 65 grupos, busca, filtros, 31 exemplos nmap, expansão, navegação, cópia segura e fallback.')})});
+vm.runInContext("copy('git status')",context).then(()=>{assert.equal(context.copied,'git status');context.window.isSecureContext=false;context.document.execCommand=()=>true;let restored=false,scrolled=false;context.document.activeElement={isConnected:true,focus(o){restored=o.preventScroll}};context.window.scrollTo=()=>{scrolled=true};return vm.runInContext("copy('fallback')",context).then(()=>{assert(restored);assert(scrolled);console.log('PASS: 2.653 entradas acessíveis, atalho / com guardas estritas (Alt/Meta/Ctrl/Shift/views), sanitização de IDs inválidos, falha de cota, restauração de foco no teclado, sincronização entre abas via storage, favoritos individuais por ID, filtro e limpeza, exportação Markdown resiliente a crases, catálogos sem comandos copiáveis, ffuf com receita, 1.080 nomes, 65 grupos, busca, filtros, 31 exemplos nmap, expansão, navegação, cópia segura e fallback.')})});
