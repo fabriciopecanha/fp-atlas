@@ -84,9 +84,16 @@ def build(output, root=ROOT):
     require(not re.search(r'\{\{(?:DATA_DECLARATIONS|APP_JS|PWA_JS|STYLE_CSS|BUILD_ID)\}\}', template), 'Marcador não resolvido')
     output.mkdir(parents=True, exist_ok=True)
     (output / 'index.html').write_text(template, encoding='utf-8')
-    (output / 'sw.js').write_text(sources['sw.js'].replace('{{BUILD_ID}}', version), encoding='utf-8')
     shutil.copyfile(root / 'src/manifest.webmanifest', output / 'manifest.webmanifest')
     shutil.copytree(root / 'assets', output / 'assets', dirs_exist_ok=True)
+    extras = [f'assets/{model}-l{layer}.webp' for model in ('corne', 'sofle') for layer in range(6)] + ['assets/manual-v21.pdf', 'assets/adesivos-v21.pdf']
+    core = ['index.html', 'manifest.webmanifest', 'assets/icon-180.png', 'assets/icon-192.png', 'assets/icon-512.png']
+    worker = sources['sw.js']
+    for marker, paths in [('{{EXTRAS_MANIFEST}}', extras), ('{{CORE_MANIFEST}}', core)]:
+        require(worker.count(marker) == 1, f'Marcador ausente/duplicado: {marker}')
+        manifest = {p: hashlib.sha256((output / p).read_bytes()).hexdigest() for p in paths}
+        worker = worker.replace(marker, inline_json(manifest))
+    (output / 'sw.js').write_text(worker.replace('{{BUILD_ID}}', version), encoding='utf-8')
     for name in ('LICENCA.md', 'Inter_OFL.txt', 'FiraCode_OFL.txt'):
         shutil.copyfile(root / name, output / name)
     (output / '.nojekyll').write_text('')

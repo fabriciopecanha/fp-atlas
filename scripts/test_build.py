@@ -54,6 +54,34 @@ class BuildTests(unittest.TestCase):
         self.assertNotIn('</script>', encoded)
         self.assertEqual(json.loads(encoded), data)
 
+    def test_worker_hashes_match_generated_files(self):
+        import hashlib
+        with tempfile.TemporaryDirectory() as folder:
+            out = Path(folder)
+            build.build(out)
+            worker = (out/'sw.js').read_text()
+            for label, expected_count in [('CORE_MANIFEST', 5), ('EXTRAS_MANIFEST', 14)]:
+                manifest = json.JSONDecoder().raw_decode(worker.split('const '+label+'=absoluteManifest(', 1)[1])[0]
+                self.assertEqual(len(manifest), expected_count)
+                for path, digest in manifest.items():
+                    self.assertEqual(digest, hashlib.sha256((out/path).read_bytes()).hexdigest())
+
+    def test_asset_change_changes_build_and_manifest(self):
+        import shutil
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)/'source'
+            root.mkdir()
+            for path in ['src', 'assets', 'scripts']:
+                shutil.copytree(build.ROOT/path, root/path)
+            for name in ['atlas_base.json', 'shortcuts.json', 'LICENCA.md', 'Inter_OFL.txt', 'FiraCode_OFL.txt']:
+                shutil.copyfile(build.ROOT/name, root/name)
+            out = Path(folder)/'output'
+            before = build.build(out, root)
+            old_worker = (out/'sw.js').read_text()
+            (root/'assets/corne-l0.webp').write_bytes(b'changed fixture bytes')
+            self.assertNotEqual(before, build.build(out, root))
+            self.assertNotEqual(old_worker, (out/'sw.js').read_text())
+
     def test_generation_is_deterministic_and_offline_package_complete(self):
         import zipfile
         with tempfile.TemporaryDirectory() as folder:

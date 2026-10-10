@@ -32,6 +32,7 @@ jobs:
           node --check dist/sw.js
           node scripts/test_app.cjs
           node scripts/test_sw.cjs
+          node scripts/test_pwa.cjs
       - uses: actions/upload-pages-artifact@v4
         if: github.event_name != 'pull_request'
         with:
