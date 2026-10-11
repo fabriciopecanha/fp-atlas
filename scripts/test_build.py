@@ -120,17 +120,64 @@ class BuildTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, 'reviewed_on inválido'):
                 build.read_data(root)
 
-            # Rejeita doc_ref inválido
+            # Rejeita data impossível no calendário gregoriano (e.g. 2026-02-31)
+            bad = copy.deepcopy(atlas)
+            bad['rows'][0]['reviewed_on'] = '2026-02-31'
+            (root/'atlas_base.json').write_text(json.dumps(bad))
+            with self.assertRaisesRegex(ValueError, 'reviewed_on inválido'):
+                build.read_data(root)
+
+            # Rejeita doc_ref inválido sem esquema http/https
             bad = copy.deepcopy(atlas)
             bad['rows'][0]['doc_ref'] = 'man:rm(1)'
             (root/'atlas_base.json').write_text(json.dumps(bad))
             with self.assertRaisesRegex(ValueError, 'doc_ref inválido'):
                 build.read_data(root)
 
+            # Rejeita doc_ref incompleto (apenas esquema sem host como https://)
+            bad = copy.deepcopy(atlas)
+            bad['rows'][0]['doc_ref'] = 'https://'
+            (root/'atlas_base.json').write_text(json.dumps(bad))
+            with self.assertRaisesRegex(ValueError, 'doc_ref inválido'):
+                build.read_data(root)
+
+            # Rejeita documented sem reviewed_on
+            bad = copy.deepcopy(atlas)
+            bad['rows'][0]['review_status'] = 'documented'
+            bad['rows'][0]['doc_ref'] = 'https://manpages.debian.org/bookworm/coreutils/rm.1.en.html'
+            bad['rows'][0].pop('reviewed_on', None)
+            (root/'atlas_base.json').write_text(json.dumps(bad))
+            with self.assertRaisesRegex(ValueError, 'registro documented requer reviewed_on com data válida'):
+                build.read_data(root)
+
+            # Rejeita documented sem doc_ref
+            bad = copy.deepcopy(atlas)
+            bad['rows'][0]['review_status'] = 'documented'
+            bad['rows'][0]['reviewed_on'] = '2026-10-11'
+            bad['rows'][0].pop('doc_ref', None)
+            (root/'atlas_base.json').write_text(json.dumps(bad))
+            with self.assertRaisesRegex(ValueError, 'registro documented requer doc_ref com URL válida'):
+                build.read_data(root)
+
+            # Rejeita tested sem reviewed_on
+            bad = copy.deepcopy(atlas)
+            bad['rows'][0]['review_status'] = 'tested'
+            bad['rows'][0]['doc_ref'] = 'https://manpages.debian.org/bookworm/coreutils/rm.1.en.html'
+            bad['rows'][0]['tested_distros'] = ['Debian 12.7']
+            bad['rows'][0]['test_evidence'] = {
+                'environment': 'Debian 12.7 bookworm', 'tool_version': 'coreutils 9.1', 'kernel': 'Linux 6.1.0-25-amd64',
+                'command': 'rm test.txt', 'expected': 'código 0', 'observed': 'arquivo removido', 'log_ref': 'bench_log_001.txt'
+            }
+            bad['rows'][0].pop('reviewed_on', None)
+            (root/'atlas_base.json').write_text(json.dumps(bad))
+            with self.assertRaisesRegex(ValueError, 'registro tested requer reviewed_on com data válida'):
+                build.read_data(root)
+
             # Rejeita tested sem ambiente (tested_distros)
             bad = copy.deepcopy(atlas)
             bad['rows'][0]['review_status'] = 'tested'
             bad['rows'][0]['reviewed_on'] = '2026-10-11'
+            bad['rows'][0]['doc_ref'] = 'https://manpages.debian.org/bookworm/coreutils/rm.1.en.html'
             (root/'atlas_base.json').write_text(json.dumps(bad))
             with self.assertRaisesRegex(ValueError, 'registro tested requer tested_distros'):
                 build.read_data(root)
@@ -141,12 +188,40 @@ class BuildTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, 'registro tested requer test_evidence'):
                 build.read_data(root)
 
+            # Rejeita tested faltando campos obrigatórios em test_evidence (e.g. kernel ou log_ref)
+            bad['rows'][0]['test_evidence'] = {
+                'environment': 'Debian 12.7', 'tool_version': '9.1',
+                'command': 'rm test.txt', 'expected': 'ok', 'observed': 'ok'
+            }
+            (root/'atlas_base.json').write_text(json.dumps(bad))
+            with self.assertRaisesRegex(ValueError, 'test_evidence.kernel deve ser texto não vazio'):
+                build.read_data(root)
+
+            # Rejeita tested com campo de test_evidence com tipo inválido (não-string)
+            bad['rows'][0]['test_evidence'] = {
+                'environment': 'Debian 12.7', 'tool_version': '9.1', 'kernel': 'Linux 6.1',
+                'command': 12345, 'expected': 'ok', 'observed': 'ok', 'log_ref': 'bench.log'
+            }
+            (root/'atlas_base.json').write_text(json.dumps(bad))
+            with self.assertRaisesRegex(ValueError, 'test_evidence.command deve ser texto não vazio'):
+                build.read_data(root)
+
             # Rejeita tested_distros quando status não for tested
             bad = copy.deepcopy(atlas)
             bad['rows'][0]['review_status'] = 'documented'
+            bad['rows'][0]['reviewed_on'] = '2026-10-11'
+            bad['rows'][0]['doc_ref'] = 'https://manpages.debian.org/bookworm/coreutils/rm.1.en.html'
             bad['rows'][0]['tested_distros'] = ['Debian 12.7']
             (root/'atlas_base.json').write_text(json.dumps(bad))
             with self.assertRaisesRegex(ValueError, 'tested_distros permitido somente quando'):
+                build.read_data(root)
+
+            # Rejeita test_evidence quando status for pending
+            bad = copy.deepcopy(atlas)
+            bad['rows'][0]['review_status'] = 'pending'
+            bad['rows'][0]['test_evidence'] = {'environment': 'VM'}
+            (root/'atlas_base.json').write_text(json.dumps(bad))
+            with self.assertRaisesRegex(ValueError, 'test_evidence permitido somente quando'):
                 build.read_data(root)
 
 if __name__ == '__main__': unittest.main()

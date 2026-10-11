@@ -177,4 +177,29 @@ for(const r of batch1Rows){
   assert(detail.children.some(c=>c.className==='doc-ref'&&c.textContent.includes('Documentação técnica')));
 }
 
+// Verificações específicas de precisão técnica no Lote 1
+const wipefsRow=context.ATLAS_DATA.rows.find(r=>r.id==='07b952d517');
+assert.equal(wipefsRow?.risk,'USO','wipefs --no-act deve ser classificado operacionalmente como USO (somente leitura)');
+assert(wipefsRow?.example?.includes('--no-act'));
+
+const ntfsRow=context.ATLAS_DATA.rows.find(r=>r.id==='e8196aeba5');
+assert.equal(ntfsRow?.risk,'RISCO');
+assert(ntfsRow?.example?.includes('--fast'));
+assert(!ntfsRow?.example?.includes('-c /dev/'));
+assert(ntfsRow?.notes?.includes('cluster'));
+
+const fsckRow=context.ATLAS_DATA.rows.find(r=>r.id==='0e2445fe60');
+assert.equal(fsckRow?.risk,'USO');
+assert(fsckRow?.notes?.includes('e2fsck -fn'));
+
+const ddIsoRow=context.ATLAS_DATA.rows.find(r=>r.id==='4255d2e070');
+assert(ddIsoRow?.notes?.includes('tamanho da imagem ISO gravada'));
+
+const ddCloneRow=context.ATLAS_DATA.rows.find(r=>r.id==='879289edae');
+assert(ddCloneRow?.notes?.includes('capacidade da origem'));
+
+const ddImgRow=context.ATLAS_DATA.rows.find(r=>r.id==='93f99affea');
+assert(ddImgRow?.notes?.includes('ddrescue'));
+assert(ddImgRow?.notes?.includes('ibs'));
+
 vm.runInContext("copy('git status')",context).then(()=>{assert.equal(context.copied,'git status');context.window.isSecureContext=false;context.document.execCommand=()=>true;let restored=false,scrolled=false;context.document.activeElement={isConnected:true,focus(o){restored=o.preventScroll}};context.window.scrollTo=()=>{scrolled=true};return vm.runInContext("copy('fallback')",context).then(()=>{assert(restored);assert(scrolled);console.log('PASS: 2.653 entradas acessíveis, Lote 1 de 39 receitas de discos/FS/exclusão com revisão documental e doc_ref, metadados de auditoria validados, atalho / com guardas estritas, sincronização de storage, foco de teclado adjacente e testes executados.')})});

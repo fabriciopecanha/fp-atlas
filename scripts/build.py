@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
 """Valide os JSONs canônicos e gere o site e o pacote offline, sem dependências."""
 import argparse
+import datetime
 import hashlib
 import json
 from pathlib import Path
 import re
 import shutil
+import urllib.parse
 import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -14,6 +16,26 @@ ROOT = Path(__file__).resolve().parents[1]
 def require(condition, message):
     if not condition:
         raise ValueError(message)
+
+
+def is_valid_iso_date(val):
+    if not isinstance(val, str) or not re.match(r'^\d{4}-\d{2}-\d{2}$', val):
+        return False
+    try:
+        datetime.date.fromisoformat(val)
+        return True
+    except (ValueError, TypeError):
+        return False
+
+
+def is_valid_url(val):
+    if not isinstance(val, str):
+        return False
+    try:
+        parsed = urllib.parse.urlparse(val)
+        return parsed.scheme in ('http', 'https') and bool(parsed.netloc)
+    except Exception:
+        return False
 
 
 def read_data(root=ROOT):
@@ -40,25 +62,40 @@ def read_data(root=ROOT):
                     require(isinstance(row[key], str), f'{label}: {key} precisa ser texto em {ident}')
             if label == 'Atalhos':
                 require(row['platform'] in ('linux', 'mac'), f'Plataforma inválida em {ident}')
-            require(row['source'] == '' or re.match(r'^https?://', row['source']) or label == 'Linux', f'Fonte inválida em {ident}')
+            require(row['source'] == '' or is_valid_url(row['source']) or label == 'Linux', f'Fonte inválida em {ident}')
             if label == 'Linux':
                 status = row.get('review_status', 'pending')
                 require(status in ('pending', 'documented', 'tested'), f'{label}: review_status inválido em {ident}: {status}')
                 reviewed_on = row.get('reviewed_on')
                 if reviewed_on is not None:
-                    require(isinstance(reviewed_on, str) and bool(re.match(r'^\d{4}-\d{2}-\d{2}$', reviewed_on)),
-                            f'{label}: reviewed_on inválido em {ident}: {reviewed_on}')
+                    require(is_valid_iso_date(reviewed_on), f'{label}: reviewed_on inválido em {ident}: {reviewed_on}')
                 doc_ref = row.get('doc_ref')
                 if doc_ref is not None:
-                    require(isinstance(doc_ref, str) and bool(re.match(r'^https?://', doc_ref)),
-                            f'{label}: doc_ref inválido em {ident}: {doc_ref}')
+                    require(is_valid_url(doc_ref), f'{label}: doc_ref inválido em {ident}: {doc_ref}')
                 tested_distros = row.get('tested_distros')
                 test_evidence = row.get('test_evidence')
-                if status == 'tested':
+                if status == 'documented':
+                    require(reviewed_on is not None and is_valid_iso_date(reviewed_on),
+                            f'{label}: registro documented requer reviewed_on com data válida em {ident}')
+                    require(doc_ref is not None and is_valid_url(doc_ref),
+                            f'{label}: registro documented requer doc_ref com URL válida em {ident}')
+                    require(tested_distros is None or tested_distros == [],
+                            f'{label}: tested_distros permitido somente quando review_status="tested" em {ident}')
+                    require(test_evidence is None or test_evidence == {},
+                            f'{label}: test_evidence permitido somente quando review_status="tested" em {ident}')
+                elif status == 'tested':
+                    require(reviewed_on is not None and is_valid_iso_date(reviewed_on),
+                            f'{label}: registro tested requer reviewed_on com data válida em {ident}')
+                    require(doc_ref is not None and is_valid_url(doc_ref),
+                            f'{label}: registro tested requer doc_ref com URL válida em {ident}')
                     require(isinstance(tested_distros, list) and len(tested_distros) > 0 and all(isinstance(d, str) and d.strip() for d in tested_distros),
-                            f'{label}: registro tested requer tested_distros não-vazio em {ident}')
-                    require(isinstance(test_evidence, dict) and bool(test_evidence.get('environment')) and bool(test_evidence.get('command')) and bool(test_evidence.get('expected')) and bool(test_evidence.get('observed')),
-                            f'{label}: registro tested requer test_evidence com environment, command, expected e observed em {ident}')
+                            f'{label}: registro tested requer tested_distros não-vazio com nomes em texto em {ident}')
+                    require(isinstance(test_evidence, dict),
+                            f'{label}: registro tested requer test_evidence como objeto em {ident}')
+                    for ef in ('environment', 'tool_version', 'kernel', 'command', 'expected', 'observed', 'log_ref'):
+                        val = test_evidence.get(ef)
+                        require(isinstance(val, str) and bool(val.strip()),
+                                f'{label}: test_evidence.{ef} deve ser texto não vazio em {ident}')
                 else:
                     require(tested_distros is None or tested_distros == [],
                             f'{label}: tested_distros permitido somente quando review_status="tested" em {ident}')
