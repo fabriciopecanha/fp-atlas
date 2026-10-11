@@ -606,4 +606,79 @@ assert.equal(vipwRow?.risk,'RISCO');
 const vigrRow=context.ATLAS_DATA.rows.find(r=>r.id==='3f8d841f0c');
 assert.equal(vigrRow?.risk,'RISCO');
 
-vm.runInContext("copy('git status')",context).then(()=>{assert.equal(context.copied,'git status');context.window.isSecureContext=false;context.document.execCommand=()=>true;let restored=false,scrolled=false;context.document.activeElement={isConnected:true,focus(o){restored=o.preventScroll}};context.window.scrollTo=()=>{scrolled=true};return vm.runInContext("copy('fallback')",context).then(()=>{assert(restored);assert(scrolled);console.log('PASS: 2.656 entradas acessíveis, Lote 1 (39), Lote 2A (23), Lote 2B (37), Lote 3A (34), Lote 3B (31), Lote 4A (33) e Lote 5A (29) com revisão documental e doc_ref, metadados de auditoria validados, atalho / com guardas estritas, sincronização de storage, foco de teclado adjacente e testes executados.')})});
+// Validação do Lote 5B (33 receitas de privilégios, sudo, su, doas, sessões e identidade)
+const batch5BIds=new Set([
+  'cafb28dd74','e89c5bbe0f','3504d112f2','a43b201827','088d82595e',
+  '7186cef438','f9847290da','5cd5909a87','f07f3ef384','49f6f7f865',
+  'ca88e72c2e','1dbf41450c','ef779d4d10','66928cf9c6','81ba0d71bf',
+  'f0ede79a97','eca78ab258','71f3a4354f','3551c0fd8c','cbe1ff9cea',
+  'b4a80b554e','2cdd8c5c79','578f950735','97681205b4','1f6304cd5d',
+  '070d6bd54d','d10b003541','989c6a066d','5dc99c336a','d5f83ff468',
+  '2e31fe2168','58317a4943','9341b961d1'
+]);
+const batch5BRows=context.ATLAS_DATA.rows.filter(r=>batch5BIds.has(r.id));
+assert.equal(batch5BRows.length,33,'Lote 5B deve conter exatamente 33 receitas');
+for(const r of batch5BRows){
+  assert.equal(r.review_status,'documented',`Registro ${r.id} (${r.command}) deve ter review_status: documented`);
+  assert.equal(r.reviewed_on,'2026-10-11',`Registro ${r.id} (${r.command}) deve ter reviewed_on: 2026-10-11`);
+  assert(r.doc_ref&&r.doc_ref.startsWith('https://manpages.debian.org/'),`Registro ${r.id} (${r.command}) requer doc_ref Debian`);
+  assert(!r.notes.includes('Mesma sintaxe em F/K'),`Registro ${r.id} (${r.command}) não deve conter nota genérica F/K`);
+}
+
+// Distribuição de risco do Lote 5B (22 CONSULTA, 9 ALTERA, 2 RISCO)
+const b5bConsulta=batch5BRows.filter(r=>r.risk==='CONSULTA');
+const b5bAltera=batch5BRows.filter(r=>r.risk==='ALTERA');
+const b5bRisco=batch5BRows.filter(r=>r.risk==='RISCO');
+assert.equal(b5bConsulta.length,22,'Lote 5B requer exatamente 22 receitas CONSULTA');
+assert.equal(b5bAltera.length,9,'Lote 5B requer exatamente 9 receitas ALTERA');
+assert.equal(b5bRisco.length,2,'Lote 5B requer exatamente 2 receitas RISCO');
+
+// Asserções técnicas específicas do Lote 5B
+const doasLRow=context.ATLAS_DATA.rows.find(r=>r.id==='088d82595e');
+assert.equal(doasLRow?.risk,'ALTERA');
+assert(doasLRow?.purpose?.includes('Limpar autenticações persistidas de execuções anteriores, quando o suporte a persistência estiver disponível. Não executa outro comando.'));
+assert(doasLRow?.notes?.includes('Não afeta regras com a diretiva nopass'));
+assert(!doasLRow?.notes?.includes('memória no kernel'));
+
+const sudoUgIdRow=context.ATLAS_DATA.rows.find(r=>r.id==='989c6a066d');
+assert.equal(sudoUgIdRow?.risk,'CONSULTA');
+assert.equal(sudoUgIdRow?.example,'sudo -u usuario_lab -g grupo_lab id');
+assert(sudoUgIdRow?.notes?.includes('não testa permissões sobre arquivos ou diretórios'));
+
+const sudoLessRow=context.ATLAS_DATA.rows.find(r=>r.id==='070d6bd54d');
+assert.equal(sudoLessRow?.risk,'RISCO');
+assert(sudoLessRow?.notes?.includes('LESSSECURE=1'));
+assert(sudoLessRow?.notes?.includes('NOEXEC'));
+
+const sudoHistoryRow=context.ATLAS_DATA.rows.find(r=>r.id==='5dc99c336a');
+assert.equal(sudoHistoryRow?.risk,'RISCO');
+assert(sudoHistoryRow?.notes?.includes('ANTES da chamada ao binário sudo'));
+
+const sudoSRow=context.ATLAS_DATA.rows.find(r=>r.id==='2e31fe2168');
+assert.equal(sudoSRow?.risk,'ALTERA');
+assert(sudoSRow?.notes?.includes('Mantém normalmente o diretório atual; o ambiente depende da configuração do sudoers'));
+
+const sudoIRow=context.ATLAS_DATA.rows.find(r=>r.id==='d5f83ff468');
+assert.equal(sudoIRow?.risk,'ALTERA');
+assert(sudoIRow?.notes?.includes('arquivos de inicialização do shell de login'));
+assert(sudoIRow?.notes?.includes('muda para o diretório inicial cadastrado para o superusuário na base de senhas'));
+
+const doasCRow=context.ATLAS_DATA.rows.find(r=>r.id==='a43b201827');
+assert.equal(doasCRow?.risk,'CONSULTA');
+assert(doasCRow?.notes?.includes('permit nopass'));
+
+const doasURow=context.ATLAS_DATA.rows.find(r=>r.id==='e89c5bbe0f');
+assert.equal(doasURow?.risk,'CONSULTA');
+assert(doasURow?.notes?.includes("quando 'as' é omitido em uma regra permit, a execução é autorizada para qualquer usuário de destino"));
+
+const runuserRow=context.ATLAS_DATA.rows.find(r=>r.id==='2cdd8c5c79');
+assert.equal(runuserRow?.risk,'CONSULTA');
+assert(runuserRow?.notes?.includes('runuser gerencia a sessão via PAM'));
+assert(runuserRow?.notes?.includes('setpriv'));
+
+// Conclusão total da seção "Usuários e grupos" (62/62 documentadas)
+const ugAllRows=context.ATLAS_DATA.rows.filter(r=>r.section==='Usuários e grupos');
+assert.equal(ugAllRows.length,62,'Seção Usuários e grupos deve possuir 62 receitas');
+assert(ugAllRows.every(r=>r.review_status==='documented'),'Todas as 62 receitas de Usuários e grupos devem estar documented');
+
+vm.runInContext("copy('git status')",context).then(()=>{assert.equal(context.copied,'git status');context.window.isSecureContext=false;context.document.execCommand=()=>true;let restored=false,scrolled=false;context.document.activeElement={isConnected:true,focus(o){restored=o.preventScroll}};context.window.scrollTo=()=>{scrolled=true};return vm.runInContext("copy('fallback')",context).then(()=>{assert(restored);assert(scrolled);console.log('PASS: 2.656 entradas acessíveis, Lote 1 (39), Lote 2A (23), Lote 2B (37), Lote 3A (34), Lote 3B (31), Lote 4A (33), Lote 5A (29) e Lote 5B (33) com revisão documental e doc_ref, seção Usuários e grupos (62/62) concluída, metadados de auditoria validados, atalho / com guardas estritas, sincronização de storage, foco de teclado adjacente e testes executados.')})});
