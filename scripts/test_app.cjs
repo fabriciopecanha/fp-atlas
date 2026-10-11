@@ -355,4 +355,72 @@ assert.equal(btrfsQgroupShowRow?.risk,'CONSULTA');
 assert(btrfsQgroupShowRow?.example?.includes('-r -e'));
 assert(btrfsQgroupShowRow?.notes?.includes('-r (max_rfer) e -e (max_excl)'));
 
-vm.runInContext("copy('git status')",context).then(()=>{assert.equal(context.copied,'git status');context.window.isSecureContext=false;context.document.execCommand=()=>true;let restored=false,scrolled=false;context.document.activeElement={isConnected:true,focus(o){restored=o.preventScroll}};context.window.scrollTo=()=>{scrolled=true};return vm.runInContext("copy('fallback')",context).then(()=>{assert(restored);assert(scrolled);console.log('PASS: 2.653 entradas acessíveis, Lote 1 (39), Lote 2A (23) e Lote 2B (37) com revisão documental e doc_ref, metadados de auditoria validados, atalho / com guardas estritas, sincronização de storage, foco de teclado adjacente e testes executados.')})});
+// Validação do Lote 3A (34 receitas de inspeção e espaço em disco)
+const batch3AIds=new Set([
+  '0c21d4ac12','e0b84bbd24','1953cf78e4','a0a20e3d5f','a217c3f93b','6a84c0e009','d8d0915fa0','7a47f6f7dc','67b4bc20fc',
+  'f126e2a593','93adcd9796','67a7332c45','9691204f76','a613b6555e','fc2ca161dd','d58a3784c9',
+  '69a0f5abe4','be7bb5194f','b0bdf0d833','b4b9f5f90a','2a314e662a','beac716247','f86c6b153a',
+  '79101256c9','234818bb91','295477f72f','e0cda7ad65','7cdab5e99b',
+  'd00bdc642c','622b3a3a47',
+  '38013a0e57','28752ee34d',
+  '07cd2b1bef','1b661ce39c'
+]);
+const batch3ARows=context.ATLAS_DATA.rows.filter(r=>batch3AIds.has(r.id));
+assert.equal(batch3ARows.length,34,'Lote 3A deve conter exatamente 34 receitas');
+for(const r of batch3ARows){
+  assert.equal(r.review_status,'documented',`Registro ${r.id} (${r.command}) deve ter review_status: documented`);
+  assert.equal(r.reviewed_on,'2026-10-11',`Registro ${r.id} (${r.command}) deve ter reviewed_on: 2026-10-11`);
+  assert(r.doc_ref&&(r.doc_ref.startsWith('https://manpages.debian.org/')||r.doc_ref.startsWith('https://github.com/bootandy/dust')),`Registro ${r.id} (${r.command}) requer doc_ref canônico Debian ou upstream`);
+  assert(!r.notes.includes('Mesma sintaxe em F/K'),`Registro ${r.id} (${r.command}) não deve conter nota genérica F/K`);
+}
+
+// Asserções técnicas específicas do Lote 3A
+const duARow=context.ATLAS_DATA.rows.find(r=>r.id==='9691204f76');
+assert.equal(duARow?.risk,'CONSULTA');
+assert(duARow?.notes?.includes('A opção -a exibe também o tamanho de cada arquivo individual, além dos totais dos diretórios.'));
+
+const duHRow=context.ATLAS_DATA.rows.find(r=>r.id==='93adcd9796');
+assert.equal(duHRow?.risk,'CONSULTA');
+assert(duHRow?.notes?.includes('Estima o espaço alocado informado pelo sistema de arquivos'));
+assert(!duHRow?.notes?.includes('refletindo o consumo real no armazenamento'));
+
+const duThreshRow=context.ATLAS_DATA.rows.find(r=>r.id==='d58a3784c9');
+assert.equal(duThreshRow?.risk,'CONSULTA');
+assert.equal(duThreshRow?.example,'du -ah -t 1G -- .');
+assert(duThreshRow?.notes?.includes('pelo menos 1 GiB'));
+
+const dustNRow=context.ATLAS_DATA.rows.find(r=>r.id==='b0bdf0d833');
+assert.equal(dustNRow?.risk,'CONSULTA');
+assert(dustNRow?.doc_ref?.startsWith('https://github.com/bootandy/dust'));
+assert(dustNRow?.notes?.includes('arquivos ou diretórios'));
+assert(dustNRow?.notes?.includes('altura do terminal'));
+
+const dustXRow=context.ATLAS_DATA.rows.find(r=>r.id==='beac716247');
+assert.equal(dustXRow?.example,'dust -X node_modules');
+
+const ncduSafeRow=context.ATLAS_DATA.rows.find(r=>r.id==='79101256c9');
+assert.equal(ncduSafeRow?.risk,'CONSULTA');
+assert.equal(ncduSafeRow?.example,'ncdu -rr');
+assert(ncduSafeRow?.notes?.includes('desabilitando a exclusão de arquivos'));
+assert(ncduSafeRow?.notes?.includes('desabilita a abertura de subshells'));
+
+const ncduOutRow=context.ATLAS_DATA.rows.find(r=>r.id==='e0cda7ad65');
+assert.equal(ncduOutRow?.risk,'ALTERA');
+assert.equal(ncduOutRow?.example,'ncdu -o inventario.json');
+assert(!ncduOutRow?.example?.includes('.gz'));
+assert(ncduOutRow?.notes?.includes('ncdu -f inventario.json'));
+
+const blkidTabRow=context.ATLAS_DATA.rows.find(r=>r.id==='d00bdc642c');
+assert.equal(blkidTabRow?.risk,'CONSULTA');
+assert(blkidTabRow?.notes?.includes('/run/blkid/blkid.tab'));
+
+const blkidListRow=context.ATLAS_DATA.rows.find(r=>r.id==='622b3a3a47');
+assert.equal(blkidListRow?.risk,'CONSULTA');
+assert(blkidListRow?.notes?.includes('depreciado'));
+assert(blkidListRow?.notes?.includes('lsblk -f'));
+
+const lsblkTreeRow=context.ATLAS_DATA.rows.find(r=>r.id==='e0b84bbd24');
+assert.equal(lsblkTreeRow?.risk,'CONSULTA');
+assert(lsblkTreeRow?.purpose?.includes('incluindo as desmontadas'));
+
+vm.runInContext("copy('git status')",context).then(()=>{assert.equal(context.copied,'git status');context.window.isSecureContext=false;context.document.execCommand=()=>true;let restored=false,scrolled=false;context.document.activeElement={isConnected:true,focus(o){restored=o.preventScroll}};context.window.scrollTo=()=>{scrolled=true};return vm.runInContext("copy('fallback')",context).then(()=>{assert(restored);assert(scrolled);console.log('PASS: 2.653 entradas acessíveis, Lote 1 (39), Lote 2A (23), Lote 2B (37) e Lote 3A (34) com revisão documental e doc_ref, metadados de auditoria validados, atalho / com guardas estritas, sincronização de storage, foco de teclado adjacente e testes executados.')})});
