@@ -191,7 +191,9 @@ assert(ntfsRow?.notes?.includes('cluster'));
 
 const fsckRow=context.ATLAS_DATA.rows.find(r=>r.id==='0e2445fe60');
 assert.equal(fsckRow?.risk,'CONSULTA');
-assert(fsckRow?.notes?.includes('e2fsck -fn'));
+assert(fsckRow?.name?.includes('ext2/ext3/ext4'));
+assert(fsckRow?.purpose?.includes('ext2/ext3/ext4'));
+assert(fsckRow?.notes?.includes('fsck.ext4/e2fsck'));
 
 const e2fsckRow=context.ATLAS_DATA.rows.find(r=>r.id==='e59a343bff');
 assert.equal(e2fsckRow?.risk,'CONSULTA');
