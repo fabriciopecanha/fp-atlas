@@ -259,6 +259,8 @@ assert(modprobe1?.notes?.includes('não configura nem ativa swap'));
 const modprobe2=context.ATLAS_DATA.rows.find(r=>r.id==='11f3e80db4');
 assert.equal(modprobe2?.command,'modprobe');
 assert(modprobe2?.notes?.includes('não configura nem ativa swap'));
+assert(modprobe2?.notes?.includes('O parâmetro num_devices=2 é aplicado ao carregar o módulo'));
+assert(modprobe2?.notes?.includes('Não descarregue o módulo enquanto houver dispositivos em uso'));
 
 const zramStatus=context.ATLAS_DATA.rows.find(r=>r.id==='70f519dc76');
 assert.equal(zramStatus?.risk,'CONSULTA');

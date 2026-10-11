@@ -15826,7 +15826,7 @@
       "name": "Carregar zram com quantidade estática de dispositivos",
       "purpose": "Carregar o módulo zram especificando quantidade predefinida de dispositivos (/dev/zram0, /dev/zram1)",
       "example": "sudo modprobe zram num_devices=2",
-      "notes": "Define a criação de exatamente 2 dispositivos (/dev/zram0 e /dev/zram1) na inicialização do módulo. Carrega o driver e pode criar dispositivos ZRAM; não configura nem ativa swap. Cada nó precisa ter seu algoritmo e capacidade definidos via zramctl antes de ser formatado com mkswap e ativado com swapon.",
+      "notes": "O parâmetro num_devices=2 é aplicado ao carregar o módulo. Se zram já estiver carregado, este comando não altera a quantidade existente. Não descarregue o módulo enquanto houver dispositivos em uso. Carrega o driver e pode criar dispositivos ZRAM; não configura nem ativa swap. Cada nó precisa ter seu algoritmo e capacidade definidos via zramctl antes de ser formatado com mkswap e ativado com swapon.",
       "source": "Redação original com referência ao manual da ferramenta",
       "adapted": false,
       "risk": "ALTERA",
