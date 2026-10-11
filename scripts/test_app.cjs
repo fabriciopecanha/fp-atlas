@@ -162,4 +162,19 @@ const podmanRow=context.ATLAS_DATA.rows.find(r=>r.id==='dac96ba421');
 assert(podmanRow?.example?.includes('{{.ID}}'));
 assert(!podmanRow?.example?.includes('\\{\\{'));
 
-vm.runInContext("copy('git status')",context).then(()=>{assert.equal(context.copied,'git status');context.window.isSecureContext=false;context.document.execCommand=()=>true;let restored=false,scrolled=false;context.document.activeElement={isConnected:true,focus(o){restored=o.preventScroll}};context.window.scrollTo=()=>{scrolled=true};return vm.runInContext("copy('fallback')",context).then(()=>{assert(restored);assert(scrolled);console.log('PASS: 2.653 entradas acessíveis, classificações clamdscan/apt-purge corrigidas, template podman sem escape, atalho / com guardas estritas, sanitização de IDs inválidos, falha de cota, restauração e redirecionamento de foco no teclado, sincronização entre abas via storage (inclusive key: null), favoritos individuais por ID, filtro e limpeza, exportação Markdown resiliente a crases, catálogos sem comandos copiáveis, ffuf com receita, 1.080 nomes, 65 grupos, busca, filtros, 31 exemplos nmap, expansão, navegação, cópia segura e fallback.')})});
+// Validação do Lote 1 (39 receitas de discos, sistemas de arquivos e exclusão)
+const batch1Cmds=new Set(['rm','shred','wipefs','dd','mkfs','mkfs.ext4','mkfs.btrfs','mkfs.fat','truncate','losetup','fdisk','cfdisk','sfdisk','parted','fsck','e2fsck','xfs_repair']);
+const batch1Rows=context.ATLAS_DATA.rows.filter(r=>batch1Cmds.has(r.command));
+assert.equal(batch1Rows.length,39);
+for(const r of batch1Rows){
+  assert.equal(r.review_status,'documented',`Registro ${r.id} (${r.command}) deve ter review_status: documented`);
+  assert.equal(r.reviewed_on,'2026-10-11',`Registro ${r.id} (${r.command}) deve ter reviewed_on: 2026-10-11`);
+  assert(r.doc_ref&&r.doc_ref.startsWith('https://manpages.debian.org/'),`Registro ${r.id} (${r.command}) requer doc_ref canônico Debian`);
+  assert(!r.notes.includes('Mesma sintaxe em F/K'),`Registro ${r.id} (${r.command}) não deve conter nota genérica F/K`);
+  // Testa renderização de sourceDetails
+  const detail=vm.runInContext(`sourceDetails(${JSON.stringify(r)})`,context);
+  assert(detail.children.some(c=>c.className==='review-status'&&c.textContent.includes('Revisão documental')));
+  assert(detail.children.some(c=>c.className==='doc-ref'&&c.textContent.includes('Documentação técnica')));
+}
+
+vm.runInContext("copy('git status')",context).then(()=>{assert.equal(context.copied,'git status');context.window.isSecureContext=false;context.document.execCommand=()=>true;let restored=false,scrolled=false;context.document.activeElement={isConnected:true,focus(o){restored=o.preventScroll}};context.window.scrollTo=()=>{scrolled=true};return vm.runInContext("copy('fallback')",context).then(()=>{assert(restored);assert(scrolled);console.log('PASS: 2.653 entradas acessíveis, Lote 1 de 39 receitas de discos/FS/exclusão com revisão documental e doc_ref, metadados de auditoria validados, atalho / com guardas estritas, sincronização de storage, foco de teclado adjacente e testes executados.')})});

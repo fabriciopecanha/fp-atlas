@@ -100,4 +100,53 @@ class BuildTests(unittest.TestCase):
                 data=json.JSONDecoder().raw_decode(text.split('const '+label+'=',1)[1])[0]
                 self.assertEqual(data, json.loads((build.ROOT/filename).read_text()))
 
+    def test_review_metadata_validation(self):
+        atlas, shortcuts = build.read_data()
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            (root/'shortcuts.json').write_text(json.dumps(shortcuts))
+
+            # Rejeita status desconhecido
+            bad = copy.deepcopy(atlas)
+            bad['rows'][0]['review_status'] = 'aprovado'
+            (root/'atlas_base.json').write_text(json.dumps(bad))
+            with self.assertRaisesRegex(ValueError, 'review_status inválido'):
+                build.read_data(root)
+
+            # Rejeita data fora do padrão YYYY-MM-DD
+            bad = copy.deepcopy(atlas)
+            bad['rows'][0]['reviewed_on'] = '11/10/2026'
+            (root/'atlas_base.json').write_text(json.dumps(bad))
+            with self.assertRaisesRegex(ValueError, 'reviewed_on inválido'):
+                build.read_data(root)
+
+            # Rejeita doc_ref inválido
+            bad = copy.deepcopy(atlas)
+            bad['rows'][0]['doc_ref'] = 'man:rm(1)'
+            (root/'atlas_base.json').write_text(json.dumps(bad))
+            with self.assertRaisesRegex(ValueError, 'doc_ref inválido'):
+                build.read_data(root)
+
+            # Rejeita tested sem ambiente (tested_distros)
+            bad = copy.deepcopy(atlas)
+            bad['rows'][0]['review_status'] = 'tested'
+            bad['rows'][0]['reviewed_on'] = '2026-10-11'
+            (root/'atlas_base.json').write_text(json.dumps(bad))
+            with self.assertRaisesRegex(ValueError, 'registro tested requer tested_distros'):
+                build.read_data(root)
+
+            # Rejeita tested sem test_evidence
+            bad['rows'][0]['tested_distros'] = ['Debian 12.7']
+            (root/'atlas_base.json').write_text(json.dumps(bad))
+            with self.assertRaisesRegex(ValueError, 'registro tested requer test_evidence'):
+                build.read_data(root)
+
+            # Rejeita tested_distros quando status não for tested
+            bad = copy.deepcopy(atlas)
+            bad['rows'][0]['review_status'] = 'documented'
+            bad['rows'][0]['tested_distros'] = ['Debian 12.7']
+            (root/'atlas_base.json').write_text(json.dumps(bad))
+            with self.assertRaisesRegex(ValueError, 'tested_distros permitido somente quando'):
+                build.read_data(root)
+
 if __name__ == '__main__': unittest.main()

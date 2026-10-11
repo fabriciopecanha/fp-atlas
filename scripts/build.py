@@ -41,6 +41,29 @@ def read_data(root=ROOT):
             if label == 'Atalhos':
                 require(row['platform'] in ('linux', 'mac'), f'Plataforma inválida em {ident}')
             require(row['source'] == '' or re.match(r'^https?://', row['source']) or label == 'Linux', f'Fonte inválida em {ident}')
+            if label == 'Linux':
+                status = row.get('review_status', 'pending')
+                require(status in ('pending', 'documented', 'tested'), f'{label}: review_status inválido em {ident}: {status}')
+                reviewed_on = row.get('reviewed_on')
+                if reviewed_on is not None:
+                    require(isinstance(reviewed_on, str) and bool(re.match(r'^\d{4}-\d{2}-\d{2}$', reviewed_on)),
+                            f'{label}: reviewed_on inválido em {ident}: {reviewed_on}')
+                doc_ref = row.get('doc_ref')
+                if doc_ref is not None:
+                    require(isinstance(doc_ref, str) and bool(re.match(r'^https?://', doc_ref)),
+                            f'{label}: doc_ref inválido em {ident}: {doc_ref}')
+                tested_distros = row.get('tested_distros')
+                test_evidence = row.get('test_evidence')
+                if status == 'tested':
+                    require(isinstance(tested_distros, list) and len(tested_distros) > 0 and all(isinstance(d, str) and d.strip() for d in tested_distros),
+                            f'{label}: registro tested requer tested_distros não-vazio em {ident}')
+                    require(isinstance(test_evidence, dict) and bool(test_evidence.get('environment')) and bool(test_evidence.get('command')) and bool(test_evidence.get('expected')) and bool(test_evidence.get('observed')),
+                            f'{label}: registro tested requer test_evidence com environment, command, expected e observed em {ident}')
+                else:
+                    require(tested_distros is None or tested_distros == [],
+                            f'{label}: tested_distros permitido somente quando review_status="tested" em {ident}')
+                    require(test_evidence is None or test_evidence == {},
+                            f'{label}: test_evidence permitido somente quando review_status="tested" em {ident}')
     require({r['vol'] for r in atlas['rows']} == set(range(1, 9)), 'Os oito volumes precisam estar presentes')
     require({r['platform'] for r in shortcuts} == {'mac', 'linux'}, 'As duas plataformas precisam estar presentes')
     tools = {}
