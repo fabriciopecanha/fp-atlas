@@ -280,4 +280,79 @@ assert.equal(swaponRow?.risk,'CONSULTA');
 const mdadmRow=context.ATLAS_DATA.rows.find(r=>r.id==='28575e339b');
 assert.equal(mdadmRow?.risk,'CONSULTA');
 
-vm.runInContext("copy('git status')",context).then(()=>{assert.equal(context.copied,'git status');context.window.isSecureContext=false;context.document.execCommand=()=>true;let restored=false,scrolled=false;context.document.activeElement={isConnected:true,focus(o){restored=o.preventScroll}};context.window.scrollTo=()=>{scrolled=true};return vm.runInContext("copy('fallback')",context).then(()=>{assert(restored);assert(scrolled);console.log('PASS: 2.653 entradas acessíveis, Lote 1 de 39 receitas de discos/FS/exclusão com revisão documental e doc_ref, metadados de auditoria validados, atalho / com guardas estritas, sincronização de storage, foco de teclado adjacente e testes executados.')})});
+// Validação do Lote 2B (37 receitas de Btrfs)
+const batch2BIds=new Set([
+  '0de1c037d5','3b6609de7b','b5939207a0','5c710a191f','c8984ae673','043b0b348c','84cf91c797','6ecd667de8','1f88e5cb4d',
+  '208ee5bfba','86e91b5264','2ad8fb6100','5d2cd6c34a','705e381044','c0100d2784','092cad1486','4fe7575516',
+  'c598320d18','d53d5c6dc9','f5fa6f7e49','51ca157dd5','bf3b0eebe6','2f12e9aabb','a2424f66a8',
+  '0ed24856cb','055ae6b863','c6c667d20b','474d4080db','56c66a8e42','0db05a3fb7',
+  'f66e8dd11b','186f690634','c1f74837b6','5e064781a7','52cefb86ff',
+  '6182925875','6b08d0a859'
+]);
+const batch2BRows=context.ATLAS_DATA.rows.filter(r=>batch2BIds.has(r.id));
+assert.equal(batch2BRows.length,37,'Lote 2B deve conter exatamente 37 receitas');
+for(const r of batch2BRows){
+  assert.equal(r.review_status,'documented',`Registro ${r.id} (${r.command}) deve ter review_status: documented`);
+  assert.equal(r.reviewed_on,'2026-10-11',`Registro ${r.id} (${r.command}) deve ter reviewed_on: 2026-10-11`);
+  assert(r.doc_ref&&r.doc_ref.startsWith('https://manpages.debian.org/'),`Registro ${r.id} (${r.command}) requer doc_ref Debian`);
+  assert(!r.notes.includes('Mesma sintaxe em F/K'),`Registro ${r.id} (${r.command}) não deve conter nota genérica F/K`);
+}
+
+// Asserções técnicas específicas do Lote 2B
+const btrfsDelRow=context.ATLAS_DATA.rows.find(r=>r.id==='1f88e5cb4d');
+assert.equal(btrfsDelRow?.risk,'RISCO');
+assert(!btrfsDelRow?.notes?.includes('--commit-after'));
+assert(btrfsDelRow?.notes?.includes('subvolumes filhos precisam ser removidos previamente'));
+
+const btrfsShowRow=context.ATLAS_DATA.rows.find(r=>r.id==='5c710a191f');
+assert.equal(btrfsShowRow?.risk,'CONSULTA');
+assert(!btrfsShowRow?.purpose?.includes('cotas'));
+assert(btrfsShowRow?.notes?.includes('btrfs qgroup show'));
+
+const btrfsDuRow=context.ATLAS_DATA.rows.find(r=>r.id==='705e381044');
+assert.equal(btrfsDuRow?.risk,'CONSULTA');
+assert(btrfsDuRow?.name?.includes('espaço total, exclusivo e compartilhado'));
+assert(btrfsDuRow?.notes?.includes('Não representa diretamente o espaço físico em disco após compressão transparente'));
+
+const btrfsSyncRow=context.ATLAS_DATA.rows.find(r=>r.id==='4fe7575516');
+assert(btrfsSyncRow?.notes?.includes('Força a sincronização do filesystem e inicia a limpeza de subvolumes excluídos'));
+assert(btrfsSyncRow?.notes?.includes('btrfs subvolume sync'));
+assert(!btrfsSyncRow?.notes?.includes('comitê'));
+
+const btrfsRaid6Row=context.ATLAS_DATA.rows.find(r=>r.id==='a2424f66a8');
+assert.equal(btrfsRaid6Row?.risk,'RISCO');
+assert(btrfsRaid6Row?.notes?.includes('write-hole'));
+assert(btrfsRaid6Row?.notes?.includes('experimentais e instáveis'));
+assert(!btrfsRaid6Row?.notes?.includes('quatro para tolerar duas falhas'));
+
+const btrfsDevStatsRow=context.ATLAS_DATA.rows.find(r=>r.id==='f66e8dd11b');
+assert.equal(btrfsDevStatsRow?.risk,'CONSULTA');
+assert(btrfsDevStatsRow?.notes?.includes('indica erros registrados que precisam ser investigados'));
+assert(btrfsDevStatsRow?.notes?.includes('contadores são persistentes no disco'));
+
+const btrfsDevAddRow=context.ATLAS_DATA.rows.find(r=>r.id==='5e064781a7');
+assert.equal(btrfsDevAddRow?.risk,'RISCO');
+assert(btrfsDevAddRow?.notes?.includes('OPERAÇÃO DE RISCO PARA O NOVO DISPOSITIVO'));
+assert(btrfsDevAddRow?.notes?.includes('dados contidos no filesystem existente em /mnt/btrfs são preservados'));
+
+const btrfsDevRemRow=context.ATLAS_DATA.rows.find(r=>r.id==='52cefb86ff');
+assert.equal(btrfsDevRemRow?.risk,'RISCO');
+assert(btrfsDevRemRow?.notes?.includes('migra e realoca todos os chunks'));
+assert(btrfsDevRemRow?.notes?.includes('não apaga os arquivos do filesystem'));
+assert(btrfsDevRemRow?.notes?.includes('perfil de redundância ativo'));
+
+const btrfsSnapRoRow=context.ATLAS_DATA.rows.find(r=>r.id==='84cf91c797');
+assert.equal(btrfsSnapRoRow?.risk,'ALTERA');
+assert(btrfsSnapRoRow?.name?.includes('somente leitura'));
+assert(!btrfsSnapRoRow?.name?.includes('imutável'));
+assert(btrfsSnapRoRow?.notes?.includes('não o torna intrinsecamente imutável'));
+assert(btrfsSnapRoRow?.notes?.includes('btrfs property set'));
+assert(btrfsSnapRoRow?.notes?.includes('NÃO inclui recursivamente o conteúdo de subvolumes aninhados'));
+assert(btrfsSnapRoRow?.notes?.includes('não substituem backups externos'));
+
+const btrfsQgroupShowRow=context.ATLAS_DATA.rows.find(r=>r.id==='6b08d0a859');
+assert.equal(btrfsQgroupShowRow?.risk,'CONSULTA');
+assert(btrfsQgroupShowRow?.example?.includes('-r -e'));
+assert(btrfsQgroupShowRow?.notes?.includes('-r (max_rfer) e -e (max_excl)'));
+
+vm.runInContext("copy('git status')",context).then(()=>{assert.equal(context.copied,'git status');context.window.isSecureContext=false;context.document.execCommand=()=>true;let restored=false,scrolled=false;context.document.activeElement={isConnected:true,focus(o){restored=o.preventScroll}};context.window.scrollTo=()=>{scrolled=true};return vm.runInContext("copy('fallback')",context).then(()=>{assert(restored);assert(scrolled);console.log('PASS: 2.653 entradas acessíveis, Lote 1 (39), Lote 2A (23) e Lote 2B (37) com revisão documental e doc_ref, metadados de auditoria validados, atalho / com guardas estritas, sincronização de storage, foco de teclado adjacente e testes executados.')})});
