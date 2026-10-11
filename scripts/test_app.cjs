@@ -163,7 +163,7 @@ assert(podmanRow?.example?.includes('{{.ID}}'));
 assert(!podmanRow?.example?.includes('\\{\\{'));
 
 // Validação do Lote 1 (39 receitas de discos, sistemas de arquivos e exclusão)
-const batch1Cmds=new Set(['rm','shred','wipefs','dd','mkfs','mkfs.ext4','mkfs.btrfs','mkfs.fat','truncate','losetup','fdisk','cfdisk','sfdisk','parted','fsck','e2fsck','xfs_repair']);
+const batch1Cmds=new Set(['rm','shred','wipefs','dd','mkfs','mkfs.ext4','mkfs.btrfs','mkfs.fat','mkfs.ntfs','truncate','losetup','fdisk','cfdisk','sfdisk','parted','fsck','e2fsck','xfs_repair']);
 const batch1Rows=context.ATLAS_DATA.rows.filter(r=>batch1Cmds.has(r.command));
 assert.equal(batch1Rows.length,39);
 for(const r of batch1Rows){
@@ -179,21 +179,32 @@ for(const r of batch1Rows){
 
 // Verificações específicas de precisão técnica no Lote 1
 const wipefsRow=context.ATLAS_DATA.rows.find(r=>r.id==='07b952d517');
-assert.equal(wipefsRow?.risk,'USO','wipefs --no-act deve ser classificado operacionalmente como USO (somente leitura)');
+assert.equal(wipefsRow?.risk,'CONSULTA','wipefs --no-act deve ser classificado operacionalmente como CONSULTA');
 assert(wipefsRow?.example?.includes('--no-act'));
 
 const ntfsRow=context.ATLAS_DATA.rows.find(r=>r.id==='e8196aeba5');
+assert.equal(ntfsRow?.command,'mkfs.ntfs');
 assert.equal(ntfsRow?.risk,'RISCO');
 assert(ntfsRow?.example?.includes('--fast'));
 assert(!ntfsRow?.example?.includes('-c /dev/'));
 assert(ntfsRow?.notes?.includes('cluster'));
 
 const fsckRow=context.ATLAS_DATA.rows.find(r=>r.id==='0e2445fe60');
-assert.equal(fsckRow?.risk,'USO');
+assert.equal(fsckRow?.risk,'CONSULTA');
 assert(fsckRow?.notes?.includes('e2fsck -fn'));
 
+const e2fsckRow=context.ATLAS_DATA.rows.find(r=>r.id==='e59a343bff');
+assert.equal(e2fsckRow?.risk,'CONSULTA');
+
+const xfsRow=context.ATLAS_DATA.rows.find(r=>r.id==='63a2ec0e0b');
+assert.equal(xfsRow?.risk,'CONSULTA');
+
+const fdiskListRow=context.ATLAS_DATA.rows.find(r=>r.id==='c74454915e');
+assert.equal(fdiskListRow?.risk,'CONSULTA');
+
 const ddIsoRow=context.ATLAS_DATA.rows.find(r=>r.id==='4255d2e070');
-assert(ddIsoRow?.notes?.includes('tamanho da imagem ISO gravada'));
+assert(ddIsoRow?.notes?.includes('apenas a região correspondente ao tamanho da imagem'));
+assert(ddIsoRow?.notes?.includes('wipefs remove assinaturas reconhecidas; não sobrescreve esses dados nem realiza apagamento seguro'));
 
 const ddCloneRow=context.ATLAS_DATA.rows.find(r=>r.id==='879289edae');
 assert(ddCloneRow?.notes?.includes('capacidade da origem'));
