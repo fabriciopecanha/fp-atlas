@@ -544,4 +544,66 @@ assert.equal(chmodRecRisk?.risk,'RISCO');
 const setcapRisk=context.ATLAS_DATA.rows.find(r=>r.id==='cd5326a8f8');
 assert.equal(setcapRisk?.risk,'RISCO');
 
-vm.runInContext("copy('git status')",context).then(()=>{assert.equal(context.copied,'git status');context.window.isSecureContext=false;context.document.execCommand=()=>true;let restored=false,scrolled=false;context.document.activeElement={isConnected:true,focus(o){restored=o.preventScroll}};context.window.scrollTo=()=>{scrolled=true};return vm.runInContext("copy('fallback')",context).then(()=>{assert(restored);assert(scrolled);console.log('PASS: 2.656 entradas acessíveis, Lote 1 (39), Lote 2A (23), Lote 2B (37), Lote 3A (34), Lote 3B (31) e Lote 4A (33) com revisão documental e doc_ref, metadados de auditoria validados, atalho / com guardas estritas, sincronização de storage, foco de teclado adjacente e testes executados.')})});
+// Validação do Lote 5A (29 receitas de criação, gerenciamento, senhas e integridade de contas e grupos)
+const batch5AIds=new Set([
+  '1f4ddba7bf','627c1546db','525442d65e','e662da7e75','a223e05f2b',
+  'c405ee1b31','6dd2f644e7','e2a77c0e37','5174ee3bcd','819765cfeb',
+  '2bc9ec39e6','3acf31169a','96d8807fd7','1aa1cfa04b','4236305df1',
+  '815b3b24a3','ab5c076eaa','fe0a753c6d','c85b18c1cf','93fdcef183',
+  'd99dea2406','a0aded4777','45b3dd69ec','1ff3003a6f','11355e1b6f',
+  '74154911ad','7db1243ca9','3f8d841f0c','8b761e400f'
+]);
+const batch5ARows=context.ATLAS_DATA.rows.filter(r=>batch5AIds.has(r.id));
+assert.equal(batch5ARows.length,29,'Lote 5A deve conter exatamente 29 receitas');
+for(const r of batch5ARows){
+  assert.equal(r.review_status,'documented',`Registro ${r.id} (${r.command}) deve ter review_status: documented`);
+  assert.equal(r.reviewed_on,'2026-10-11',`Registro ${r.id} (${r.command}) deve ter reviewed_on: 2026-10-11`);
+  assert(r.doc_ref&&r.doc_ref.startsWith('https://manpages.debian.org/'),`Registro ${r.id} (${r.command}) requer doc_ref Debian`);
+  assert(!r.notes.includes('Mesma sintaxe em F/K'),`Registro ${r.id} (${r.command}) não deve conter nota genérica F/K`);
+}
+
+// Asserções técnicas específicas do Lote 5A
+const chpasswdRow=context.ATLAS_DATA.rows.find(r=>r.id==='3acf31169a');
+assert.equal(chpasswdRow?.risk,'ALTERA');
+assert.equal(chpasswdRow?.example,'sudo chpasswd < senhas_lab.txt');
+assert(chpasswdRow?.notes?.includes('O arquivo contém senhas em texto claro'));
+assert(chpasswdRow?.notes?.includes('quem abre o arquivo é o shell do usuário atual'));
+
+const pwckRow=context.ATLAS_DATA.rows.find(r=>r.id==='1ff3003a6f');
+assert.equal(pwckRow?.risk,'CONSULTA');
+assert(pwckRow?.purpose?.includes('nomes duplicados, validade dos identificadores'));
+assert(!pwckRow?.purpose?.includes('UIDs duplicados'));
+
+const grpckRow=context.ATLAS_DATA.rows.find(r=>r.id==='c85b18c1cf');
+assert.equal(grpckRow?.risk,'CONSULTA');
+assert(grpckRow?.purpose?.includes('nomes duplicados, validade dos identificadores'));
+assert(!grpckRow?.purpose?.includes('GIDs duplicados'));
+
+const passwdRootRow=context.ATLAS_DATA.rows.find(r=>r.id==='d99dea2406');
+assert.equal(passwdRootRow?.risk,'ALTERA');
+assert(passwdRootRow?.notes?.includes('enforce_for_root'));
+
+const passwdSRow=context.ATLAS_DATA.rows.find(r=>r.id==='a0aded4777');
+assert.equal(passwdSRow?.risk,'CONSULTA');
+assert(passwdSRow?.notes?.includes('senha bloqueada (prefixada com !), e não necessariamente conta desativada'));
+
+const deluserRow=context.ATLAS_DATA.rows.find(r=>r.id==='1aa1cfa04b');
+assert.equal(deluserRow?.risk,'RISCO');
+assert(deluserRow?.notes?.includes('Por padrão preserva a pasta pessoal; confira a configuração em /etc/deluser.conf antes de executar'));
+
+const userdelRow=context.ATLAS_DATA.rows.find(r=>r.id==='74154911ad');
+assert.equal(userdelRow?.risk,'RISCO');
+
+const groupdelRow=context.ATLAS_DATA.rows.find(r=>r.id==='ab5c076eaa');
+assert.equal(groupdelRow?.risk,'RISCO');
+
+const passwdDRow=context.ATLAS_DATA.rows.find(r=>r.id==='45b3dd69ec');
+assert.equal(passwdDRow?.risk,'RISCO');
+
+const vipwRow=context.ATLAS_DATA.rows.find(r=>r.id==='8b761e400f');
+assert.equal(vipwRow?.risk,'RISCO');
+
+const vigrRow=context.ATLAS_DATA.rows.find(r=>r.id==='3f8d841f0c');
+assert.equal(vigrRow?.risk,'RISCO');
+
+vm.runInContext("copy('git status')",context).then(()=>{assert.equal(context.copied,'git status');context.window.isSecureContext=false;context.document.execCommand=()=>true;let restored=false,scrolled=false;context.document.activeElement={isConnected:true,focus(o){restored=o.preventScroll}};context.window.scrollTo=()=>{scrolled=true};return vm.runInContext("copy('fallback')",context).then(()=>{assert(restored);assert(scrolled);console.log('PASS: 2.656 entradas acessíveis, Lote 1 (39), Lote 2A (23), Lote 2B (37), Lote 3A (34), Lote 3B (31), Lote 4A (33) e Lote 5A (29) com revisão documental e doc_ref, metadados de auditoria validados, atalho / com guardas estritas, sincronização de storage, foco de teclado adjacente e testes executados.')})});
