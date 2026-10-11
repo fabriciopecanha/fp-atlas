@@ -423,4 +423,58 @@ const lsblkTreeRow=context.ATLAS_DATA.rows.find(r=>r.id==='e0b84bbd24');
 assert.equal(lsblkTreeRow?.risk,'CONSULTA');
 assert(lsblkTreeRow?.purpose?.includes('incluindo as desmontadas'));
 
-vm.runInContext("copy('git status')",context).then(()=>{assert.equal(context.copied,'git status');context.window.isSecureContext=false;context.document.execCommand=()=>true;let restored=false,scrolled=false;context.document.activeElement={isConnected:true,focus(o){restored=o.preventScroll}};context.window.scrollTo=()=>{scrolled=true};return vm.runInContext("copy('fallback')",context).then(()=>{assert(restored);assert(scrolled);console.log('PASS: 2.653 entradas acessíveis, Lote 1 (39), Lote 2A (23), Lote 2B (37) e Lote 3A (34) com revisão documental e doc_ref, metadados de auditoria validados, atalho / com guardas estritas, sincronização de storage, foco de teclado adjacente e testes executados.')})});
+// Validação do Lote 3B (31 receitas de montagem, cotas, ferramentas de bloco e diagnóstico)
+const batch3BIds=new Set([
+  '88b712a131','cd6aec8b41','23bb3ff5be','2f63203eb6',
+  'b541c59b66','855dc8877d','a67a7525d1','b2eb55ebff','3583e2ca73','8bcf02da41',
+  '7ac2c802ac','0bb1986280','7550c01d60','d71e7cbb95','28459446dd','7ab6ff6883','41185c3753','69a1b49705',
+  '53d0c69d23','34772c6b09','713b9c45a7','a5a44512b7','5ae2dc7fad','b46217f6e1',
+  '17df165811','9d04ee4c95','74c95d18e6','f3ac4281a7','b8a5899343','1bcf786e44','84f3317b3e'
+]);
+const batch3BRows=context.ATLAS_DATA.rows.filter(r=>batch3BIds.has(r.id));
+assert.equal(batch3BRows.length,31,'Lote 3B deve conter exatamente 31 receitas');
+for(const r of batch3BRows){
+  assert.equal(r.review_status,'documented',`Registro ${r.id} (${r.command}) deve ter review_status: documented`);
+  assert.equal(r.reviewed_on,'2026-10-11',`Registro ${r.id} (${r.command}) deve ter reviewed_on: 2026-10-11`);
+  assert(r.doc_ref&&(r.doc_ref.startsWith('https://manpages.debian.org/')||r.doc_ref.startsWith('https://openzfs.github.io/')||r.doc_ref.startsWith('https://github.com/Byron/dua-cli')||r.doc_ref.startsWith('https://github.com/muesli/duf')),`Registro ${r.id} (${r.command}) requer doc_ref canônico Debian ou upstream`);
+  assert(!r.notes.includes('Mesma sintaxe em F/K'),`Registro ${r.id} (${r.command}) não deve conter nota genérica F/K`);
+}
+
+// Asserções técnicas específicas do Lote 3B
+const mountRoRow=context.ATLAS_DATA.rows.find(r=>r.id==='88b712a131');
+assert.equal(mountRoRow?.risk,'ALTERA');
+assert(mountRoRow?.notes?.includes('journal replay'));
+assert(mountRoRow?.notes?.includes('noload'));
+
+const quotacheckRow=context.ATLAS_DATA.rows.find(r=>r.id==='a67a7525d1');
+assert.equal(quotacheckRow?.risk,'ALTERA');
+assert(!quotacheckRow?.example?.includes('-m'));
+assert(quotacheckRow?.notes?.includes('quotaoff'));
+
+const e2labelRow=context.ATLAS_DATA.rows.find(r=>r.id==='5ae2dc7fad');
+assert.equal(e2labelRow?.risk,'CONSULTA');
+assert(!e2labelRow?.notes?.includes('tune2fs -L'));
+
+const xfsGrowfsNRow=context.ATLAS_DATA.rows.find(r=>r.id==='9d04ee4c95');
+assert.equal(xfsGrowfsNRow?.risk,'CONSULTA');
+assert(xfsGrowfsNRow?.purpose?.includes('Exibir a geometria do XFS e verificar argumentos sem modificar o sistema de arquivos'));
+
+const fstrimRow=context.ATLAS_DATA.rows.find(r=>r.id==='23bb3ff5be');
+assert.equal(fstrimRow?.risk,'ALTERA');
+assert(fstrimRow?.notes?.includes('descarte potencial'));
+assert(!fstrimRow?.notes?.includes('liberados imediatamente'));
+
+const dumpe2fsRow=context.ATLAS_DATA.rows.find(r=>r.id==='713b9c45a7');
+assert.equal(dumpe2fsRow?.risk,'CONSULTA');
+assert(dumpe2fsRow?.notes?.includes('desatualizadas ou inconsistentes'));
+assert(!dumpe2fsRow?.notes?.includes('--header'));
+
+const duaRow=context.ATLAS_DATA.rows.find(r=>r.id==='1bcf786e44');
+assert.equal(duaRow?.risk,'ALTERA');
+assert(duaRow?.notes?.includes('dua aggregate .'));
+
+const nvmeSmartJsonRow=context.ATLAS_DATA.rows.find(r=>r.id==='7ab6ff6883');
+assert.equal(nvmeSmartJsonRow?.risk,'CONSULTA');
+assert(nvmeSmartJsonRow?.example?.includes('-o json'));
+
+vm.runInContext("copy('git status')",context).then(()=>{assert.equal(context.copied,'git status');context.window.isSecureContext=false;context.document.execCommand=()=>true;let restored=false,scrolled=false;context.document.activeElement={isConnected:true,focus(o){restored=o.preventScroll}};context.window.scrollTo=()=>{scrolled=true};return vm.runInContext("copy('fallback')",context).then(()=>{assert(restored);assert(scrolled);console.log('PASS: 2.653 entradas acessíveis, Lote 1 (39), Lote 2A (23), Lote 2B (37), Lote 3A (34) e Lote 3B (31) com revisão documental e doc_ref, metadados de auditoria validados, atalho / com guardas estritas, sincronização de storage, foco de teclado adjacente e testes executados.')})});
