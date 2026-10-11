@@ -215,4 +215,67 @@ const ddImgRow=context.ATLAS_DATA.rows.find(r=>r.id==='93f99affea');
 assert(ddImgRow?.notes?.includes('ddrescue'));
 assert(ddImgRow?.notes?.includes('ibs'));
 
+// Validação do Lote 2A (23 receitas de LVM, swap, zram, criptografia LUKS e RAID)
+const batch2AIds=new Set([
+  '830d704963','7c97b7175a','00d3f08590',
+  'e5112752f4','3ff2827e11','b442485227',
+  '1f810c88b2','0ede7d8338','2252b3c4f5',
+  '2af1dcbfa0','dae5a29725','a2120adeae',
+  'cba04c4b94','803f225dcb','c1936f1dbb',
+  '28575e339b',
+  '0ddd3d7d65','862a950e54',
+  'dd162045a1','91dd5e3e8f','11f3e80db4','e5ef22d0c6','70f519dc76'
+]);
+const batch2ARows=context.ATLAS_DATA.rows.filter(r=>batch2AIds.has(r.id));
+assert.equal(batch2ARows.length,23,'Lote 2A deve conter exatamente 23 receitas');
+for(const r of batch2ARows){
+  assert.equal(r.review_status,'documented',`Registro ${r.id} (${r.command}) deve ter review_status: documented`);
+  assert.equal(r.reviewed_on,'2026-10-11',`Registro ${r.id} (${r.command}) deve ter reviewed_on: 2026-10-11`);
+  assert(r.doc_ref&&r.doc_ref.startsWith('https://manpages.debian.org/'),`Registro ${r.id} (${r.command}) requer doc_ref Debian`);
+  assert(!r.notes.includes('Mesma sintaxe em F/K'),`Registro ${r.id} (${r.command}) não deve conter nota genérica F/K`);
+}
+
+// Asserções técnicas específicas do Lote 2A
+const vgcreateRow=context.ATLAS_DATA.rows.find(r=>r.id==='1f810c88b2');
+assert.equal(vgcreateRow?.risk,'RISCO','vgcreate com partição genérica deve ser RISCO por poder inicializar PV');
+assert(vgcreateRow?.notes?.includes('DESTRUTIVO SE NÃO INICIALIZADO'));
+
+const resizeRow=context.ATLAS_DATA.rows.find(r=>r.id==='c1936f1dbb');
+assert(resizeRow?.purpose?.includes('Após ampliar o volume lógico'));
+assert(resizeRow?.notes?.includes('desmontagem'));
+
+const lvextendRRow=context.ATLAS_DATA.rows.find(r=>r.id==='803f225dcb');
+assert(lvextendRRow?.purpose?.includes('via fsadm'));
+assert(lvextendRRow?.notes?.includes('fsadm'));
+
+const lsmodRow=context.ATLAS_DATA.rows.find(r=>r.id==='dd162045a1');
+assert.equal(lsmodRow?.command,'lsmod');
+assert.equal(lsmodRow?.risk,'CONSULTA');
+
+const modprobe1=context.ATLAS_DATA.rows.find(r=>r.id==='91dd5e3e8f');
+assert.equal(modprobe1?.command,'modprobe');
+assert(modprobe1?.notes?.includes('não configura nem ativa swap'));
+
+const modprobe2=context.ATLAS_DATA.rows.find(r=>r.id==='11f3e80db4');
+assert.equal(modprobe2?.command,'modprobe');
+assert(modprobe2?.notes?.includes('não configura nem ativa swap'));
+
+const zramStatus=context.ATLAS_DATA.rows.find(r=>r.id==='70f519dc76');
+assert.equal(zramStatus?.risk,'CONSULTA');
+assert(zramStatus?.notes?.includes('COMPR'));
+assert(zramStatus?.notes?.includes('TOTAL'));
+
+const luksBackup=context.ATLAS_DATA.rows.find(r=>r.id==='00d3f08590');
+assert(luksBackup?.notes?.includes('Uma senha válida naquele momento'));
+
+const swapoffRow=context.ATLAS_DATA.rows.find(r=>r.id==='862a950e54');
+assert.equal(swapoffRow?.risk,'RISCO');
+assert(swapoffRow?.notes?.includes('Pode causar forte pressão de memória ou falhar por memória insuficiente'));
+
+const swaponRow=context.ATLAS_DATA.rows.find(r=>r.id==='0ddd3d7d65');
+assert.equal(swaponRow?.risk,'CONSULTA');
+
+const mdadmRow=context.ATLAS_DATA.rows.find(r=>r.id==='28575e339b');
+assert.equal(mdadmRow?.risk,'CONSULTA');
+
 vm.runInContext("copy('git status')",context).then(()=>{assert.equal(context.copied,'git status');context.window.isSecureContext=false;context.document.execCommand=()=>true;let restored=false,scrolled=false;context.document.activeElement={isConnected:true,focus(o){restored=o.preventScroll}};context.window.scrollTo=()=>{scrolled=true};return vm.runInContext("copy('fallback')",context).then(()=>{assert(restored);assert(scrolled);console.log('PASS: 2.653 entradas acessíveis, Lote 1 de 39 receitas de discos/FS/exclusão com revisão documental e doc_ref, metadados de auditoria validados, atalho / com guardas estritas, sincronização de storage, foco de teclado adjacente e testes executados.')})});
