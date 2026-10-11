@@ -477,4 +477,66 @@ const nvmeSmartJsonRow=context.ATLAS_DATA.rows.find(r=>r.id==='7ab6ff6883');
 assert.equal(nvmeSmartJsonRow?.risk,'CONSULTA');
 assert(nvmeSmartJsonRow?.example?.includes('-o json'));
 
-vm.runInContext("copy('git status')",context).then(()=>{assert.equal(context.copied,'git status');context.window.isSecureContext=false;context.document.execCommand=()=>true;let restored=false,scrolled=false;context.document.activeElement={isConnected:true,focus(o){restored=o.preventScroll}};context.window.scrollTo=()=>{scrolled=true};return vm.runInContext("copy('fallback')",context).then(()=>{assert(restored);assert(scrolled);console.log('PASS: 2.653 entradas acessíveis, Lote 1 (39), Lote 2A (23), Lote 2B (37), Lote 3A (34) e Lote 3B (31) com revisão documental e doc_ref, metadados de auditoria validados, atalho / com guardas estritas, sincronização de storage, foco de teclado adjacente e testes executados.')})});
+// Validação do Lote 4A (33 receitas de permissões, atributos, ACL e capabilities)
+const batch4AIds=new Set([
+  '1ea12faa20','5baabe72e3','d2a5304a0e','572aa34ca7','b5c316d2cf','3e7b26d93a','2e78e26b45','e758dd79a9','d6c88c63fe','110b641b2e',
+  '708b21a8f8','287f4c8f11','f522f934d8','d63f78a0a5','70f8440306','a774b14e96',
+  '0c380f055c',
+  '887ead4cb4','8037aab499','d3ced3fb48',
+  '9d747fefdb',
+  'fcb2eefc8d','f83dc1d459','d8aacedd51',
+  '28c2f95a77','9c1970201d',
+  '703a00d041','cd5326a8f8',
+  'f34a9857b6','64c3e6ee24',
+  '1553244b60','5ade6e4543','c4f2609dd4'
+]);
+const batch4ARows=context.ATLAS_DATA.rows.filter(r=>batch4AIds.has(r.id));
+assert.equal(batch4ARows.length,33,'Lote 4A deve conter exatamente 33 receitas');
+for(const r of batch4ARows){
+  assert.equal(r.review_status,'documented',`Registro ${r.id} (${r.command}) deve ter review_status: documented`);
+  assert.equal(r.reviewed_on,'2026-10-11',`Registro ${r.id} (${r.command}) deve ter reviewed_on: 2026-10-11`);
+  assert(r.doc_ref&&r.doc_ref.startsWith('https://manpages.debian.org/'),`Registro ${r.id} (${r.command}) requer doc_ref Debian`);
+  assert(!r.notes.includes('Mesma sintaxe em F/K'),`Registro ${r.id} (${r.command}) não deve conter nota genérica F/K`);
+}
+
+// Asserções técnicas específicas do Lote 4A
+const chmod750Row=context.ATLAS_DATA.rows.find(r=>r.id==='1ea12faa20');
+assert.equal(chmod750Row?.risk,'ALTERA');
+assert(chmod750Row?.notes?.includes('00750'));
+assert(chmod750Row?.notes?.includes('u-s,g-s'));
+
+const umaskRow=context.ATLAS_DATA.rows.find(r=>r.id==='f34a9857b6');
+assert.equal(umaskRow?.risk,'ALTERA');
+assert(umaskRow?.notes?.includes('modo_solicitado & ~umask'));
+assert(umaskRow?.notes?.includes('limitadas pelo modo solicitado'));
+
+const chmodORow=context.ATLAS_DATA.rows.find(r=>r.id==='e758dd79a9');
+assert.equal(chmodORow?.risk,'ALTERA');
+assert(chmodORow?.notes?.includes('ACL estendida'));
+
+const chmod640Row=context.ATLAS_DATA.rows.find(r=>r.id==='5baabe72e3');
+assert.equal(chmod640Row?.risk,'ALTERA');
+assert(chmod640Row?.notes?.includes('máscara da ACL'));
+
+const setfaclRow=context.ATLAS_DATA.rows.find(r=>r.id==='f83dc1d459');
+assert.equal(setfaclRow?.risk,'ALTERA');
+assert(setfaclRow?.notes?.includes('recalcula a máscara'));
+assert(setfaclRow?.notes?.includes('--no-mask'));
+
+const setfattrRow=context.ATLAS_DATA.rows.find(r=>r.id==='9c1970201d');
+assert.equal(setfattrRow?.risk,'ALTERA');
+assert(setfattrRow?.notes?.includes('CAP_SYS_ADMIN'));
+assert(setfattrRow?.notes?.includes('LSM'));
+
+const suidRow=context.ATLAS_DATA.rows.find(r=>r.id==='1553244b60');
+assert.equal(suidRow?.risk,'RISCO');
+assert(suidRow?.notes?.includes('no_new_privs'));
+assert(suidRow?.notes?.includes('nosuid'));
+
+const chmodRecRisk=context.ATLAS_DATA.rows.find(r=>r.id==='d6c88c63fe');
+assert.equal(chmodRecRisk?.risk,'RISCO');
+
+const setcapRisk=context.ATLAS_DATA.rows.find(r=>r.id==='cd5326a8f8');
+assert.equal(setcapRisk?.risk,'RISCO');
+
+vm.runInContext("copy('git status')",context).then(()=>{assert.equal(context.copied,'git status');context.window.isSecureContext=false;context.document.execCommand=()=>true;let restored=false,scrolled=false;context.document.activeElement={isConnected:true,focus(o){restored=o.preventScroll}};context.window.scrollTo=()=>{scrolled=true};return vm.runInContext("copy('fallback')",context).then(()=>{assert(restored);assert(scrolled);console.log('PASS: 2.656 entradas acessíveis, Lote 1 (39), Lote 2A (23), Lote 2B (37), Lote 3A (34), Lote 3B (31) e Lote 4A (33) com revisão documental e doc_ref, metadados de auditoria validados, atalho / com guardas estritas, sincronização de storage, foco de teclado adjacente e testes executados.')})});
