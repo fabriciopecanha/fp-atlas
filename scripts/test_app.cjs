@@ -1,5 +1,5 @@
 const fs=require('fs'),vm=require('vm'),assert=require('assert');
-class El{constructor(tag='div'){this.tag=tag;this.children=[];this.dataset={};this.value='';this.hidden=false;this.handlers={};this.style={setProperty(){}};this.classList={toggle(){},add(){},remove(){}};this.attributes={}}append(...a){this.children.push(...a)}replaceChildren(...a){this.children=a}setAttribute(k,v){this.attributes[k]=String(v)}getAttribute(k){return this.attributes[k]}addEventListener(k,f){this.handlers[k]=f}focus(){context.lastFocused=this}blur(){}remove(){}select(){}setSelectionRange(){}querySelectorAll(){return this.children.filter(x=>x.tag==='button')}querySelector(s){function findClass(n,cls){if(n.className?.includes(cls))return n;for(const c of n.children||[]){const r=findClass(c,cls);if(r)return r}return null}function match(n){if(s==='.fav-btn')return findClass(n,'fav-btn');const m=s.match(/data-id="([^"]+)"/);if(m&&n.dataset?.id===m[1])return findClass(n,'fav-btn');for(const c of n.children||[]){const r=match(c);if(r)return r}return null}return match(this)}click(){if(this.onclick)this.onclick()}}
+class El{constructor(tag='div'){this.tag=tag;this.children=[];this.dataset={};this.value='';this.hidden=false;this.handlers={};this.style={setProperty(){}};this.classList={toggle(){},add(){},remove(){}};this.attributes={}}append(...a){this.children.push(...a)}replaceChildren(...a){this.children=a}setAttribute(k,v){this.attributes[k]=String(v)}getAttribute(k){return this.attributes[k]}addEventListener(k,f){this.handlers[k]=f}focus(){context.lastFocused=this}blur(){}remove(){}select(){}setSelectionRange(){}querySelectorAll(s){const out=[];function walk(n){for(const c of n.children||[]){if(!s||s==='button'){if(c.tag==='button')out.push(c)}else if(s==='[data-id]'){if(c.dataset?.id)out.push(c)}else if(s==='.fav-btn'){if(c.className?.includes('fav-btn'))out.push(c)}walk(c)}}walk(this);return out}querySelector(s){function findClass(n,cls){if(n.className?.includes(cls))return n;for(const c of n.children||[]){const r=findClass(c,cls);if(r)return r}return null}function match(n){if(s==='.fav-btn')return findClass(n,'fav-btn');const m=s.match(/data-id="([^"]+)"/);if(m&&n.dataset?.id===m[1])return findClass(n,'fav-btn');for(const c of n.children||[]){const r=match(c);if(r)return r}return null}return match(this)}click(){if(this.onclick)this.onclick()}}
 const map=new Map(),get=id=>{if(!map.has(id))map.set(id,new El());return map.get(id)},nav=[new El(),new El()];nav[0].dataset.view='linux';nav[1].dataset.view='keyboard';const eventHandlers={},windowEventHandlers={},themeStore={'fp-atlas-v02-theme':'light'};const context={ATLAS_DATA:JSON.parse(fs.readFileSync('atlas_base.json','utf8')),SHORTCUTS:JSON.parse(fs.readFileSync('shortcuts.json','utf8')),URL,Blob,document:{getElementById:get,createElement:t=>new El(t),createTextNode:t=>({textContent:t}),querySelectorAll:s=>s==='.nav'?nav:s==='.area-btn'?get('area-nav').children:[],body:new El(),addEventListener(k,f){(eventHandlers[k]||=[]).push(f)}},navigator:{clipboard:{writeText:async t=>{context.copied=t}}},location:{hash:''},window:{isSecureContext:true,scrollX:0,scrollY:0,scrollTo(){},addEventListener(k,f){(windowEventHandlers[k]||=[]).push(f)}},localStorage:{getItem(k){return themeStore[k]??null},setItem(k,v){themeStore[k]=v}},setTimeout,clearTimeout,console};get('template-layer').value='0';vm.createContext(context);vm.runInContext(fs.readFileSync('src/app.js','utf8'),context);
 assert.equal(get('cards').children.length,18);assert.equal(get('area-nav').children.length,9);assert.equal(get('group').children.length,new Set(context.ATLAS_DATA.rows.map(r=>r.section)).size+1);assert.equal(get('command').children.length,new Set(context.ATLAS_DATA.rows.map(r=>r.command)).size+1);
 get('search').value='wireguard';get('search').handlers.input();assert(get('cards').children.length>0);get('search').value='ZZZZinexistente';get('search').handlers.input();assert.equal(get('cards').children.length,0);get('reset-filters').onclick();get('more').onclick();assert.equal(get('cards').children.length,36);
@@ -67,20 +67,34 @@ favButtons=[];findFavButtons(get('cards'));favButtons[0].onclick();
 assert.equal(get('fav-filter-btn').textContent,'★ Apenas favoritos (0)');assert.equal(get('cards').children.length,0);
 assert.equal(get('empty').hidden,false);assert.equal(get('empty-title').textContent,'Nenhum item salvo nos favoritos ainda.');
 assert.equal(context.lastFocused,get('fav-filter-btn'));
-// Adicionar 2 favoritos e testar redirecionamento de foco para próximo item e clear-favs-btn
+// Adicionar 3 favoritos e testar redirecionamento de foco para item subsequente, item anterior e botão de filtro
 get('reset-filters').onclick();
 favButtons=[];findFavButtons(get('cards'));favButtons[0].onclick();
 favButtons=[];findFavButtons(get('cards'));favButtons[1].onclick();
-assert.equal(get('fav-filter-btn').textContent,'★ Favoritos (2)');
+favButtons=[];findFavButtons(get('cards'));favButtons[2].onclick();
+assert.equal(get('fav-filter-btn').textContent,'★ Favoritos (3)');
 get('fav-filter-btn').onclick();
 assert.equal(get('clear-favs-btn').hidden,false);
-favButtons=[];findFavButtons(get('cards'));
-assert.equal(favButtons.length,2);
-favButtons[0].onclick();
-assert.equal(context.lastFocused,get('cards').querySelector('.fav-btn'));
+let cardBtns=get('cards').querySelectorAll('.fav-btn');
+assert.equal(cardBtns.length,3);
+// Remover o item do meio (índice 1): foco deve ir para o item subsequente (índice 2)
+const idNext=context.ATLAS_DATA.rows[2].id;
+cardBtns[1].onclick();
+assert.equal(context.lastFocused,get('cards').querySelector(`[data-id="${idNext}"] .fav-btn`));
+assert.equal(get('fav-filter-btn').textContent,'★ Apenas favoritos (2)');
+// Remover o último item restante (índice 1 na nova lista): foco vai para o item anterior (índice 0)
+const idFirst=context.ATLAS_DATA.rows[0].id;
+cardBtns=get('cards').querySelectorAll('.fav-btn');
+assert.equal(cardBtns.length,2);
+cardBtns[1].onclick();
+assert.equal(context.lastFocused,get('cards').querySelector(`[data-id="${idFirst}"] .fav-btn`));
 assert.equal(get('fav-filter-btn').textContent,'★ Apenas favoritos (1)');
-get('clear-favs-btn').onclick();
-assert.equal(get('fav-filter-btn').textContent,'★ Apenas favoritos (0)');assert.equal(themeStore['fp-atlas-favorites'],'[]');
+// Remover o único item restante: foco vai para o botão de filtro de favoritos
+cardBtns=get('cards').querySelectorAll('.fav-btn');
+assert.equal(cardBtns.length,1);
+cardBtns[0].onclick();
+assert.equal(context.lastFocused,get('fav-filter-btn'));
+assert.equal(get('fav-filter-btn').textContent,'★ Apenas favoritos (0)');
 
 // Teste de sanitização de IDs inválidos/antigos ao inicializar
 get('reset-filters').onclick();
@@ -135,8 +149,14 @@ assert(clamRow?.purpose?.includes('sem lixeira'));
 
 const aptRow=context.ATLAS_DATA.rows.find(r=>r.id==='d612e7533c');
 assert.equal(aptRow?.risk,'RISCO');
+assert(aptRow?.purpose?.includes('gerenciadas pelo pacote'));
 assert(aptRow?.notes?.includes('destrutiva'));
 assert(aptRow?.notes?.includes('/etc'));
+assert(aptRow?.notes?.includes('pasta pessoal'));
+assert(aptRow?.notes?.includes('.rpmsave'));
+
+const aptRemoveRow=context.ATLAS_DATA.rows.find(r=>r.id==='531dfc8dab');
+assert(aptRemoveRow?.purpose?.includes('gerenciadas pelo pacote'));
 
 const podmanRow=context.ATLAS_DATA.rows.find(r=>r.id==='dac96ba421');
 assert(podmanRow?.example?.includes('{{.ID}}'));
