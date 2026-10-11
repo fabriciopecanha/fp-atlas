@@ -517,6 +517,11 @@ assert(chmodORow?.notes?.includes('ACL estendida'));
 const chmod640Row=context.ATLAS_DATA.rows.find(r=>r.id==='5baabe72e3');
 assert.equal(chmod640Row?.risk,'ALTERA');
 assert(chmod640Row?.notes?.includes('máscara da ACL'));
+assert(chmod640Row?.notes?.includes('reduzir ou ampliar os direitos efetivos'));
+
+const chmodArxRow=context.ATLAS_DATA.rows.find(r=>r.id==='3e7b26d93a');
+assert.equal(chmodArxRow?.risk,'ALTERA');
+assert(chmodArxRow?.notes?.includes('ACLs nomeadas e outras restrições ainda podem impedir o acesso'));
 
 const setfaclRow=context.ATLAS_DATA.rows.find(r=>r.id==='f83dc1d459');
 assert.equal(setfaclRow?.risk,'ALTERA');
