@@ -681,4 +681,70 @@ const ugAllRows=context.ATLAS_DATA.rows.filter(r=>r.section==='Usuários e grupo
 assert.equal(ugAllRows.length,62,'Seção Usuários e grupos deve possuir 62 receitas');
 assert(ugAllRows.every(r=>r.review_status==='documented'),'Todas as 62 receitas de Usuários e grupos devem estar documented');
 
-vm.runInContext("copy('git status')",context).then(()=>{assert.equal(context.copied,'git status');context.window.isSecureContext=false;context.document.execCommand=()=>true;let restored=false,scrolled=false;context.document.activeElement={isConnected:true,focus(o){restored=o.preventScroll}};context.window.scrollTo=()=>{scrolled=true};return vm.runInContext("copy('fallback')",context).then(()=>{assert(restored);assert(scrolled);console.log('PASS: 2.656 entradas acessíveis, Lote 1 (39), Lote 2A (23), Lote 2B (37), Lote 3A (34), Lote 3B (31), Lote 4A (33), Lote 5A (29) e Lote 5B (33) com revisão documental e doc_ref, seção Usuários e grupos (62/62) concluída, metadados de auditoria validados, atalho / com guardas estritas, sincronização de storage, foco de teclado adjacente e testes executados.')})});
+// Validação do Lote 6A (23 receitas de sincronização, deduplicação e repositórios em nível de arquivo)
+const batch6AIds=new Set([
+  '490944951a','3fd2b14c12','5b53d7039c','d7517584ad','65eee50342',
+  'b07ad7f27d','cb5518fb67','0594f6f84d','61fb21f38b','e1e52c204a',
+  '8d296d2c2e','3ade985b8d','551882da9c','7e53774707','c40b58df86',
+  '0bc129c199','898cc39c6b','84fa4c3ded','25a6c6bbcc','7295204743',
+  '0d071c24d0','855ec80e78','1fafd55fb9'
+]);
+const batch6ARows=context.ATLAS_DATA.rows.filter(r=>batch6AIds.has(r.id));
+assert.equal(batch6ARows.length,23,'Lote 6A deve conter exatamente 23 receitas');
+for(const r of batch6ARows){
+  assert.equal(r.review_status,'documented',`Registro ${r.id} (${r.command}) deve ter review_status: documented`);
+  assert.equal(r.reviewed_on,'2026-10-13',`Registro ${r.id} (${r.command}) deve ter reviewed_on: 2026-10-13`);
+  assert(r.doc_ref&&r.doc_ref.startsWith('https://manpages.debian.org/'),`Registro ${r.id} (${r.command}) requer doc_ref Debian`);
+  assert(!r.notes.includes('Mesma sintaxe em F/K'),`Registro ${r.id} (${r.command}) não deve conter nota genérica F/K`);
+}
+
+// Distribuição de risco do Lote 6A (7 CONSULTA, 15 ALTERA, 1 RISCO)
+const b6aConsulta=batch6ARows.filter(r=>r.risk==='CONSULTA');
+const b6aAltera=batch6ARows.filter(r=>r.risk==='ALTERA');
+const b6aRisco=batch6ARows.filter(r=>r.risk==='RISCO');
+assert.equal(b6aConsulta.length,7,'Lote 6A requer exatamente 7 receitas CONSULTA');
+assert.equal(b6aAltera.length,15,'Lote 6A requer exatamente 15 receitas ALTERA');
+assert.equal(b6aRisco.length,1,'Lote 6A requer exatamente 1 receita RISCO');
+
+// Asserções técnicas específicas do Lote 6A
+const rsyncP=context.ATLAS_DATA.rows.find(r=>r.id==='84fa4c3ded');
+assert.equal(rsyncP?.example,'rsync -rzvhP origem/ destino/');
+assert(rsyncP?.notes?.includes('A opção -r garante a recursividade para transferir diretórios'));
+assert(rsyncP?.notes?.includes('--dry-run --itemize-changes'));
+
+const rsyncSsh=context.ATLAS_DATA.rows.find(r=>r.id==='1fafd55fb9');
+assert.equal(rsyncSsh?.example,"rsync -r -e 'ssh -p 2222' --info=progress2 host:origem/ destino/");
+assert(rsyncSsh?.notes?.includes('A opção -r garante a recursividade para transferir pastas remotas'));
+
+const rsyncDestDir=context.ATLAS_DATA.rows.find(r=>r.id==='25a6c6bbcc');
+assert.equal(rsyncDestDir?.example,'rsync -r origem destino/');
+assert.equal(rsyncDestDir?.notes,'Sem barra final na origem, copia o diretório pelo nome, criando destino/origem/. Neste exemplo, a barra final em destino/ faz com que ele seja tratado como diretório, inclusive quando precisa ser criado. Pode sobrescrever arquivos existentes selecionados para transferência.');
+
+const rsyncCsum=context.ATLAS_DATA.rows.find(r=>r.id==='c40b58df86');
+assert.equal(rsyncCsum?.purpose,'Comparar por tamanho e checksum, em vez da comparação padrão por tamanho e data, simulando as transferências.');
+assert(!rsyncCsum?.notes?.includes('hash criptográfico'));
+
+const rsyncArchive=context.ATLAS_DATA.rows.find(r=>r.id==='898cc39c6b');
+assert(rsyncArchive?.notes?.includes('não preserva tudo: ACLs (-A), atributos estendidos (-X) e hard links (-H)'));
+
+const rsyncDelete=context.ATLAS_DATA.rows.find(r=>r.id==='855ec80e78');
+assert.equal(rsyncDelete?.risk,'RISCO');
+assert(rsyncDelete?.notes?.includes('rsync -r --dry-run --itemize-changes --delete rsync://host/modulo/ destino/'));
+assert(rsyncDelete?.notes?.includes('*deleting'));
+
+const rcloneCopy=context.ATLAS_DATA.rows.find(r=>r.id==='61fb21f38b');
+assert.equal(rcloneCopy?.risk,'CONSULTA');
+assert(rcloneCopy?.notes?.includes('arquivos no destino com mesmo nome e tamanho/hash divergente podem ser sobrescritos'));
+assert(rcloneCopy?.notes?.includes('sem reproduzir a distinção de barra final do rsync'));
+
+const resticCheck=context.ATLAS_DATA.rows.find(r=>r.id==='551882da9c');
+assert.equal(resticCheck?.risk,'CONSULTA');
+assert(resticCheck?.notes?.includes('baixa e descriptografa apenas 10% dos pacotes de dados para validar hashes'));
+assert(resticCheck?.notes?.includes('Um ensaio prático de restauração (restic restore) em diretório isolado é uma verificação separada e indispensável'));
+
+const borgInit=context.ATLAS_DATA.rows.find(r=>r.id==='490944951a');
+assert.equal(borgInit?.risk,'ALTERA');
+assert(borgInit?.notes?.includes('Borg 1.x'));
+assert(borgInit?.notes?.includes('borg key export'));
+
+vm.runInContext("copy('git status')",context).then(()=>{assert.equal(context.copied,'git status');context.window.isSecureContext=false;context.document.execCommand=()=>true;let restored=false,scrolled=false;context.document.activeElement={isConnected:true,focus(o){restored=o.preventScroll}};context.window.scrollTo=()=>{scrolled=true};return vm.runInContext("copy('fallback')",context).then(()=>{assert(restored);assert(scrolled);console.log('PASS: 2.656 entradas acessíveis, Lote 1 (39), Lote 2A (23), Lote 2B (37), Lote 3A (34), Lote 3B (31), Lote 4A (33), Lote 5A (29), Lote 5B (33) e Lote 6A (23) com revisão documental e doc_ref, seção Usuários e grupos (62/62) concluída, metadados de auditoria validados, atalho / com guardas estritas, sincronização de storage, foco de teclado adjacente e testes executados.')})});
