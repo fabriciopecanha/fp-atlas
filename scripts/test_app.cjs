@@ -747,4 +747,100 @@ assert.equal(borgInit?.risk,'ALTERA');
 assert(borgInit?.notes?.includes('Borg 1.x'));
 assert(borgInit?.notes?.includes('borg key export'));
 
-vm.runInContext("copy('git status')",context).then(()=>{assert.equal(context.copied,'git status');context.window.isSecureContext=false;context.document.execCommand=()=>true;let restored=false,scrolled=false;context.document.activeElement={isConnected:true,focus(o){restored=o.preventScroll}};context.window.scrollTo=()=>{scrolled=true};return vm.runInContext("copy('fallback')",context).then(()=>{assert(restored);assert(scrolled);console.log('PASS: 2.656 entradas acessíveis, Lote 1 (39), Lote 2A (23), Lote 2B (37), Lote 3A (34), Lote 3B (31), Lote 4A (33), Lote 5A (29), Lote 5B (33) e Lote 6A (23) com revisão documental e doc_ref, seção Usuários e grupos (62/62) concluída, metadados de auditoria validados, atalho / com guardas estritas, sincronização de storage, foco de teclado adjacente e testes executados.')})});
+// Validação do Lote 6B (20 receitas de imagem de bloco, snapshots e resgate)
+const batch6BIds=new Set([
+  'ef2b1bc56d','265bb5c1f3','6a2a225129','96fcc44970','05b1319f36',
+  '30e33169d0','4e5da43f57','3d0f2f0f85','590b25f8f2','823ede1e8f',
+  'd96ac1c2bc','206eeb921c','1ec52828c6','75e310de79','6b97a68183',
+  '3dfa72585c','ee6b3f01e6','a5f82eab81','0901d7b127','53e1333a88'
+]);
+const batch6BRows=context.ATLAS_DATA.rows.filter(r=>batch6BIds.has(r.id));
+assert.equal(batch6BRows.length,20,'Lote 6B deve conter exatamente 20 receitas');
+for(const r of batch6BRows){
+  assert.equal(r.review_status,'documented',`Registro ${r.id} (${r.command}) deve ter review_status: documented`);
+  assert.equal(r.reviewed_on,'2026-10-13',`Registro ${r.id} (${r.command}) deve ter reviewed_on: 2026-10-13`);
+  assert(r.doc_ref&&(r.doc_ref.startsWith('https://manpages.debian.org/')||r.doc_ref.startsWith('https://github.com/')),`Registro ${r.id} (${r.command}) requer doc_ref Debian ou projeto`);
+  assert(!r.notes.includes('Mesma sintaxe em F/K'),`Registro ${r.id} (${r.command}) não deve conter nota genérica F/K`);
+}
+
+// Distribuição de risco do Lote 6B (11 CONSULTA, 6 ALTERA, 3 RISCO)
+const b6bConsulta=batch6BRows.filter(r=>r.risk==='CONSULTA');
+const b6bAltera=batch6BRows.filter(r=>r.risk==='ALTERA');
+const b6bRisco=batch6BRows.filter(r=>r.risk==='RISCO');
+assert.equal(b6bConsulta.length,11,'Lote 6B requer exatamente 11 receitas CONSULTA');
+assert.equal(b6bAltera.length,6,'Lote 6B requer exatamente 6 receitas ALTERA');
+assert.equal(b6bRisco.length,3,'Lote 6B requer exatamente 3 receitas RISCO');
+
+// Asserções técnicas específicas do Lote 6B
+const ddrescueRow=context.ATLAS_DATA.rows.find(r=>r.id==='6a2a225129');
+assert.equal(ddrescueRow?.risk,'ALTERA');
+assert(ddrescueRow?.notes?.includes('pula apenas a fase de raspagem'));
+assert(ddrescueRow?.notes?.includes('-f (--force)'));
+assert(!ddrescueRow?.notes?.includes('sobrescrito integralmente'));
+
+const partcloneRow=context.ATLAS_DATA.rows.find(r=>r.id==='4e5da43f57');
+assert.equal(partcloneRow?.risk,'CONSULTA');
+assert(partcloneRow?.name?.includes('(Referência)'));
+assert(partcloneRow?.notes?.includes('Entrada de referência informativa'));
+
+const clonezillaRow=context.ATLAS_DATA.rows.find(r=>r.id==='ef2b1bc56d');
+assert.equal(clonezillaRow?.risk,'CONSULTA');
+assert(clonezillaRow?.name?.includes('(Referência)'));
+assert(clonezillaRow?.notes?.includes('não constitua apagamento seguro de todos os setores'));
+assert(!clonezillaRow?.notes?.includes('impossibilidade de recuperação'));
+
+const testdiskRow=context.ATLAS_DATA.rows.find(r=>r.id==='a5f82eab81');
+assert.equal(testdiskRow?.risk,'RISCO');
+assert(testdiskRow?.notes?.includes('Classificado como RISCO'));
+assert(testdiskRow?.notes?.includes('imagem_lab.dd'));
+
+const snapperDelRow=context.ATLAS_DATA.rows.find(r=>r.id==='3dfa72585c');
+assert.equal(snapperDelRow?.risk,'RISCO');
+assert(snapperDelRow?.notes?.includes('delete --sync'));
+assert(snapperDelRow?.notes?.includes('assíncrona'));
+
+const snapperDelRange=context.ATLAS_DATA.rows.find(r=>r.id==='ee6b3f01e6');
+assert.equal(snapperDelRange?.risk,'RISCO');
+assert(snapperDelRange?.notes?.includes('--sync'));
+
+const snapperCfgRow=context.ATLAS_DATA.rows.find(r=>r.id==='1ec52828c6');
+assert(snapperCfgRow?.notes?.includes('thin-pool diretamente'));
+
+const timeshiftRow=context.ATLAS_DATA.rows.find(r=>r.id==='0901d7b127');
+assert.equal(timeshiftRow?.risk,'CONSULTA');
+assert(timeshiftRow?.notes?.includes('/home'));
+
+const zfsRow=context.ATLAS_DATA.rows.find(r=>r.id==='53e1333a88');
+assert.equal(zfsRow?.risk,'CONSULTA');
+assert(zfsRow?.notes?.includes('zpool list'));
+assert(zfsRow?.notes?.includes('-t filesystem,volume,snapshot'));
+
+const lvmHelpRow=context.ATLAS_DATA.rows.find(r=>r.id==='05b1319f36');
+assert.equal(lvmHelpRow?.risk,'CONSULTA');
+assert(lvmHelpRow?.name?.includes('(Referência)'));
+assert(lvmHelpRow?.notes?.includes('lvcreate --snapshot'));
+assert(!lvmHelpRow?.notes?.includes('lvsnapshot'));
+
+const lvremoveRow=context.ATLAS_DATA.rows.find(r=>r.id==='30e33169d0');
+assert.equal(lvremoveRow?.risk,'CONSULTA');
+assert(lvremoveRow?.name?.includes('(Referência)'));
+assert(lvremoveRow?.notes?.includes('devolve os physical extents'));
+assert(lvremoveRow?.notes?.includes('snapshots dependentes'));
+
+const pgDumpallRow=context.ATLAS_DATA.rows.find(r=>r.id==='3d0f2f0f85');
+assert.equal(pgDumpallRow?.risk,'ALTERA');
+assert.equal(pgDumpallRow?.example,'(umask 077 && set -C && pg_dumpall --globals-only > globais_v01.sql)');
+assert(pgDumpallRow?.notes?.includes('set -C impede sobrescrever'));
+assert(pgDumpallRow?.notes?.includes('--no-role-passwords'));
+
+const restoredrillRow=context.ATLAS_DATA.rows.find(r=>r.id==='d96ac1c2bc');
+assert.equal(restoredrillRow?.risk,'CONSULTA');
+assert(restoredrillRow?.name?.includes('(Referência)'));
+assert(restoredrillRow?.notes?.includes('PostgreSQL e MySQL'));
+
+// Conclusão total da seção "Backup sincronização e recuperação" (48/48 documentadas)
+const backupAllRows=context.ATLAS_DATA.rows.filter(r=>r.section==='Backup sincronização e recuperação');
+assert.equal(backupAllRows.length,48,'Seção Backup sincronização e recuperação deve possuir 48 receitas');
+assert(backupAllRows.every(r=>r.review_status==='documented'),'Todas as 48 receitas de Backup sincronização e recuperação devem estar documented');
+
+vm.runInContext("copy('git status')",context).then(()=>{assert.equal(context.copied,'git status');context.window.isSecureContext=false;context.document.execCommand=()=>true;let restored=false,scrolled=false;context.document.activeElement={isConnected:true,focus(o){restored=o.preventScroll}};context.window.scrollTo=()=>{scrolled=true};return vm.runInContext("copy('fallback')",context).then(()=>{assert(restored);assert(scrolled);console.log('PASS: 2.656 entradas acessíveis, Lotes 1 (39), 2A (23), 2B (37), 3A (34), 3B (31), 4A (33), 5A (29), 5B (33), 6A (23) e 6B (20) com revisão documental e doc_ref, seções Usuários e grupos (62/62) e Backup sincronização e recuperação (48/48) concluídas, metadados de auditoria validados, atalho / com guardas estritas, sincronização de storage, foco de teclado adjacente e testes executados.')})});
