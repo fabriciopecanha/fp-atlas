@@ -843,4 +843,103 @@ const backupAllRows=context.ATLAS_DATA.rows.filter(r=>r.section==='Backup sincro
 assert.equal(backupAllRows.length,48,'Seção Backup sincronização e recuperação deve possuir 48 receitas');
 assert(backupAllRows.every(r=>r.review_status==='documented'),'Todas as 48 receitas de Backup sincronização e recuperação devem estar documented');
 
-vm.runInContext("copy('git status')",context).then(()=>{assert.equal(context.copied,'git status');context.window.isSecureContext=false;context.document.execCommand=()=>true;let restored=false,scrolled=false;context.document.activeElement={isConnected:true,focus(o){restored=o.preventScroll}};context.window.scrollTo=()=>{scrolled=true};return vm.runInContext("copy('fallback')",context).then(()=>{assert(restored);assert(scrolled);console.log('PASS: 2.656 entradas acessíveis, Lotes 1 (39), 2A (23), 2B (37), 3A (34), 3B (31), 4A (33), 5A (29), 5B (33), 6A (23) e 6B (20) com revisão documental e doc_ref, seções Usuários e grupos (62/62) e Backup sincronização e recuperação (48/48) concluídas, metadados de auditoria validados, atalho / com guardas estritas, sincronização de storage, foco de teclado adjacente e testes executados.')})});
+// Retificação do Duplicity (Lote 6B)
+const duplicityRow=context.ATLAS_DATA.rows.find(r=>r.id==='96fcc44970');
+assert.equal(duplicityRow?.purpose,'Exibir a versão do utilitário de backup incremental cifrado.');
+assert(!duplicityRow?.purpose?.includes('e backends suportados'));
+
+// Validação do Lote 7 (12 receitas de Inicialização GRUB initramfs e recuperação)
+const batch7Ids=new Set([
+  '62397d80a3','5f3873f319','bb966fba58','5904e84973','add7dc4fca',
+  '04a63e5d80','1f91df5318','a0ca5fbdca','1b5bf3dc5e','086fcf533d',
+  '57fb84c29a','86020b05ed'
+]);
+const batch7Rows=context.ATLAS_DATA.rows.filter(r=>batch7Ids.has(r.id));
+assert.equal(batch7Rows.length,12,'Lote 7 deve conter exatamente 12 receitas');
+for(const r of batch7Rows){
+  assert.equal(r.review_status,'documented',`Registro ${r.id} (${r.command}) deve ter review_status: documented`);
+  assert.equal(r.reviewed_on,'2026-10-13',`Registro ${r.id} (${r.command}) deve ter reviewed_on: 2026-10-13`);
+  assert(r.doc_ref&&(r.doc_ref.startsWith('https://manpages.debian.org/')||r.doc_ref.startsWith('https://man.archlinux.org/')),`Registro ${r.id} (${r.command}) requer doc_ref Debian ou Arch`);
+  assert(!r.notes.includes('Mesma sintaxe em F/K'),`Registro ${r.id} (${r.command}) não deve conter nota genérica F/K`);
+}
+
+// Distribuição de risco do Lote 7 (4 CONSULTA, 7 ALTERA, 1 RISCO)
+const b7Consulta=batch7Rows.filter(r=>r.risk==='CONSULTA');
+const b7Altera=batch7Rows.filter(r=>r.risk==='ALTERA');
+const b7Risco=batch7Rows.filter(r=>r.risk==='RISCO');
+assert.equal(b7Consulta.length,4,'Lote 7 requer exatamente 4 receitas CONSULTA');
+assert.equal(b7Altera.length,7,'Lote 7 requer exatamente 7 receitas ALTERA');
+assert.equal(b7Risco.length,1,'Lote 7 requer exatamente 1 receita RISCO');
+
+// Asserções técnicas específicas do Lote 7
+const extundeleteRow=context.ATLAS_DATA.rows.find(r=>r.id==='5904e84973');
+assert.equal(extundeleteRow?.risk,'ALTERA');
+assert(extundeleteRow?.example?.includes('imagem_particao_lab.img'));
+assert(extundeleteRow?.notes?.includes('RECOVERED_FILES'));
+assert(extundeleteRow?.notes?.includes('saudável e separado'));
+
+const updateInitramfsRow=context.ATLAS_DATA.rows.find(r=>r.id==='086fcf533d');
+assert.equal(updateInitramfsRow?.risk,'ALTERA');
+assert(updateInitramfsRow?.example?.includes('6.1.0-25-amd64'));
+assert(updateInitramfsRow?.notes?.includes('6.1.0-25-amd64 é ilustrativa'));
+assert(updateInitramfsRow?.notes?.includes('$(uname -r)'));
+assert(updateInitramfsRow?.notes?.includes('chroot originado de mídia Live'));
+
+const grubInstallRow=context.ATLAS_DATA.rows.find(r=>r.id==='add7dc4fca');
+assert.equal(grubInstallRow?.risk,'RISCO');
+assert(grubInstallRow?.example?.includes('--boot-directory=/mnt/boot'));
+assert(grubInstallRow?.notes?.includes('EXCLUSIVO PARA VM OU LABORATÓRIO DESCARTÁVEL'));
+assert(grubInstallRow?.notes?.includes('/mnt/boot precisa corresponder ao boot do sistema recuperado'));
+assert(grubInstallRow?.notes?.includes('NÃO EXECUTAR grub2-install'));
+
+const vgscanRow=context.ATLAS_DATA.rows.find(r=>r.id==='86020b05ed');
+assert.equal(vgscanRow?.risk,'CONSULTA');
+assert(!vgscanRow?.purpose?.includes('cache do kernel'));
+assert(!vgscanRow?.notes?.includes('cache do kernel'));
+
+const archChrootRow=context.ATLAS_DATA.rows.find(r=>r.id==='62397d80a3');
+assert.equal(archChrootRow?.risk,'ALTERA');
+assert.equal(archChrootRow?.example,'sudo arch-chroot /mnt');
+
+const grubMkconfigRow=context.ATLAS_DATA.rows.find(r=>r.id==='04a63e5d80');
+assert.equal(grubMkconfigRow?.risk,'ALTERA');
+assert.equal(grubMkconfigRow?.example,'sudo grub-mkconfig -o /boot/grub/grub.cfg');
+
+const mkinitcpioRow=context.ATLAS_DATA.rows.find(r=>r.id==='a0ca5fbdca');
+assert.equal(mkinitcpioRow?.risk,'ALTERA');
+assert.equal(mkinitcpioRow?.example,'sudo mkinitcpio -P');
+
+const updateGrubRow=context.ATLAS_DATA.rows.find(r=>r.id==='1b5bf3dc5e');
+assert.equal(updateGrubRow?.risk,'ALTERA');
+assert.equal(updateGrubRow?.example,'sudo update-grub');
+
+const dracutRow=context.ATLAS_DATA.rows.find(r=>r.id==='5f3873f319');
+assert.equal(dracutRow?.risk,'CONSULTA');
+assert.equal(dracutRow?.example,'dracut --list-modules');
+
+const efibootmgrRow=context.ATLAS_DATA.rows.find(r=>r.id==='bb966fba58');
+assert.equal(efibootmgrRow?.risk,'CONSULTA');
+assert.equal(efibootmgrRow?.example,'sudo efibootmgr -v');
+
+const lvscanRow=context.ATLAS_DATA.rows.find(r=>r.id==='1f91df5318');
+assert.equal(lvscanRow?.risk,'CONSULTA');
+assert.equal(lvscanRow?.example,'sudo lvscan');
+
+const vgchangeRow=context.ATLAS_DATA.rows.find(r=>r.id==='57fb84c29a');
+assert.equal(vgchangeRow?.risk,'ALTERA');
+assert.equal(vgchangeRow?.example,'sudo vgchange -ay vg_teste');
+
+// Conclusão total da seção "Inicialização GRUB initramfs e recuperação" (12/12 documentadas)
+const initAllRows=context.ATLAS_DATA.rows.filter(r=>r.section==='Inicialização GRUB initramfs e recuperação');
+assert.equal(initAllRows.length,12,'Seção Inicialização GRUB initramfs e recuperação deve possuir 12 receitas');
+assert(initAllRows.every(r=>r.review_status==='documented'),'Todas as 12 receitas de Inicialização GRUB initramfs e recuperação devem estar documented');
+
+// Balanço geral do catálogo: 314 documentadas, 2342 pendentes, 0 testadas
+const totalDocumented=context.ATLAS_DATA.rows.filter(r=>r.review_status==='documented').length;
+const totalPending=context.ATLAS_DATA.rows.filter(r=>r.review_status==='pending'||!r.review_status).length;
+const totalTested=context.ATLAS_DATA.rows.filter(r=>r.review_status==='tested').length;
+assert.equal(totalDocumented,314,'Total de receitas documentadas deve ser 314');
+assert.equal(totalPending,2342,'Total de receitas pendentes deve ser 2342');
+assert.equal(totalTested,0,'Total de receitas testadas em bancada deve ser estritamente 0');
+
+vm.runInContext("copy('git status')",context).then(()=>{assert.equal(context.copied,'git status');context.window.isSecureContext=false;context.document.execCommand=()=>true;let restored=false,scrolled=false;context.document.activeElement={isConnected:true,focus(o){restored=o.preventScroll}};context.window.scrollTo=()=>{scrolled=true};return vm.runInContext("copy('fallback')",context).then(()=>{assert(restored);assert(scrolled);console.log('PASS: 2.656 entradas acessíveis, Lotes 1 a 7 com revisão documental e doc_ref, seções Usuários e grupos (62/62), Backup (48/48) e Inicialização (12/12) concluídas, metadados de auditoria validados, atalho / com guardas estritas, sincronização de storage, foco de teclado adjacente e testes executados.')})});
