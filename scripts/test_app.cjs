@@ -978,6 +978,16 @@ assert.equal(bootcSwitchRow?.risk,'RISCO');
 assert(bootcSwitchRow?.notes?.includes('CARÁTER HISTÓRICO DE LABORATÓRIO'));
 assert(bootcSwitchRow?.notes?.includes('quay.io/fedora/fedora-bootc:41'));
 
+const bootcCheckRow=context.ATLAS_DATA.rows.find(r=>r.id==='2f1e88dcdc');
+assert.equal(bootcCheckRow?.risk,'CONSULTA');
+assert(bootcCheckRow?.notes?.includes('baixando apenas metadados, sem preparar um novo deployment'));
+assert(!bootcCheckRow?.notes?.includes('sem baixar'));
+
+const dnfUpgradeRow=context.ATLAS_DATA.rows.find(r=>r.id==='b93b396828');
+assert.equal(dnfUpgradeRow?.risk,'ALTERA');
+assert(dnfUpgradeRow?.notes?.includes('/var/cache/libdnf5/'));
+assert(!dnfUpgradeRow?.notes?.includes('daemon de segundo plano'));
+
 const dnfHistoryRow=context.ATLAS_DATA.rows.find(r=>r.id==='983790f794');
 assert.equal(dnfHistoryRow?.risk,'CONSULTA');
 assert.equal(dnfHistoryRow?.example,'dnf history list');
