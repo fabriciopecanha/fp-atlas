@@ -934,12 +934,88 @@ const initAllRows=context.ATLAS_DATA.rows.filter(r=>r.section==='Inicialização
 assert.equal(initAllRows.length,12,'Seção Inicialização GRUB initramfs e recuperação deve possuir 12 receitas');
 assert(initAllRows.every(r=>r.review_status==='documented'),'Todas as 12 receitas de Inicialização GRUB initramfs e recuperação devem estar documented');
 
-// Balanço geral do catálogo: 314 documentadas, 2342 pendentes, 0 testadas
+// Validação do Lote 8 (29 receitas de Pacotes Fedora RPM e Flatpak)
+const batch8Ids=new Set([
+  '78971b71d4','2f1e88dcdc','68158138b3','52365f1278','8395ed36dd',
+  'cffc2856b0','923d355d94','28ad3a6dba','b7230990d6','ec00b7220d',
+  'b93b396828','88b308107e','44ffbad2c3','b35ed5a2b8','3f1ca81658',
+  '5107b51949','983790f794','e1e4aa13a1','ec57c72af5','5e94c50525',
+  '7a05b8309b','6a75fa1e90','e2523c7ef8','0b15762c04','93cde48331',
+  '264712c19f','9cbf7e9b54','7f5179f55f','e97490000b'
+]);
+const batch8Rows=context.ATLAS_DATA.rows.filter(r=>batch8Ids.has(r.id));
+assert.equal(batch8Rows.length,29,'Lote 8 deve conter exatamente 29 receitas');
+for(const r of batch8Rows){
+  assert.equal(r.review_status,'documented',`Registro ${r.id} (${r.command}) deve ter review_status: documented`);
+  assert.equal(r.reviewed_on,'2026-10-13',`Registro ${r.id} (${r.command}) deve ter reviewed_on: 2026-10-13`);
+  assert(r.doc_ref&&(r.doc_ref.startsWith('https://bootc.dev/')||r.doc_ref.startsWith('https://dnf5.readthedocs.io/')||r.doc_ref.startsWith('https://manpages.debian.org/')||r.doc_ref.startsWith('https://docs.flatpak.org/')),`Registro ${r.id} (${r.command}) requer doc_ref canônico`);
+  assert(!r.notes.includes('Mesma sintaxe em F/K'),`Registro ${r.id} (${r.command}) não deve conter nota genérica F/K`);
+}
+
+// Distribuição de risco do Lote 8 (17 CONSULTA, 10 ALTERA, 1 USO, 1 RISCO)
+const b8Consulta=batch8Rows.filter(r=>r.risk==='CONSULTA');
+const b8Altera=batch8Rows.filter(r=>r.risk==='ALTERA');
+const b8Uso=batch8Rows.filter(r=>r.risk==='USO');
+const b8Risco=batch8Rows.filter(r=>r.risk==='RISCO');
+assert.equal(b8Consulta.length,17,'Lote 8 requer exatamente 17 receitas CONSULTA');
+assert.equal(b8Altera.length,10,'Lote 8 requer exatamente 10 receitas ALTERA');
+assert.equal(b8Uso.length,1,'Lote 8 requer exatamente 1 receita USO');
+assert.equal(b8Risco.length,1,'Lote 8 requer exatamente 1 receita RISCO');
+
+// Asserções técnicas específicas do Lote 8
+const bootcStatusRow=context.ATLAS_DATA.rows.find(r=>r.id==='78971b71d4');
+assert.equal(bootcStatusRow?.risk,'CONSULTA');
+assert(bootcStatusRow?.notes?.includes('REQUISITO DE AMBIENTE'));
+assert(bootcStatusRow?.notes?.includes('imagens imutáveis'));
+
+const bootcUpgradeRow=context.ATLAS_DATA.rows.find(r=>r.id==='68158138b3');
+assert.equal(bootcUpgradeRow?.risk,'ALTERA');
+assert(bootcUpgradeRow?.notes?.includes('--apply'));
+assert(bootcUpgradeRow?.notes?.includes('reinicialização automática'));
+
+const bootcSwitchRow=context.ATLAS_DATA.rows.find(r=>r.id==='52365f1278');
+assert.equal(bootcSwitchRow?.risk,'RISCO');
+assert(bootcSwitchRow?.notes?.includes('CARÁTER HISTÓRICO DE LABORATÓRIO'));
+assert(bootcSwitchRow?.notes?.includes('quay.io/fedora/fedora-bootc:41'));
+
+const dnfHistoryRow=context.ATLAS_DATA.rows.find(r=>r.id==='983790f794');
+assert.equal(dnfHistoryRow?.risk,'CONSULTA');
+assert.equal(dnfHistoryRow?.example,'dnf history list');
+assert(dnfHistoryRow?.notes?.includes('EXIGÊNCIA DO DNF5'));
+
+const dnfUpgradeAssumenoRow=context.ATLAS_DATA.rows.find(r=>r.id==='b7230990d6');
+assert.equal(dnfUpgradeAssumenoRow?.risk,'CONSULTA');
+assert(dnfUpgradeAssumenoRow?.notes?.includes('RESSALVA DE ESCRITA DE METADADOS'));
+assert(dnfUpgradeAssumenoRow?.notes?.includes('/var/cache/libdnf5/'));
+
+const flatpakRunRow=context.ATLAS_DATA.rows.find(r=>r.id==='e1e4aa13a1');
+assert.equal(flatpakRunRow?.risk,'USO');
+assert(flatpakRunRow?.notes?.includes('CLASSIFICADO COMO USO'));
+assert(flatpakRunRow?.notes?.includes('~/.var/app/'));
+
+const flatpakListRow=context.ATLAS_DATA.rows.find(r=>r.id==='5e94c50525');
+assert.equal(flatpakListRow?.risk,'CONSULTA');
+assert.equal(flatpakListRow?.example,'flatpak list --app');
+
+const rpmVRow=context.ATLAS_DATA.rows.find(r=>r.id==='e97490000b');
+assert.equal(rpmVRow?.risk,'CONSULTA');
+assert.equal(rpmVRow?.example,'rpm -V bash');
+
+// Conclusão total da seção "Pacotes Fedora RPM e Flatpak" (29/29 documentadas)
+const fedoraAllRows=context.ATLAS_DATA.rows.filter(r=>r.section==='Pacotes Fedora RPM e Flatpak');
+assert.equal(fedoraAllRows.length,29,'Seção Pacotes Fedora RPM e Flatpak deve possuir 29 receitas');
+assert(fedoraAllRows.every(r=>r.review_status==='documented'),'Todas as 29 receitas de Pacotes Fedora RPM e Flatpak devem estar documented');
+
+// Balanço do Volume 3: 116 pendentes restantes (62 Debian/Python + 54 Outras distros)
+const vol3Pending=context.ATLAS_DATA.rows.filter(r=>String(r.vol)==='3'&&r.review_status!=='documented').length;
+assert.equal(vol3Pending,116,'Volume 3 deve possuir exatamente 116 receitas pendentes');
+
+// Balanço geral do catálogo: 343 documentadas, 2313 pendentes, 0 testadas
 const totalDocumented=context.ATLAS_DATA.rows.filter(r=>r.review_status==='documented').length;
 const totalPending=context.ATLAS_DATA.rows.filter(r=>r.review_status==='pending'||!r.review_status).length;
 const totalTested=context.ATLAS_DATA.rows.filter(r=>r.review_status==='tested').length;
-assert.equal(totalDocumented,314,'Total de receitas documentadas deve ser 314');
-assert.equal(totalPending,2342,'Total de receitas pendentes deve ser 2342');
+assert.equal(totalDocumented,343,'Total de receitas documentadas deve ser 343');
+assert.equal(totalPending,2313,'Total de receitas pendentes deve ser 2313');
 assert.equal(totalTested,0,'Total de receitas testadas em bancada deve ser estritamente 0');
 
-vm.runInContext("copy('git status')",context).then(()=>{assert.equal(context.copied,'git status');context.window.isSecureContext=false;context.document.execCommand=()=>true;let restored=false,scrolled=false;context.document.activeElement={isConnected:true,focus(o){restored=o.preventScroll}};context.window.scrollTo=()=>{scrolled=true};return vm.runInContext("copy('fallback')",context).then(()=>{assert(restored);assert(scrolled);console.log('PASS: 2.656 entradas acessíveis, Lotes 1 a 7 com revisão documental e doc_ref, seções Usuários e grupos (62/62), Backup (48/48) e Inicialização (12/12) concluídas, metadados de auditoria validados, atalho / com guardas estritas, sincronização de storage, foco de teclado adjacente e testes executados.')})});
+vm.runInContext("copy('git status')",context).then(()=>{assert.equal(context.copied,'git status');context.window.isSecureContext=false;context.document.execCommand=()=>true;let restored=false,scrolled=false;context.document.activeElement={isConnected:true,focus(o){restored=o.preventScroll}};context.window.scrollTo=()=>{scrolled=true};return vm.runInContext("copy('fallback')",context).then(()=>{assert(restored);assert(scrolled);console.log('PASS: 2.656 entradas acessíveis, Lotes 1 a 8 com revisão documental e doc_ref, seções Usuários e grupos (62/62), Backup (48/48), Inicialização (12/12) e Fedora RPM/Flatpak (29/29) concluídas, 116 pendentes no Vol 3, metadados de auditoria validados, atalho / com guardas estritas, sincronização de storage, foco de teclado adjacente e testes executados.')})});
