@@ -1088,6 +1088,32 @@ assert.equal(aptFileSearchRow?.example,'apt-file search usr/bin/dig');
 assert(aptFileSearchRow?.notes?.includes('ÍNDICES CONTENTS'));
 assert(aptFileSearchRow?.notes?.includes('sem a barra inicial'));
 
+const aptFileRegexRow=context.ATLAS_DATA.rows.find(r=>r.id==='89fb2e74e3');
+assert.equal(aptFileRegexRow?.risk,'CONSULTA');
+assert(aptFileRegexRow?.notes?.includes('Perl'));
+assert(!aptFileRegexRow?.notes?.includes('POSIX'));
+
+const aptFileListRow=context.ATLAS_DATA.rows.find(r=>r.id==='447f2ed465');
+assert.equal(aptFileListRow?.risk,'CONSULTA');
+assert(aptFileListRow?.notes?.includes('lista de caminhos de arquivos'));
+assert(!aptFileListRow?.notes?.includes('árvore de diretórios'));
+
+const aptMarkShowHoldRow=context.ATLAS_DATA.rows.find(r=>r.id==='eb852b6c71');
+assert.equal(aptMarkShowHoldRow?.risk,'CONSULTA');
+assert(aptMarkShowHoldRow?.notes?.includes('seleções de pacotes do dpkg'));
+assert(!aptMarkShowHoldRow?.notes?.includes('extended_states'));
+
+const aptMarkUnholdRow=context.ATLAS_DATA.rows.find(r=>r.id==='4a45470113');
+assert.equal(aptMarkUnholdRow?.risk,'ALTERA');
+assert(aptMarkUnholdRow?.notes?.includes('seleções de pacotes do dpkg'));
+assert(!aptMarkUnholdRow?.notes?.includes('extended_states'));
+
+const aptCacheSearchRow=context.ATLAS_DATA.rows.find(r=>r.id==='3d8caecf24');
+assert.equal(aptCacheSearchRow?.risk,'CONSULTA');
+assert(aptCacheSearchRow?.notes?.includes('pode regenerar caches auxiliares'));
+assert(!aptCacheSearchRow?.notes?.includes('sem escrita'));
+assert(!aptCacheSearchRow?.notes?.includes('mais eficiente'));
+
 const aptGetInstallRow=context.ATLAS_DATA.rows.find(r=>r.id==='d50c35484d');
 assert.equal(aptGetInstallRow?.risk,'ALTERA');
 assert.equal(aptGetInstallRow?.example,'sudo apt-get install curl');
