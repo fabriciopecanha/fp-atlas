@@ -149,14 +149,13 @@ assert(clamRow?.purpose?.includes('sem lixeira'));
 
 const aptRow=context.ATLAS_DATA.rows.find(r=>r.id==='d612e7533c');
 assert.equal(aptRow?.risk,'RISCO');
-assert(aptRow?.purpose?.includes('gerenciadas pelo pacote'));
-assert(aptRow?.notes?.includes('destrutiva'));
-assert(aptRow?.notes?.includes('/etc'));
-assert(aptRow?.notes?.includes('pasta pessoal'));
-assert(aptRow?.notes?.includes('.rpmsave'));
+assert(aptRow?.purpose?.includes('configurações gerenciadas, incluindo ações dos scripts de manutenção'));
+assert(aptRow?.notes?.includes('ESCOPO DO PURGE'));
+assert(aptRow?.notes?.includes('postrm purge'));
+assert(aptRow?.notes?.includes('$HOME'));
 
 const aptRemoveRow=context.ATLAS_DATA.rows.find(r=>r.id==='531dfc8dab');
-assert(aptRemoveRow?.purpose?.includes('gerenciadas pelo pacote'));
+assert(aptRemoveRow?.purpose?.includes('configurações gerenciadas'));
 
 const podmanRow=context.ATLAS_DATA.rows.find(r=>r.id==='dac96ba421');
 assert(podmanRow?.example?.includes('{{.ID}}'));
@@ -1016,16 +1015,93 @@ const fedoraAllRows=context.ATLAS_DATA.rows.filter(r=>r.section==='Pacotes Fedor
 assert.equal(fedoraAllRows.length,29,'Seção Pacotes Fedora RPM e Flatpak deve possuir 29 receitas');
 assert(fedoraAllRows.every(r=>r.review_status==='documented'),'Todas as 29 receitas de Pacotes Fedora RPM e Flatpak devem estar documented');
 
-// Balanço do Volume 3: 116 pendentes restantes (62 Debian/Python + 54 Outras distros)
-const vol3Pending=context.ATLAS_DATA.rows.filter(r=>String(r.vol)==='3'&&r.review_status!=='documented').length;
-assert.equal(vol3Pending,116,'Volume 3 deve possuir exatamente 116 receitas pendentes');
+// Validação do Lote 9A (32 receitas de Subsistema APT de Pacotes Kali Debian e Python)
+const batch9AIds=new Set([
+  'd6515951de','8ce135dea6','dd4da88b45','da20408e7c','3a949a95cc',
+  '531dfc8dab','40c151d023','782f0b218e','e6aedaac15','3d8caecf24',
+  '9975df2392','0c247c2378','452970eb86','efee9abd32','abbc06a674',
+  'ce627b552f','447f2ed465','89fb2e74e3','b203c8fd59','d50c35484d',
+  '29abbe6ed2','d612e7533c','0d995f6e73','52198be977','f36955e410',
+  '66a50a4709','f3bf77e3b5','c284da238d','4a45470113','f6e34e7644',
+  'eb852b6c71','f65d2f4fc5'
+]);
+const batch9ARows=context.ATLAS_DATA.rows.filter(r=>batch9AIds.has(r.id));
+assert.equal(batch9ARows.length,32,'Lote 9A deve conter exatamente 32 receitas');
+for(const r of batch9ARows){
+  assert.equal(r.review_status,'documented',`Registro ${r.id} (${r.command}) deve ter review_status: documented`);
+  assert.equal(r.reviewed_on,'2026-10-14',`Registro ${r.id} (${r.command}) deve ter reviewed_on: 2026-10-14`);
+  assert(r.doc_ref&&r.doc_ref.startsWith('https://manpages.debian.org/'),`Registro ${r.id} (${r.command}) requer doc_ref Debian Bookworm`);
+  assert(!r.notes.includes('Mesma sintaxe em F/K'),`Registro ${r.id} (${r.command}) não deve conter nota genérica F/K`);
+}
 
-// Balanço geral do catálogo: 343 documentadas, 2313 pendentes, 0 testadas
+// Distribuição de risco do Lote 9A (17 CONSULTA, 14 ALTERA, 1 RISCO)
+const b9aConsulta=batch9ARows.filter(r=>r.risk==='CONSULTA');
+const b9aAltera=batch9ARows.filter(r=>r.risk==='ALTERA');
+const b9aRisco=batch9ARows.filter(r=>r.risk==='RISCO');
+assert.equal(b9aConsulta.length,17,'Lote 9A requer exatamente 17 receitas CONSULTA');
+assert.equal(b9aAltera.length,14,'Lote 9A requer exatamente 14 receitas ALTERA');
+assert.equal(b9aRisco.length,1,'Lote 9A requer exatamente 1 receita RISCO');
+
+// Asserções técnicas específicas do Lote 9A
+const aptUpgradeRow=context.ATLAS_DATA.rows.find(r=>r.id==='40c151d023');
+assert.equal(aptUpgradeRow?.risk,'ALTERA');
+assert(aptUpgradeRow?.notes?.includes('DIFERENÇA DE UPGRADE'));
+assert(aptUpgradeRow?.notes?.includes('novas dependências podem ser instaladas'));
+assert(aptUpgradeRow?.notes?.includes('sob nenhuma circunstância pacotes atualmente instalados serão removidos'));
+
+const aptGetUpgradeRow=context.ATLAS_DATA.rows.find(r=>r.id==='0d995f6e73');
+assert.equal(aptGetUpgradeRow?.risk,'ALTERA');
+assert(aptGetUpgradeRow?.notes?.includes('DIFERENÇA DE UPGRADE'));
+assert(aptGetUpgradeRow?.notes?.includes('sob nenhuma circunstância ele instala pacotes novos nem remove pacotes existentes'));
+
+const purgeRow=context.ATLAS_DATA.rows.find(r=>r.id==='d612e7533c');
+assert.equal(purgeRow?.risk,'RISCO');
+assert.equal(purgeRow?.purpose,'Remover o pacote e suas configurações gerenciadas, incluindo ações dos scripts de manutenção.');
+assert(purgeRow?.notes?.includes('ESCOPO DO PURGE'));
+assert(purgeRow?.notes?.includes('postrm purge'));
+assert(purgeRow?.notes?.includes('NÃO apaga nem promete limpar arquivos pessoais, dados de aplicação ou configurações no diretório pessoal do usuário ($HOME)'));
+
+const aptSimulateRow=context.ATLAS_DATA.rows.find(r=>r.id==='8ce135dea6');
+assert.equal(aptSimulateRow?.risk,'CONSULTA');
+assert(aptSimulateRow?.notes?.includes('LIMITAÇÕES DA SIMULAÇÃO'));
+assert(aptSimulateRow?.notes?.includes('não bloqueia os bancos de dados do APT/dpkg'));
+
+const aptMarkShowManualRow=context.ATLAS_DATA.rows.find(r=>r.id==='f6e34e7644');
+assert.equal(aptMarkShowManualRow?.risk,'CONSULTA');
+assert.equal(aptMarkShowManualRow?.purpose,'Listar pacotes marcados como instalados manualmente.');
+assert(aptMarkShowManualRow?.notes?.includes('ORIGEM DA MARCAÇÃO'));
+assert(aptMarkShowManualRow?.notes?.includes('não comprova quem executou a instalação'));
+
+const aptMarkHoldRow=context.ATLAS_DATA.rows.find(r=>r.id==='c284da238d');
+assert.equal(aptMarkHoldRow?.risk,'ALTERA');
+assert.equal(aptMarkHoldRow?.purpose,'Marcar um pacote como retido, impedindo instalação, atualização ou remoção automáticas.');
+assert(aptMarkHoldRow?.notes?.includes('ALCANCE DO BLOQUEIO'));
+
+const aptMarkAutoRow=context.ATLAS_DATA.rows.find(r=>r.id==='f3bf77e3b5');
+assert.equal(aptMarkAutoRow?.risk,'ALTERA');
+assert(aptMarkAutoRow?.notes?.includes('NÃO remove o pacote imediatamente'));
+assert(aptMarkAutoRow?.notes?.includes('elegível para uma futura remoção pelo comando autoremove'));
+
+const aptFileSearchRow=context.ATLAS_DATA.rows.find(r=>r.id==='abbc06a674');
+assert.equal(aptFileSearchRow?.risk,'CONSULTA');
+assert.equal(aptFileSearchRow?.example,'apt-file search usr/bin/dig');
+assert(aptFileSearchRow?.notes?.includes('ÍNDICES CONTENTS'));
+assert(aptFileSearchRow?.notes?.includes('sem a barra inicial'));
+
+const aptGetInstallRow=context.ATLAS_DATA.rows.find(r=>r.id==='d50c35484d');
+assert.equal(aptGetInstallRow?.risk,'ALTERA');
+assert.equal(aptGetInstallRow?.example,'sudo apt-get install curl');
+
+// Balanço do Volume 3: 84 pendentes restantes (13 dpkg + 17 python + 54 outras distros)
+const vol3Pending=context.ATLAS_DATA.rows.filter(r=>String(r.vol)==='3'&&r.review_status!=='documented').length;
+assert.equal(vol3Pending,84,'Volume 3 deve possuir exatamente 84 receitas pendentes');
+
+// Balanço geral do catálogo: 375 documentadas, 2281 pendentes, 0 testadas
 const totalDocumented=context.ATLAS_DATA.rows.filter(r=>r.review_status==='documented').length;
 const totalPending=context.ATLAS_DATA.rows.filter(r=>r.review_status==='pending'||!r.review_status).length;
 const totalTested=context.ATLAS_DATA.rows.filter(r=>r.review_status==='tested').length;
-assert.equal(totalDocumented,343,'Total de receitas documentadas deve ser 343');
-assert.equal(totalPending,2313,'Total de receitas pendentes deve ser 2313');
+assert.equal(totalDocumented,375,'Total de receitas documentadas deve ser 375');
+assert.equal(totalPending,2281,'Total de receitas pendentes deve ser 2281');
 assert.equal(totalTested,0,'Total de receitas testadas em bancada deve ser estritamente 0');
 
-vm.runInContext("copy('git status')",context).then(()=>{assert.equal(context.copied,'git status');context.window.isSecureContext=false;context.document.execCommand=()=>true;let restored=false,scrolled=false;context.document.activeElement={isConnected:true,focus(o){restored=o.preventScroll}};context.window.scrollTo=()=>{scrolled=true};return vm.runInContext("copy('fallback')",context).then(()=>{assert(restored);assert(scrolled);console.log('PASS: 2.656 entradas acessíveis, Lotes 1 a 8 com revisão documental e doc_ref, seções Usuários e grupos (62/62), Backup (48/48), Inicialização (12/12) e Fedora RPM/Flatpak (29/29) concluídas, 116 pendentes no Vol 3, metadados de auditoria validados, atalho / com guardas estritas, sincronização de storage, foco de teclado adjacente e testes executados.')})});
+vm.runInContext("copy('git status')",context).then(()=>{assert.equal(context.copied,'git status');context.window.isSecureContext=false;context.document.execCommand=()=>true;let restored=false,scrolled=false;context.document.activeElement={isConnected:true,focus(o){restored=o.preventScroll}};context.window.scrollTo=()=>{scrolled=true};return vm.runInContext("copy('fallback')",context).then(()=>{assert(restored);assert(scrolled);console.log('PASS: 2.656 entradas acessíveis, Lotes 1 a 9A com revisão documental e doc_ref, seções Usuários e grupos (62/62), Backup (48/48), Inicialização (12/12) e Fedora RPM/Flatpak (29/29) concluídas, Lote 9A (32/32) concluído, 84 pendentes no Vol 3, metadados de auditoria validados, atalho / com guardas estritas, sincronização de storage, foco de teclado adjacente e testes executados.')})});
