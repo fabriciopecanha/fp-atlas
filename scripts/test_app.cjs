@@ -1090,7 +1090,8 @@ assert(aptFileSearchRow?.notes?.includes('sem a barra inicial'));
 
 const aptFileRegexRow=context.ATLAS_DATA.rows.find(r=>r.id==='89fb2e74e3');
 assert.equal(aptFileRegexRow?.risk,'CONSULTA');
-assert(aptFileRegexRow?.notes?.includes('Perl'));
+assert(aptFileRegexRow?.notes?.includes('expressão regular Perl'));
+assert(!aptFileRegexRow?.notes?.includes('PCRE'));
 assert(!aptFileRegexRow?.notes?.includes('POSIX'));
 
 const aptFileListRow=context.ATLAS_DATA.rows.find(r=>r.id==='447f2ed465');
@@ -1118,16 +1119,112 @@ const aptGetInstallRow=context.ATLAS_DATA.rows.find(r=>r.id==='d50c35484d');
 assert.equal(aptGetInstallRow?.risk,'ALTERA');
 assert.equal(aptGetInstallRow?.example,'sudo apt-get install curl');
 
-// Balanço do Volume 3: 84 pendentes restantes (13 dpkg + 17 python + 54 outras distros)
-const vol3Pending=context.ATLAS_DATA.rows.filter(r=>String(r.vol)==='3'&&r.review_status!=='documented').length;
-assert.equal(vol3Pending,84,'Volume 3 deve possuir exatamente 84 receitas pendentes');
+// Validação do Lote 9B (13 receitas de dpkg, dpkg-query e update-alternatives)
+const batch9BIds=new Set([
+  'c45c9af5c3','6ca6fa5e76','c75f0c3fd5','7e61aa73bd','d5e0de2c8d',
+  'bf7f407e7c','86a16ab5cd','c7ad2617b9','bb0cefc864','479ab4b051',
+  'f39bd95857','812df78080','48f03dc703'
+]);
+const batch9BRows=context.ATLAS_DATA.rows.filter(r=>batch9BIds.has(r.id));
+assert.equal(batch9BRows.length,13,'Lote 9B deve conter exatamente 13 receitas');
+for(const r of batch9BRows){
+  assert.equal(r.review_status,'documented',`Registro ${r.id} (${r.command}) deve ter review_status: documented`);
+  assert.equal(r.reviewed_on,'2026-10-14',`Registro ${r.id} (${r.command}) deve ter reviewed_on: 2026-10-14`);
+  assert(r.doc_ref&&r.doc_ref.startsWith('https://manpages.debian.org/'),`Registro ${r.id} (${r.command}) requer doc_ref Debian Bookworm`);
+  assert(!r.notes.includes('Mesma sintaxe em F/K'),`Registro ${r.id} (${r.command}) não deve conter nota genérica F/K`);
+}
 
-// Balanço geral do catálogo: 375 documentadas, 2281 pendentes, 0 testadas
+// Distribuição de risco do Lote 9B (11 CONSULTA, 2 ALTERA, 0 RISCO)
+const b9bConsulta=batch9BRows.filter(r=>r.risk==='CONSULTA');
+const b9bAltera=batch9BRows.filter(r=>r.risk==='ALTERA');
+const b9bRisco=batch9BRows.filter(r=>r.risk==='RISCO');
+assert.equal(b9bConsulta.length,11,'Lote 9B requer exatamente 11 receitas CONSULTA');
+assert.equal(b9bAltera.length,2,'Lote 9B requer exatamente 2 receitas ALTERA');
+assert.equal(b9bRisco.length,0,'Lote 9B requer 0 receitas RISCO');
+
+// Asserções técnicas específicas do Lote 9B
+const dpkgInstallRow=context.ATLAS_DATA.rows.find(r=>r.id==='c45c9af5c3');
+assert.equal(dpkgInstallRow?.risk,'ALTERA');
+assert.equal(dpkgInstallRow?.example,'sudo dpkg -i pacote_lab.deb');
+assert(dpkgInstallRow?.notes?.includes('pacote_lab.deb é ilustrativo'));
+assert(dpkgInstallRow?.notes?.includes('arquitetura compatível'));
+assert(dpkgInstallRow?.notes?.includes('origem confiável'));
+assert(dpkgInstallRow?.notes?.includes('preinst e postinst'));
+assert(dpkgInstallRow?.notes?.includes('privilégios administrativos'));
+assert(dpkgInstallRow?.notes?.includes('unconfigured'));
+assert(dpkgInstallRow?.notes?.includes('Pre-Depends'));
+assert(dpkgInstallRow?.notes?.includes('sudo apt-get install -f'));
+
+const dpkgRemoveRow=context.ATLAS_DATA.rows.find(r=>r.id==='6ca6fa5e76');
+assert.equal(dpkgRemoveRow?.risk,'ALTERA');
+assert.equal(dpkgRemoveRow?.example,'sudo dpkg -r curl');
+assert(dpkgRemoveRow?.notes?.includes('status residual "rc"'));
+assert(dpkgRemoveRow?.notes?.includes('arquivos de configuração intactos'));
+
+const dpkgListRow=context.ATLAS_DATA.rows.find(r=>r.id==='c75f0c3fd5');
+assert.equal(dpkgListRow?.risk,'CONSULTA');
+assert(dpkgListRow?.notes?.includes('leitura humana'));
+assert(dpkgListRow?.notes?.includes('dpkg-query com -W e --showformat'));
+
+const dpkgListFilesRow=context.ATLAS_DATA.rows.find(r=>r.id==='7e61aa73bd');
+assert.equal(dpkgListFilesRow?.risk,'CONSULTA');
+assert(dpkgListFilesRow?.notes?.includes('registros estáticos locais'));
+assert(dpkgListFilesRow?.notes?.includes('update-alternatives'));
+
+const dpkgContentsRow=context.ATLAS_DATA.rows.find(r=>r.id==='d5e0de2c8d');
+assert.equal(dpkgContentsRow?.risk,'CONSULTA');
+assert.equal(dpkgContentsRow?.example,'dpkg -c pacote_lab.deb');
+assert(dpkgContentsRow?.notes?.includes('pacote_lab.deb é ilustrativo'));
+assert(dpkgContentsRow?.notes?.includes('dpkg-deb --contents'));
+
+const dpkgSearchRow=context.ATLAS_DATA.rows.find(r=>r.id==='bf7f407e7c');
+assert.equal(dpkgSearchRow?.risk,'CONSULTA');
+assert(dpkgSearchRow?.notes?.includes('registros estáticos locais'));
+assert(dpkgSearchRow?.notes?.includes('não identifica arquivos criados dinamicamente'));
+
+const dpkgQuerySearchBashRow=context.ATLAS_DATA.rows.find(r=>r.id==='86a16ab5cd');
+assert.equal(dpkgQuerySearchBashRow?.risk,'CONSULTA');
+assert(dpkgQuerySearchBashRow?.notes?.includes('usrmerge'));
+assert(dpkgQuerySearchBashRow?.notes?.includes('registros locais estáticos'));
+assert(dpkgQuerySearchBashRow?.notes?.includes('não inclui arquivos gerados dinamicamente'));
+
+const dpkgQueryListRow=context.ATLAS_DATA.rows.find(r=>r.id==='c7ad2617b9');
+assert.equal(dpkgQueryListRow?.risk,'CONSULTA');
+assert(dpkgQueryListRow?.notes?.includes('leitura humana'));
+assert(dpkgQueryListRow?.notes?.includes('not-installed'));
+assert(dpkgQueryListRow?.notes?.includes('-W com --showformat'));
+assert(!dpkgQueryListRow?.notes?.includes('estável para scripts'));
+
+const dpkgQueryListPatternRow=context.ATLAS_DATA.rows.find(r=>r.id==='bb0cefc864');
+assert.equal(dpkgQueryListPatternRow?.risk,'CONSULTA');
+assert(dpkgQueryListPatternRow?.notes?.includes('-W com --showformat'));
+
+const dpkgQueryListFilesRow=context.ATLAS_DATA.rows.find(r=>r.id==='479ab4b051');
+assert.equal(dpkgQueryListFilesRow?.risk,'CONSULTA');
+assert(dpkgQueryListFilesRow?.notes?.includes('registros estáticos locais'));
+
+const dpkgQueryStatusRow=context.ATLAS_DATA.rows.find(r=>r.id==='f39bd95857');
+assert.equal(dpkgQueryStatusRow?.risk,'CONSULTA');
+assert(dpkgQueryStatusRow?.notes?.includes('/var/lib/dpkg/status'));
+
+const dpkgQuerySearchDirRow=context.ATLAS_DATA.rows.find(r=>r.id==='812df78080');
+assert.equal(dpkgQuerySearchDirRow?.risk,'CONSULTA');
+assert(dpkgQuerySearchDirRow?.notes?.includes('registros estáticos locais'));
+
+const updateAlternativesRow=context.ATLAS_DATA.rows.find(r=>r.id==='48f03dc703');
+assert.equal(updateAlternativesRow?.risk,'CONSULTA');
+assert(updateAlternativesRow?.notes?.includes('alternatives'));
+
+// Balanço do Volume 3: 71 pendentes restantes (17 python + 54 outras distros)
+const vol3Pending=context.ATLAS_DATA.rows.filter(r=>String(r.vol)==='3'&&r.review_status!=='documented').length;
+assert.equal(vol3Pending,71,'Volume 3 deve possuir exatamente 71 receitas pendentes');
+
+// Balanço geral do catálogo: 388 documentadas, 2268 pendentes, 0 testadas
 const totalDocumented=context.ATLAS_DATA.rows.filter(r=>r.review_status==='documented').length;
 const totalPending=context.ATLAS_DATA.rows.filter(r=>r.review_status==='pending'||!r.review_status).length;
 const totalTested=context.ATLAS_DATA.rows.filter(r=>r.review_status==='tested').length;
-assert.equal(totalDocumented,375,'Total de receitas documentadas deve ser 375');
-assert.equal(totalPending,2281,'Total de receitas pendentes deve ser 2281');
+assert.equal(totalDocumented,388,'Total de receitas documentadas deve ser 388');
+assert.equal(totalPending,2268,'Total de receitas pendentes deve ser 2268');
 assert.equal(totalTested,0,'Total de receitas testadas em bancada deve ser estritamente 0');
 
-vm.runInContext("copy('git status')",context).then(()=>{assert.equal(context.copied,'git status');context.window.isSecureContext=false;context.document.execCommand=()=>true;let restored=false,scrolled=false;context.document.activeElement={isConnected:true,focus(o){restored=o.preventScroll}};context.window.scrollTo=()=>{scrolled=true};return vm.runInContext("copy('fallback')",context).then(()=>{assert(restored);assert(scrolled);console.log('PASS: 2.656 entradas acessíveis, Lotes 1 a 9A com revisão documental e doc_ref, seções Usuários e grupos (62/62), Backup (48/48), Inicialização (12/12) e Fedora RPM/Flatpak (29/29) concluídas, Lote 9A (32/32) concluído, 84 pendentes no Vol 3, metadados de auditoria validados, atalho / com guardas estritas, sincronização de storage, foco de teclado adjacente e testes executados.')})});
+vm.runInContext("copy('git status')",context).then(()=>{assert.equal(context.copied,'git status');context.window.isSecureContext=false;context.document.execCommand=()=>true;let restored=false,scrolled=false;context.document.activeElement={isConnected:true,focus(o){restored=o.preventScroll}};context.window.scrollTo=()=>{scrolled=true};return vm.runInContext("copy('fallback')",context).then(()=>{assert(restored);assert(scrolled);console.log('PASS: 2.656 entradas acessíveis, Lotes 1 a 9B com revisão documental e doc_ref, seções Usuários e grupos (62/62), Backup (48/48), Inicialização (12/12) e Fedora RPM/Flatpak (29/29) concluídas, Lote 9A (32/32) e Lote 9B (13/13) concluídos, 71 pendentes no Vol 3, metadados de auditoria validados, atalho / com guardas estritas, sincronização de storage, foco de teclado adjacente e testes executados.')})});
